@@ -1,0 +1,11 @@
+Planche Spinta 3
+PlanchePushUp Spinta 3
+FrontLever Tirata 2
+FrontLeverPullUp Tirata 3
+VerticaleDueMani Verticale 1
+VerticaleUnaMano Verticale 2.5
+HandStandPushUp Spinta 1.5
+OneArmPullUp Tirata 2.5
+Maltese Spinta 5
+Victorian Tirata 5
+BackFlip Freestyle 1
