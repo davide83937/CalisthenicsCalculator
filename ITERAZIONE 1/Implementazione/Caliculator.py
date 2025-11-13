@@ -12,6 +12,8 @@ class Caliculator:
             cls._instance = super().__new__(cls)
         return cls._instance  # Restituiamo sempre la stessa istanza
 
+    #trolling comment
+
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
             print("Inizializzo la calcolatrice...")
