@@ -1,8 +1,8 @@
 from asyncore import write
-
+import Director as d
 import Atleta as a
 import Skill as sk
-import Set as set
+import SetBuilderConcrete as set
 
 class Caliculator:
     _instance = None  # Qui memorizziamo l'istanza unica
@@ -112,7 +112,7 @@ class Caliculator:
         self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
 
     def valutaAtleta(self, cod):
-        self.setCorrente = set.Set(0, [], 0, 0)
+        self.setCorrente = set.SetBuilderConcrete(0, [], 0, 0)
         self.setCorrente.cod_atleta = cod
 
     def inserisciSkillInSet(self, nomeSkill, malus):
@@ -125,7 +125,8 @@ class Caliculator:
     def calcolaPunteggioSet(self):
         for sl in self.setCorrente.listaSkill:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
-        self.setCorrente.calcolaBonus(self.setCorrente.listaSkill, self.elencoSkills)
+        d.DirectorBuilder(self.setCorrente, self.elencoSkills)
+        #self.setCorrente.calcolaBonus(self.setCorrente.listaSkill, self.elencoSkills)
         result = "Punteggio complessivo = "+str(self.setCorrente.punteggio_complessivo)
         return result
 
