@@ -5,21 +5,19 @@ class DirectorBuilder:
     def __init__(self, sb: setBuilder, listaSkill):
         self.sb = sb
         self.listaSkill = listaSkill
-        self.bonusCompletezza = self.checkBonusCompletezza()
+        self.result_builder = self.checkBonusCompletezza()
 
 
     def checkBonusCompletezza(self):
         tempListaCategorie = []
-        for e in self.sb.listaSkill:
+        for e in self.sb.elenco_skills_riferimento:
             categoria = next((s.categoria for s in self.listaSkill if s.nome == e.skill), None)
             if categoria not in tempListaCategorie:
                 tempListaCategorie.append(categoria)
         if len(tempListaCategorie) == 4:
             print("Bonus completezza presente")
-            self.sb = DecoratorCompletezza(self.sb)
-            return True
+            return DecoratorCompletezza(self.sb)
+        return self.sb
 
-        else:
-            print("Bonus completezza non presente")
-            return False
-
+    def get_result(self):
+        return self.result_builder

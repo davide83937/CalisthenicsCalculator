@@ -3,6 +3,7 @@ import Director as d
 import Atleta as a
 import Skill as sk
 import SetBuilderConcrete as set
+from Set import Set
 
 class Caliculator:
     _instance = None  # Qui memorizziamo l'istanza unica
@@ -112,23 +113,30 @@ class Caliculator:
         self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
 
     def valutaAtleta(self, cod):
-        self.setCorrente = set.SetBuilderConcrete(0, [], 0, 0)
+        self.setCorrente = set.SetBuilderConcrete(0)
         self.setCorrente.cod_atleta = cod
 
     def inserisciSkillInSet(self, nomeSkill, malus):
         for sk in self.elencoSkills:
             if sk.nome == nomeSkill.get():
-                sl = self.setCorrente.creaSetLine(sk, malus)
-                self.setCorrente.listaSkill.append(sl)
-
+                self.setCorrente.creaSetLine(sk, malus)
+                #self.setCorrente.listaSkill.append(sl)
 
     def calcolaPunteggioSet(self):
-        for sl in self.setCorrente.listaSkill:
+        # Otteniamo il prodotto dal builder/decorator
+        set_prodotto = self.setCorrente.get_result()
+
+        # Iteriamo sulle linee salvate nel prodotto
+        for sl in set_prodotto.lista_linee:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
-        d.DirectorBuilder(self.setCorrente, self.elencoSkills)
-        #self.setCorrente.calcolaBonus(self.setCorrente.listaSkill, self.elencoSkills)
-        result = "Punteggio complessivo = "+str(self.setCorrente.punteggio_complessivo)
-        return result
+
+        # Il DirectorBuilder analizza il set e decide se applicare decorator
+        director = d.DirectorBuilder(self.setCorrente, self.elencoSkills)
+        self.setCorrente = director.get_result()
+
+        # Recuperiamo il prodotto finale (potenzialmente decorato)
+        final_set = self.setCorrente.get_result()
+        return f"Punteggio complessivo = {final_set.punteggio_totale}"
 
 
 
