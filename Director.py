@@ -15,7 +15,7 @@ class DirectorBuilder:
             if categoria not in tempListaCategorie:
                 tempListaCategorie.append(categoria)
         if len(tempListaCategorie) == 4:
-            print("Bonus completezza presente")
+            print("Bonus completezza presentee")
             self.sb = DecoratorCompletezza(self.sb)
             return True
 
