@@ -113,7 +113,7 @@ class Caliculator:
         self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
 
     def valutaAtleta(self, cod):
-        self.setCorrente = set.SetBuilderConcrete(0)
+        self.setCorrente = set.SetBuilderConcrete(0, self.elencoSkills)
         self.setCorrente.cod_atleta = cod
 
     def inserisciSkillInSet(self, nomeSkill, malus):
