@@ -15,7 +15,7 @@ class Caliculator:
 
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
-            print("Inizializzo la calcolatrice...")
+            print("Inizializzo la calcolatricee...")
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
