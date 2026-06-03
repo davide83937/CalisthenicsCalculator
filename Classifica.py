@@ -3,15 +3,33 @@ class Classifica:
         self.listaSet = []
         self.classificaOrdinata = []
 
+
+
+
     def ordinaClassifica(self):
+        # --- INIZIO DEBUG ---
+        print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
+        if not self.listaSet:
+            print("ATTENZIONE: self.listaSet è VUOTA! Nessun set è stato aggiunto alla classifica.")
+        else:
+            for s in self.listaSet:
+                # Questo userà automaticamente il metodo __str__ di Set.py
+                print(s)
+        print("--------------------------------------\n")
+        # --- FINE DEBUG ---
+
+        # Da qui in poi lasci il tuo codice di ordinamento...
+        # (Ti consiglio sempre di usare il sorted() che ti ho mostrato prima)
+
         n = len(self.listaSet)
         i = n
         pos = 1
         lista_temp = []
-        item_classifica =[]
+
         while i > 0:
             max = 0
             set_max = None
+            item_classifica = []
             for set in self.listaSet:
                 if set.punteggio_totale > max and set.cod_atleta not in lista_temp:
                     max = set.punteggio_totale

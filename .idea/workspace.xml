@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="prova">
-      <change afterPath="$PROJECT_DIR$/Classifica.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Competizione.py" afterDir="false" />
+    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="si va avanti">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AppGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppGUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Caliculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Caliculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/atleti.txt" beforeDir="false" afterPath="$PROJECT_DIR$/atleti.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classifica.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifica.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DecoratorCompletezza.py" beforeDir="false" afterPath="$PROJECT_DIR$/DecoratorCompletezza.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DecoratorSet.py" beforeDir="false" afterPath="$PROJECT_DIR$/DecoratorSet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Director.py" beforeDir="false" afterPath="$PROJECT_DIR$/Director.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Set.py" beforeDir="false" afterPath="$PROJECT_DIR$/Set.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SetBuilderConcrete.py" beforeDir="false" afterPath="$PROJECT_DIR$/SetBuilderConcrete.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,61 +48,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000001945" />
-      <entry key="S5" value="1.0000119883126546" />
-      <entry key="S10" value="1.0060534772890146" />
-      <entry key="S30" value="1.5617584387868733" />
-      <entry key="S60" value="3.6106516475627233" />
-      <entry key="M2" value="8.507312925233219" />
-      <entry key="M5" value="21.581510411952333" />
-      <entry key="M10" value="41.89095651878945" />
-      <entry key="M15" value="61.0824380336927" />
-      <entry key="M30" value="107.56196034729878" />
-      <entry key="H1" value="165.31035574706857" />
-      <entry key="H2" value="237.14835302882855" />
-      <entry key="H4" value="328.05942268053" />
-      <entry key="D1" value="507.11273255709744" />
-      <entry key="W1" value="557.7226445617168" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="5.137978630688223E-178" />
+      <entry key="S2" value="4.7668229697279475E-45" />
+      <entry key="S5" value="1.9945311246402063E-18" />
+      <entry key="S10" value="1.7420917060814026E-9" />
+      <entry key="S30" value="0.0024365097236765357" />
+      <entry key="S60" value="0.10984805206633938" />
+      <entry key="M2" value="0.8264181914988538" />
+      <entry key="M5" value="3.145165123773545" />
+      <entry key="M10" value="6.757091080450901" />
+      <entry key="M15" value="12.864676265096982" />
+      <entry key="M30" value="42.67249110306209" />
+      <entry key="H1" value="103.54690159996981" />
+      <entry key="H2" value="190.41087289978444" />
+      <entry key="H4" value="298.3671925469451" />
+      <entry key="D1" value="512.1502945560599" />
+      <entry key="W1" value="573.6668592970564" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="4.276733654116289E-132" />
-      <entry key="S2" value="1.48724068602055E-33" />
-      <entry key="S5" value="1.0014116501377591E-13" />
-      <entry key="S10" value="5.053122461362968E-7" />
-      <entry key="S30" value="0.018204837284797555" />
-      <entry key="S60" value="0.30006367454041455" />
-      <entry key="M2" value="1.5762423647528903" />
-      <entry key="M5" value="6.35664962488986" />
-      <entry key="M10" value="13.780948553581457" />
-      <entry key="M15" value="20.50388418972597" />
-      <entry key="M30" value="36.19462961502823" />
-      <entry key="H1" value="55.0966802305216" />
-      <entry key="H2" value="78.38681425153231" />
-      <entry key="H4" value="107.96670415791773" />
-      <entry key="D1" value="166.43800641745034" />
-      <entry key="W1" value="182.97011911976338" />
+      <entry key="MS100" value="1.0000000000119849" />
+      <entry key="MS500" value="1.0065422381836595" />
+      <entry key="S2" value="1.2844013069681262" />
+      <entry key="S5" value="1.6047454857260406" />
+      <entry key="S10" value="1.777653834122896" />
+      <entry key="S30" value="1.9195927008905125" />
+      <entry key="S60" value="1.959356363378824" />
+      <entry key="M2" value="2.0001088011686" />
+      <entry key="M5" value="2.2858429908549573" />
+      <entry key="M10" value="3.261530432422565" />
+      <entry key="M15" value="5.208951460941608" />
+      <entry key="M30" value="15.000369851447845" />
+      <entry key="H1" value="34.94185955900277" />
+      <entry key="H2" value="63.22715789440232" />
+      <entry key="H4" value="98.39690049128734" />
+      <entry key="D1" value="168.20573073737185" />
+      <entry key="W1" value="188.2988684467917" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.678302163723836" />
-      <entry key="MS500" value="0.9253044280378523" />
-      <entry key="S2" value="0.9807790039886827" />
-      <entry key="S5" value="0.9922766720591939" />
-      <entry key="S10" value="1.001594829645929" />
-      <entry key="S30" value="1.5594836814655162" />
-      <entry key="S60" value="3.8631628931682735" />
-      <entry key="M2" value="10.013900475239506" />
-      <entry key="M5" value="27.86186815510877" />
-      <entry key="M10" value="55.59758399334216" />
-      <entry key="M15" value="81.51294511693705" />
-      <entry key="M30" value="143.68946994597098" />
-      <entry key="H1" value="220.35413268946022" />
-      <entry key="H2" value="315.4965206931393" />
-      <entry key="H4" value="435.99902521975145" />
-      <entry key="D1" value="673.5436813008866" />
-      <entry key="W1" value="740.6916535806181" />
+      <entry key="MS100" value="3.3023586326321273E-7" />
+      <entry key="MS500" value="0.052554785250008" />
+      <entry key="S2" value="0.6856441393870261" />
+      <entry key="S5" value="1.2791042965859336" />
+      <entry key="S10" value="1.5942729858070488" />
+      <entry key="S30" value="1.8554917813146914" />
+      <entry key="S60" value="2.03462890376389" />
+      <entry key="M2" value="2.806565496649113" />
+      <entry key="M5" value="5.41807655796051" />
+      <entry key="M10" value="10.007059115298885" />
+      <entry key="M15" value="18.05940267729683" />
+      <entry key="M30" value="57.64805834109563" />
+      <entry key="H1" value="138.45713646682466" />
+      <entry key="H2" value="253.60798228933928" />
+      <entry key="H4" value="396.7400087579205" />
+      <entry key="D1" value="680.349002843538" />
+      <entry key="W1" value="761.9646012219271" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -111,26 +113,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.AppGUI.executor": "Run",
-    "Python.Caliculator.executor": "Run",
-    "Python.Main.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Iterazione2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.AppGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Caliculator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Iterazione2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Desktop\Universita\Magistrale\Ingegneria del Software\PROGETTO CALISTHENICS\ITERAZIONE 2\Implementazione" />
@@ -159,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780397102184</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="si va avanti">
+      <option name="closed" value="true" />
+      <created>1780499572292</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1780499572293</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,6 +188,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="prova" />
-    <option name="LAST_COMMIT_MESSAGE" value="prova" />
+    <MESSAGE value="si va avanti" />
+    <option name="LAST_COMMIT_MESSAGE" value="si va avanti" />
   </component>
 </project>
