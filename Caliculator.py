@@ -1,9 +1,8 @@
-from asyncore import write
 import Director as d
 import Atleta as a
 import Skill as sk
 import SetBuilderConcrete as set
-from Set import Set
+import DataUploader as dup
 
 class Caliculator:
     _instance = None  # Qui memorizziamo l'istanza unica
@@ -16,6 +15,7 @@ class Caliculator:
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
             print("Inizializzo la calcolatrice...")
+            self.dup = dup.DataUploader()
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
@@ -25,39 +25,13 @@ class Caliculator:
 
 
     def carica_atleti(self):
-        f = open("atleti.txt","r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            codice = int(attributi[0])
-            nome = attributi[1]
-            cognome = attributi[2]
-            età = int(attributi[3])
-            cod_fiscale = attributi[4]
-            n_cellulare = attributi[5]
-            email = attributi[6]
-            altezza = float(attributi[7])
-            peso = float(attributi[8])
-            atleta = a.Atleta(codice, nome, cognome, età, cod_fiscale, n_cellulare, email, altezza, peso)
-            self.elencoAtleti[atleta.codice] = atleta
-            line = f.readline()
-        for codice, atl in self.elencoAtleti.items():
-            self.app.add_line(codice, atl.nome, atl.cognome)
-        f.close()
+        self.dup.carica_atleti(self.elencoAtleti, self.app)
+
 
 
     def carica_skill(self):
-        f = open("skills.txt", "r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            nome = attributi[0]
-            categoria = attributi[1]
-            valore = float(attributi[2])
-            skill = sk.Skill(nome, categoria, valore)
-            self.elencoSkills.append(skill)
-            line = f.readline()
-        f.close()
+        self.dup.carica_skill(self.elencoSkills)
+
 
 
     def getSkillList(self):
@@ -120,9 +94,9 @@ class Caliculator:
         for sk in self.elencoSkills:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
-                #self.setCorrente.listaSkill.append(sl)
 
-    def calcolaPunteggioSet(self):
+
+    def calcolaPunteggioSet(self, n_combo):
         # Otteniamo il prodotto dal builder/decorator
         set_prodotto = self.setCorrente.get_result()
 
@@ -131,12 +105,15 @@ class Caliculator:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
 
         # Il DirectorBuilder analizza il set e decide se applicare decorator
-        director = d.DirectorBuilder(self.setCorrente, self.elencoSkills)
+        director = d.DirectorBuilder(self.setCorrente, self.elencoSkills, n_combo)
         self.setCorrente = director.get_result()
 
         # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
-        return f"Punteggio complessivo = {final_set.punteggio_totale}"
+        final_set.__str__()
+
+        #return f"Punteggio complessivo = {final_set.punteggio_totale}"
+        return final_set.__str__()
 
 
 

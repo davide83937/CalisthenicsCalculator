@@ -164,12 +164,74 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-
     def openEvaluationWindow(self, code):
         import Caliculator as cc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
         self.evaluationWindow.geometry("720x540")
+        self.evaluationWindow.resizable(False, False)
+        # Importante: grid_propagate va messo DOPO aver definito la geometry
+        self.evaluationWindow.grid_propagate(False)
+
+        cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
+
+        # Label del Codice Atleta
+        self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
+        self.code.grid(row=0, column=0, columnspan=2, pady=5)
+
+        # 1. Configurazione CANVAS e SCROLLBAR
+        self.canvas = tk.Canvas(self.evaluationWindow, width=450, height=350)  # Altezza fissa
+        self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
+
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollSetLines.set)
+
+        # Posizionamento Canvas (Colonna 0)
+        self.canvas.grid(row=1, column=0, padx=10, pady=10)
+        self.scrollSetLines.grid(row=1, column=1, sticky="ns")
+
+        # 2. Sezione Input Bonus (Sotto il canvas)
+        bonus_frame = ttk.Frame(self.evaluationWindow)
+        bonus_frame.grid(row=2, column=0, pady=10)
+
+        bonus_combo_label = ttk.Label(bonus_frame, text="Bonus Combo:")
+        bonus_combo_label.grid(row=0, column=0, padx=5)
+
+        bonus_combo_entry = ttk.Entry(bonus_frame, width=5)
+        bonus_combo_entry.insert(0, "0")
+        bonus_combo_entry.grid(row=0, column=1)
+
+        # 3. Sezione Pulsanti Azione (Colonna 2)
+        buttons_frame = ttk.Frame(self.evaluationWindow)
+        buttons_frame.grid(row=1, column=2, padx=20, sticky="n")
+
+        addSetLineButton = ttk.Button(buttons_frame, text="Aggiungi Linea", command=self.addSetLine)
+        addSetLineButton.pack(pady=10)
+
+        confermaButton = ttk.Button(buttons_frame, text="Conferma",
+                                    command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
+                                                                          int(bonus_combo_entry.get())))
+        confermaButton.pack(pady=10)
+
+        self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
+        self.labelResult.pack(pady=20)
+
+        # Inizializza la prima riga
+        self.addSetLine()
+
+    """def openEvaluationWindow(self, code):
+        import Caliculator as cc
+        self.evaluationWindow = tk.Toplevel(self.root)
+        self.evaluationWindow.title("Valuta atleta")
+        self.evaluationWindow.geometry("720x540")
+        self.evaluationWindow.resizable(False, False)  # Impedisce all'utente di ridimensionare
+        self.evaluationWindow.grid_propagate(False)  # Impedisce al contenuto di allargare la finestra
         cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
         self.code = ttk.Label(self.evaluationWindow, text=code)
         self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow)
@@ -177,26 +239,36 @@ class appGUI:
         self.code.grid(row=0,column=1)
         self.scrollSetLines.grid(row=1, column=1, sticky="NS")
         self.mySetLinesList.grid(row=1, column=0, ipadx=100, ipady=150)
+        bonus_combo_label = ttk.Label(self.evaluationWindow, text="BonusCombo")
+        bonus_combo_entry = ttk.Entry(self.evaluationWindow)
+        bonus_combo_entry.insert(0, "0")
+
         addSetLineButton =  ttk.Button(self.evaluationWindow, text="Aggiungi Linea", command=self.addSetLine)
         addSetLineButton.grid(row=0, column=2)
-        confermaButton = ttk.Button(self.evaluationWindow, text="Conferma", command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton))
+        confermaButton = ttk.Button(self.evaluationWindow, text="Conferma",
+                                    command=lambda:
+                                    self.calcolaPunteggio(addSetLineButton, confermaButton, int(bonus_combo_entry.get())))
         confermaButton.grid(row=0, column=3)
         self.labelResult = ttk.Label(self.evaluationWindow, text="")
         self.labelResult.grid(row=1, column=2)
-        self.addSetLine()
+        bonus_combo_label.grid(row=2, column=0)
+        bonus_combo_entry.grid(row=3, column=0)
+        self.addSetLine()"""
 
 
 
     def addSetLine(self):
         import Caliculator as cc
-        setLine = tk.Frame(self.mySetLinesList)
+        #setLine = tk.Frame(self.mySetLinesList)
+        setLine = tk.Frame(self.scrollable_frame)
         setLine.pack(fill="x", pady=2)
         scelta = tk.StringVar(value="Seleziona una skill")
         listaSkill = cc.Caliculator.getSkillList(cc.Caliculator._instance)
         tendinaSkill = ttk.OptionMenu(setLine, scelta, *(["Seleziona Skill"]+[s.nome for s in listaSkill]))
         tendinaSkill.grid(row=1, column=0)
-        sceltaMalus = tk.StringVar(value="Seleziona un malus")
+
         listaMalus = ["Seleziona Malus", 0, 0.1, 0.25, 0.5]
+        sceltaMalus = tk.StringVar(value=str(listaMalus[0]))
         tendinaMalus = ttk.OptionMenu(setLine, sceltaMalus, *listaMalus)
         tendinaMalus.grid(row=1, column=1)
         confermaLineButton = ttk.Button(setLine, text="Conferma", command=lambda: self.confermaSingola(scelta, sceltaMalus, tendinaSkill, tendinaMalus, confermaLineButton))
@@ -213,9 +285,9 @@ class appGUI:
 
 
 
-    def calcolaPunteggio(self, addLineButton, confermaButton):
+    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo):
         import Caliculator as cc
-        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance)
+        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
