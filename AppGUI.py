@@ -1,9 +1,11 @@
 import tkinter as tk
-from cProfile import label
 from tkinter import ttk
-import copy
 
-from Tools.scripts.win_add2path import modify
+import time
+
+from pip._internal.commands import show
+
+from Classifica import Classifica
 
 
 class appGUI:
@@ -20,7 +22,7 @@ class appGUI:
         self.mylist = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.but_reg.grid(row=0, column=0)
         self.scroll.grid(row =1, column=1, sticky="NS")
-        self.mylist.grid(row=1, column=0, ipadx=200, ipady=400)
+        self.mylist.grid(row=1, column=0, ipadx=20, ipady=40)
         self.nome_entry = None
         self.style = ttk.Style()
         self.style.theme_use('clam')
@@ -34,6 +36,65 @@ class appGUI:
         self.modify = None
         self.save_button = None
         self.indexSetLine = 0
+        self.startCompetitionButton = self.add_button("StartCompetition", command=self.openCompetitionWindow)
+        self.startCompetitionButton.grid(row=0, column=2)
+        self.lista_partecipanti_temp = []
+
+    def showAthletes(self):
+        import Caliculator as cc
+        self.scroll2 = ttk.Scrollbar(self.main_frame)
+        self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
+        self.scroll2.grid(row=1, column=3, sticky="NS")
+        self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
+        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
+            if codice in self.lista_partecipanti_temp:
+               cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
+        self.makeClassification = self.add_button("Genera Classifica", command=self.generaClassifica)
+        self.makeClassification.grid(row=1, column=4)
+
+    def generaClassifica(self):
+        import Caliculator as cc
+        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
+        classificaOrdinata = comp.getClassificaOrdinata()
+        self.showClassification(classificaOrdinata)
+
+    def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
+        self.code_label = tk.Label(self.main_frame, text=posizione)
+        self.code_label.grid(row=row, column=4)
+        self.code_label = tk.Label(self.main_frame, text=nome)
+        self.code_label.grid(row=row, column=5)
+        self.code_label = tk.Label(self.main_frame, text=cognome)
+        self.code_label.grid(row=row, column=6)
+        self.code_label = tk.Label(self.main_frame, text=punteggio)
+        self.code_label.grid(row=row, column=7)
+        self.code_label = tk.Label(self.main_frame, text=code)
+        self.code_label.grid(row=row, column=8)
+
+    def makeClassification(self, classificaOrdinata):
+        import Caliculator as cc
+        row = 2
+        #n = len(classificaOrdinata)
+        lista_atleti = cc.Caliculator.getElencoAtleti(cc.Caliculator._instance)
+        for co in classificaOrdinata:
+            atleta = lista_atleti[co[0]]
+            self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
+            row = row + 1
+
+
+    def showClassification(self):
+        self.code_label = tk.Label(self.main_frame, text="CLASSIFICA")
+        self.code_label.grid(row=0, column=4)
+        self.code_label = tk.Label(self.main_frame, text="Posizione")
+        self.code_label.grid(row=1, column=4)
+        self.code_label = tk.Label(self.main_frame, text="Nome")
+        self.code_label.grid(row=1, column=5)
+        self.code_label = tk.Label(self.main_frame, text="Cognome")
+        self.code_label.grid(row=1, column=6)
+        self.code_label = tk.Label(self.main_frame, text="Punteggio")
+        self.code_label.grid(row=1, column=7)
+        self.code_label = tk.Label(self.main_frame, text="Codice")
+        self.code_label.grid(row=1, column=8)
+
 
 
 
@@ -52,18 +113,27 @@ class appGUI:
 
     def save_button_f(self):
         import Caliculator as cc
-        #print("save gui")
         cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
 
     # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
         btn = ttk.Button(self.main_frame, text=text, command=command)
-        #btn.pack(pady=5)
         return btn
 
+    def add_athlete_temp(self, code):
+        if code not in self.lista_partecipanti_temp:
+            self.lista_partecipanti_temp.append(code)
+            n = len(self.lista_partecipanti_temp)
+            self.string.set("Numero di partecipanti = " + str(n))
 
-    def add_line(self, code, nome, cognome):
-        line = tk.Frame(self.mylist)
+    def add_line(self, code, nome, cognome, goal, myLista = None):
+        if myLista == None:
+            myLista = self.mylist
+        if goal == "valuta":
+            function = lambda:self.openEvaluationWindow(code)
+        elif goal == "partecipa":
+            function = lambda: self.add_athlete_temp(code)
+        line = tk.Frame(myLista)
         line.pack(fill="x", pady=2)
         self.code_label = tk.Label(line, text=code)
         self.code_label.grid(row=0, column=0)
@@ -71,9 +141,17 @@ class appGUI:
         nome_label.grid(row=0, column=1)
         cognome_label = tk.Label(line, text=cognome)
         cognome_label.grid(row=0, column=2)
-        button_add = tk.Button(line, text="Valuta", command=lambda:self.openEvaluationWindow(code))
+        button_add = tk.Button(line, text=goal, command=function)
         button_add.grid(row=0,column=3)
-
+        import Caliculator as cc
+        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
+        if comp is not None:
+            lista_stati = comp.getStatiPartecipanti()
+            stato = lista_stati[code]
+            print("Stato")
+            print(stato)
+            stato_label = tk.Label(line, text=stato)
+            stato_label.grid(row=0, column=4)
 
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
@@ -115,8 +193,6 @@ class appGUI:
             self.email_entry.configure(style="Ok.TEntry", state="readonly")
             self.modify.grid()
             self.save_button.grid()
-
-
 
 
     def openSubWindow(self):
@@ -185,6 +261,31 @@ class appGUI:
         self.labelResult.grid(row=1, column=2)
         self.addSetLine()
 
+    def openCompetitionWindow(self):
+        import Caliculator as cc
+        self.lista_partecipanti_temp = []
+        self.competitionWindow = tk.Toplevel(self.root)
+        self.competitionWindow.title("Valuta atleta")
+        self.competitionWindow.geometry("720x850")
+        self.scrollComp = ttk.Scrollbar(self.competitionWindow)
+        self.mylistComp = tk.Listbox(self.competitionWindow, yscrollcommand=self.scrollComp.set)
+        self.scrollComp.grid(row=1, column=1, sticky="NS")
+        self.mylistComp.grid(row=1, column=0, ipadx=20, ipady=40)
+        self.beginCompetitionButton = ttk.Button(self.competitionWindow, text="Inizio", command=lambda: self.startCompetition())
+        self.beginCompetitionButton.grid(row=0, column=2)
+        self.string = tk.StringVar()
+        self.n_partecipanti = ttk.Label(self.competitionWindow, textvariable=self.string)
+        n = len(self.lista_partecipanti_temp)
+        self.string.set("Numero di partecipanti = "+str(n))
+        self.n_partecipanti.grid(row=1, column=2)
+        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
+            cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
+
+
+    def startCompetition(self):
+        import Caliculator as cc
+        cc.Caliculator.creaNuovaCompetizione(cc.Caliculator._instance, self.lista_partecipanti_temp)
+        self.showAthletes()
 
 
     def addSetLine(self):

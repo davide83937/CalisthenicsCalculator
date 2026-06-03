@@ -1,9 +1,9 @@
-from asyncore import write
 import Director as d
 import Atleta as a
 import Skill as sk
 import SetBuilderConcrete as set
-from Set import Set
+import Competizione as comp
+
 
 class Caliculator:
     _instance = None  # Qui memorizziamo l'istanza unica
@@ -16,12 +16,22 @@ class Caliculator:
     def __init__(self, app):
         if not hasattr(self, "_initialized"):
             print("Inizializzo la calcolatricee...")
+            self.competizioneAttuale = None
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
             self.app = app
             self.atletaCorrente = None
             self.setCorrente = None
+            self.statoCorrente = "general"
+    def getCompetizioneAttuale(self):
+        return self.competizioneAttuale
+
+    def getApp(self):
+        return self.app
+
+    def getElencoAtleti(self):
+        return self.elencoAtleti
 
 
     def carica_atleti(self):
@@ -42,7 +52,7 @@ class Caliculator:
             self.elencoAtleti[atleta.codice] = atleta
             line = f.readline()
         for codice, atl in self.elencoAtleti.items():
-            self.app.add_line(codice, atl.nome, atl.cognome)
+            self.app.add_line(codice, atl.nome, atl.cognome, "valuta")
         f.close()
 
 
@@ -120,7 +130,6 @@ class Caliculator:
         for sk in self.elencoSkills:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
-                #self.setCorrente.listaSkill.append(sl)
 
     def calcolaPunteggioSet(self):
         # Otteniamo il prodotto dal builder/decorator
@@ -136,7 +145,27 @@ class Caliculator:
 
         # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
+        if self.statoCorrente == "inCorso":
+            self.competizioneAttuale.inserisciSetInClassifica(final_set)
         return f"Punteggio complessivo = {final_set.punteggio_totale}"
+
+    def creaNuovaCompetizione(self, lista):
+        # 1. Crei l'istanza della competizione
+        self.competizioneAttuale = comp.Competizione()
+
+        # 2. Cicli direttamente sui codici ricevuti nella lista
+        for cod in lista:
+            # 3. Verifichi se il codice esiste nell'elenco degli atleti
+            if cod in self.elencoAtleti:
+                # Prendi l'oggetto atleta usando la chiave 'cod'
+                atleta = self.elencoAtleti[cod]
+
+                # 4. Chiami il metodo SULL'ISTANZA appena creata, passando l'atleta
+                self.competizioneAttuale.inserisciPartecipanti(atleta)
+                self.statoCorrente = "inCorso"
+
+
+
 
 
 

@@ -1,15 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="" />
+    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="prova">
+      <change afterPath="$PROJECT_DIR$/Classifica.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Competizione.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppGUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Caliculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Caliculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/atleti.txt" beforeDir="false" afterPath="$PROJECT_DIR$/atleti.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;davide83937&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/davide83937/CalisthenicsCalculator&quot;,
+    &quot;accountId&quot;: &quot;42101907-8782-42bc-b026-af789859d904&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000000000001945" />
+      <entry key="S5" value="1.0000119883126546" />
+      <entry key="S10" value="1.0060534772890146" />
+      <entry key="S30" value="1.5617584387868733" />
+      <entry key="S60" value="3.6106516475627233" />
+      <entry key="M2" value="8.507312925233219" />
+      <entry key="M5" value="21.581510411952333" />
+      <entry key="M10" value="41.89095651878945" />
+      <entry key="M15" value="61.0824380336927" />
+      <entry key="M30" value="107.56196034729878" />
+      <entry key="H1" value="165.31035574706857" />
+      <entry key="H2" value="237.14835302882855" />
+      <entry key="H4" value="328.05942268053" />
+      <entry key="D1" value="507.11273255709744" />
+      <entry key="W1" value="557.7226445617168" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="4.276733654116289E-132" />
+      <entry key="S2" value="1.48724068602055E-33" />
+      <entry key="S5" value="1.0014116501377591E-13" />
+      <entry key="S10" value="5.053122461362968E-7" />
+      <entry key="S30" value="0.018204837284797555" />
+      <entry key="S60" value="0.30006367454041455" />
+      <entry key="M2" value="1.5762423647528903" />
+      <entry key="M5" value="6.35664962488986" />
+      <entry key="M10" value="13.780948553581457" />
+      <entry key="M15" value="20.50388418972597" />
+      <entry key="M30" value="36.19462961502823" />
+      <entry key="H1" value="55.0966802305216" />
+      <entry key="H2" value="78.38681425153231" />
+      <entry key="H4" value="107.96670415791773" />
+      <entry key="D1" value="166.43800641745034" />
+      <entry key="W1" value="182.97011911976338" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.678302163723836" />
+      <entry key="MS500" value="0.9253044280378523" />
+      <entry key="S2" value="0.9807790039886827" />
+      <entry key="S5" value="0.9922766720591939" />
+      <entry key="S10" value="1.001594829645929" />
+      <entry key="S30" value="1.5594836814655162" />
+      <entry key="S60" value="3.8631628931682735" />
+      <entry key="M2" value="10.013900475239506" />
+      <entry key="M5" value="27.86186815510877" />
+      <entry key="M10" value="55.59758399334216" />
+      <entry key="M15" value="81.51294511693705" />
+      <entry key="M30" value="143.68946994597098" />
+      <entry key="H1" value="220.35413268946022" />
+      <entry key="H2" value="315.4965206931393" />
+      <entry key="H4" value="435.99902521975145" />
+      <entry key="D1" value="673.5436813008866" />
+      <entry key="W1" value="740.6916535806181" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="3EZrA9nKsM9LgHvkzhmOutnMMxK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -18,11 +114,28 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.AppGUI.executor": "Run",
+    "Python.Caliculator.executor": "Run",
+    "Python.Main.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false"
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "Iterazione2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Desktop\Universita\Magistrale\Ingegneria del Software\PROGETTO CALISTHENICS\ITERAZIONE 2\Implementazione" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -38,9 +151,33 @@
       <option name="presentableId" value="Default" />
       <updated>1780396787301</updated>
     </task>
+    <task id="LOCAL-00001" summary="prova">
+      <option name="closed" value="true" />
+      <created>1780397102184</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1780397102184</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="prova" />
+    <option name="LAST_COMMIT_MESSAGE" value="prova" />
   </component>
 </project>

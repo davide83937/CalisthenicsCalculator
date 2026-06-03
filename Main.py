@@ -10,6 +10,5 @@ cal.carica_atleti()
 cal.carica_skill()
 print("Caricato")
 
-
 root.mainloop()
 
