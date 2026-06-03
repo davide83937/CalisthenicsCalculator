@@ -49,14 +49,15 @@ class appGUI:
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
             if codice in self.lista_partecipanti_temp:
                cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
-        self.makeClassification = self.add_button("Genera Classifica", command=self.generaClassifica)
-        self.makeClassification.grid(row=1, column=4)
+        self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
+        self.makeClassificationButton.grid(row=1, column=4)
 
-    def generaClassifica(self):
+    """def generaClassifica(self):
         import Caliculator as cc
         comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
         classificaOrdinata = comp.getClassificaOrdinata()
-        self.showClassification(classificaOrdinata)
+        self.showClassification()
+        self.makeClassification(classificaOrdinata)
 
     def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
         self.code_label = tk.Label(self.main_frame, text=posizione)
@@ -93,8 +94,55 @@ class appGUI:
         self.code_label = tk.Label(self.main_frame, text="Punteggio")
         self.code_label.grid(row=1, column=7)
         self.code_label = tk.Label(self.main_frame, text="Codice")
-        self.code_label.grid(row=1, column=8)
+        self.code_label.grid(row=1, column=8)"""
 
+    def generaClassifica(self):
+        import Caliculator as cc
+        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
+        classificaOrdinata = comp.getClassificaOrdinata()
+
+        # 1. Mostra le intestazioni
+        self.showClassification()
+        # 2. Riempie la classifica con i dati
+        self.makeClassification(classificaOrdinata)
+
+    def showClassification(self):
+        # Se la classifica esiste già a schermo, la distruggiamo per svuotarla
+        # (Questo risolve il bug degli atleti duplicati sulla GUI se premi due volte!)
+        if hasattr(self, 'classifica_frame') and self.classifica_frame is not None:
+            self.classifica_frame.destroy()
+
+        # Creiamo un frame "contenitore" solo per la classifica
+        self.classifica_frame = ttk.Frame(self.main_frame)
+        # Lo mettiamo a destra di tutto (column=5), allineato in alto (sticky="n")
+        self.classifica_frame.grid(row=1, column=5, sticky="n", padx=30)
+
+        # Usiamo riga 0 e 1 DEL FRAME, quindi non interferiscono con il resto della GUI
+        tk.Label(self.classifica_frame, text="CLASSIFICA", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
+                                                                                                columnspan=5, pady=10)
+
+        tk.Label(self.classifica_frame, text="Pos").grid(row=1, column=0, padx=5)
+        tk.Label(self.classifica_frame, text="Nome").grid(row=1, column=1, padx=5)
+        tk.Label(self.classifica_frame, text="Cognome").grid(row=1, column=2, padx=5)
+        tk.Label(self.classifica_frame, text="Punti").grid(row=1, column=3, padx=5)
+        tk.Label(self.classifica_frame, text="Cod").grid(row=1, column=4, padx=5)
+
+    def makeClassification(self, classificaOrdinata):
+        import Caliculator as cc
+        row = 2
+        lista_atleti = cc.Caliculator.getElencoAtleti(cc.Caliculator._instance)
+        for co in classificaOrdinata:
+            atleta = lista_atleti[co[0]]
+            self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
+            row = row + 1
+
+    def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
+        # Anziché usare self.main_frame, inseriamo le etichette in self.classifica_frame
+        tk.Label(self.classifica_frame, text=posizione).grid(row=row, column=0)
+        tk.Label(self.classifica_frame, text=nome).grid(row=row, column=1)
+        tk.Label(self.classifica_frame, text=cognome).grid(row=row, column=2)
+        tk.Label(self.classifica_frame, text=punteggio).grid(row=row, column=3)
+        tk.Label(self.classifica_frame, text=code).grid(row=row, column=4)
 
 
 

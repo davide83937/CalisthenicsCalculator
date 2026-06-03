@@ -123,7 +123,7 @@ class Caliculator:
         self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
 
     def valutaAtleta(self, cod):
-        self.setCorrente = set.SetBuilderConcrete(0, self.elencoSkills)
+        self.setCorrente = set.SetBuilderConcrete(cod, self.elencoSkills)
         self.setCorrente.cod_atleta = cod
 
     def inserisciSkillInSet(self, nomeSkill, malus):
@@ -147,7 +147,7 @@ class Caliculator:
         final_set = self.setCorrente.get_result()
         if self.statoCorrente == "inCorso":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
-            
+
         return f"Punteggio complessivo = {final_set.punteggio_totale}"
 
 
