@@ -24,6 +24,7 @@ class Caliculator:
             self.atletaCorrente = None
             self.setCorrente = None
             self.statoCorrente = "general"
+            
     def getCompetizioneAttuale(self):
         return self.competizioneAttuale
 
