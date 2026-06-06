@@ -39,6 +39,7 @@ class appGUI:
         self.startCompetitionButton = self.add_button("StartCompetition", command=self.openCompetitionWindow)
         self.startCompetitionButton.grid(row=0, column=2)
         self.lista_partecipanti_temp = []
+        #self.mostraTabellone()
 
     def showAthletes(self):
         import Caliculator as cc
@@ -52,59 +53,17 @@ class appGUI:
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
         self.makeClassificationButton.grid(row=1, column=4)
 
-    """def generaClassifica(self):
-        import Caliculator as cc
-        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
-        classificaOrdinata = comp.getClassificaOrdinata()
-        self.showClassification()
-        self.makeClassification(classificaOrdinata)
 
-    def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
-        self.code_label = tk.Label(self.main_frame, text=posizione)
-        self.code_label.grid(row=row, column=4)
-        self.code_label = tk.Label(self.main_frame, text=nome)
-        self.code_label.grid(row=row, column=5)
-        self.code_label = tk.Label(self.main_frame, text=cognome)
-        self.code_label.grid(row=row, column=6)
-        self.code_label = tk.Label(self.main_frame, text=punteggio)
-        self.code_label.grid(row=row, column=7)
-        self.code_label = tk.Label(self.main_frame, text=code)
-        self.code_label.grid(row=row, column=8)
-
-    def makeClassification(self, classificaOrdinata):
-        import Caliculator as cc
-        row = 2
-        #n = len(classificaOrdinata)
-        lista_atleti = cc.Caliculator.getElencoAtleti(cc.Caliculator._instance)
-        for co in classificaOrdinata:
-            atleta = lista_atleti[co[0]]
-            self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
-            row = row + 1
-
-
-    def showClassification(self):
-        self.code_label = tk.Label(self.main_frame, text="CLASSIFICA")
-        self.code_label.grid(row=0, column=4)
-        self.code_label = tk.Label(self.main_frame, text="Posizione")
-        self.code_label.grid(row=1, column=4)
-        self.code_label = tk.Label(self.main_frame, text="Nome")
-        self.code_label.grid(row=1, column=5)
-        self.code_label = tk.Label(self.main_frame, text="Cognome")
-        self.code_label.grid(row=1, column=6)
-        self.code_label = tk.Label(self.main_frame, text="Punteggio")
-        self.code_label.grid(row=1, column=7)
-        self.code_label = tk.Label(self.main_frame, text="Codice")
-        self.code_label.grid(row=1, column=8)"""
 
     def generaClassifica(self):
         import Caliculator as cc
-        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
-        classificaOrdinata = comp.getClassificaOrdinata()
+        classificaOrdinata = cc.Caliculator.generaClassifica(cc.Caliculator._instance)
 
         # 1. Mostra le intestazioni
         self.showClassification()
         # 2. Riempie la classifica con i dati
         self.makeClassification(classificaOrdinata)
+        self.mostraTabellone()
 
     def showClassification(self):
         # Se la classifica esiste già a schermo, la distruggiamo per svuotarla
@@ -348,25 +307,7 @@ class appGUI:
 
         # Inizializza la prima riga
         self.addSetLine()
-    """def openEvaluationWindow(self, code):
-        import Caliculator as cc
-        self.evaluationWindow = tk.Toplevel(self.root)
-        self.evaluationWindow.title("Valuta atleta")
-        self.evaluationWindow.geometry("720x540")
-        cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
-        self.code = ttk.Label(self.evaluationWindow, text=code)
-        self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow)
-        self.mySetLinesList = tk.Listbox(self.evaluationWindow, yscrollcommand=self.scrollSetLines.set)
-        self.code.grid(row=0,column=1)
-        self.scrollSetLines.grid(row=1, column=1, sticky="NS")
-        self.mySetLinesList.grid(row=1, column=0, ipadx=100, ipady=150)
-        addSetLineButton =  ttk.Button(self.evaluationWindow, text="Aggiungi Linea", command=self.addSetLine)
-        addSetLineButton.grid(row=0, column=2)
-        confermaButton = ttk.Button(self.evaluationWindow, text="Conferma", command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton))
-        confermaButton.grid(row=0, column=3)
-        self.labelResult = ttk.Label(self.evaluationWindow, text="")
-        self.labelResult.grid(row=1, column=2)
-        self.addSetLine()"""
+
 
     def openCompetitionWindow(self):
         import Caliculator as cc
@@ -428,7 +369,86 @@ class appGUI:
         addLineButton.grid_remove()
         confermaButton.grid_remove()
 
+    def getSfidanti(self):
+        import Caliculator as cc
+        first, second = cc.Caliculator.inserisciSfidanti(cc.Caliculator._instance)
+        atl1 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, first[0])
+        atl2 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, second[0])
+        str1 = f"{atl1.nome} {atl1.cognome}"
+        str2 = f"{atl2.nome} {atl2.cognome}"
+        return (str1, str2)
+
+    def riempiOttavi(self):
+        sfidantiOttavi = []
+        for i in range(0, 7):
+            sfidantiOttavi.append(self.getSfidanti())
+        return sfidantiOttavi
 
 
+    def mostraTabellone(self):
+        if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
+            self.bracket_frame.destroy()
+
+        self.bracket_frame = ttk.Frame(self.main_frame)
+        # Un po' di margine dal resto della UI
+        self.bracket_frame.grid(row=1, column=6, sticky="n", padx=15)
+
+        # Titoli ingranditi e leggibili
+        tk.Label(self.bracket_frame, text="TABELLONE 1v1", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
+                                                                                                columnspan=4, pady=5)
+
+        fasi = ["Ottavi", "Quarti", "Semifinali", "Finale"]
+        for col, fase in enumerate(fasi):
+            tk.Label(self.bracket_frame, text=fase, font=('Helvetica', 10, 'bold')).grid(row=1, column=col, pady=2)
+
+        # Manteniamo il rowspan per evitare che la finestra si allunghi troppo in verticale
+        posizioni = {
+            "Ottavi": [(2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1)],
+            "Quarti": [(2, 2), (4, 2), (6, 2), (8, 2)],
+            "Semifinali": [(2, 4), (6, 4)],
+            "Finale": [(2, 8)]
+        }
+
+        sfidanti_ottavi = [
+            ("1° Qualif.", "16° Qualif."), ("8° Qualif.", "9° Qualif."),
+            ("4° Qualif.", "13° Qualif."), ("5° Qualif.", "12° Qualif."),
+            ("2° Qualif.", "15° Qualif."), ("7° Qualif.", "10° Qualif."),
+            ("3° Qualif.", "14° Qualif."), ("6° Qualif.", "11° Qualif.")
+        ]
+
+        l = self.riempiOttavi()
+        if len(l) == 8:
+            sfidanti_ottavi = l
+
+        for col, fase in enumerate(fasi):
+            configurazioni = posizioni[fase]
+            for i, (row, rowspan) in enumerate(configurazioni):
+                nome1, nome2 = "TBD", "TBD"
+                if fase == "Ottavi":
+                    nome1, nome2 = sfidanti_ottavi[i]
+                self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2)
+
+
+
+    def crea_match_box(self, parent, row, col, rowspan, nome1, nome2):
+        # Ripristiniamo un leggero padding esterno ed interno per dare respiro
+        box = tk.Frame(parent, borderwidth=1, relief="solid", bg="lightgrey", padx=2, pady=2)
+        box.grid(row=row, column=col, rowspan=rowspan, padx=6, pady=3)
+
+        # Font riportato a 9, larghezza a 13.
+        # bd=2 ridà il classico effetto "pulsante" cliccabile 3D
+        btn1 = tk.Button(box, text=nome1, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
+        btn2 = tk.Button(box, text=nome2, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
+
+        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.imposta_vincitore(b_win, b_lose))
+        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.imposta_vincitore(b_win, b_lose))
+
+        # Spazio di 1 pixel tra i due sfidanti nel box
+        btn1.pack(pady=1)
+        btn2.pack(pady=1)
+
+    def imposta_vincitore(self, btn_vincente, btn_perdente):
+        btn_vincente.config(bg="green", fg="white", state="disabled")
+        btn_perdente.config(bg="red", fg="white", state="disabled")
 
 

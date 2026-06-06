@@ -34,6 +34,11 @@ class Caliculator:
     def getElencoAtleti(self):
         return self.elencoAtleti
 
+    def getAtletaByIndex(self, index):
+        atleta = self.elencoAtleti[index]
+        return atleta
+
+
 
     def carica_atleti(self):
         f = open("atleti.txt","r")
@@ -150,6 +155,15 @@ class Caliculator:
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
 
         return f"Punteggio complessivo = {final_set.punteggio_totale}"
+
+    def generaClassifica(self):
+        return self.competizioneAttuale.getClassificaOrdinata()
+
+
+    def inserisciSfidanti(self):
+        first, second = self.competizioneAttuale.getDueSfidanti()
+        return first, second
+
 
 
     def creaNuovaCompetizione(self, lista):

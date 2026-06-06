@@ -1,3 +1,4 @@
+import GestoreTorneo as gt
 import Classifica as c
 
 class Competizione:
@@ -5,6 +6,8 @@ class Competizione:
         self.lista_partecipanti = []
         self.stati_partecipanti = {}
         self.classifica = c.Classifica()
+        self.gestoreTorneo = gt.GestoreTorneo()
+        self.index = 0
 
     def getStatiPartecipanti(self):
         return self.stati_partecipanti
@@ -21,3 +24,14 @@ class Competizione:
 
     def getClassificaOrdinata(self):
         return self.classifica.getClassificaOrdinata()
+
+    def getDueSfidanti(self):
+        firstAtlhete, secondAtlhete = self.classifica.getDuesfidenti(self.index, self.index + 8)
+        self.index = self.index + 1
+        self.setDueSfidenti()
+        return firstAtlhete, secondAtlhete
+
+    def setDueSfidenti(self):
+        first, second = self.getDueSfidanti()
+        self.gestoreTorneo.aggiungiMatch(first, second)
+

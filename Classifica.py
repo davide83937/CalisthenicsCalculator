@@ -38,3 +38,8 @@ class Classifica:
         self.ordinaClassifica()
         return self.classificaOrdinata
 
+    def getDuesfidenti(self, firstIndex, secondIndex):
+        firstAthlete = self.classificaOrdinata[firstIndex]
+        secondAthlete = self.classificaOrdinata[secondIndex]
+        return firstAthlete, secondAthlete
+

@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="seconda iterazione fatta ma da rifattorizzare">
+    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="aggiornamenti">
+      <change afterPath="$PROJECT_DIR$/GestoreTorneo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Match.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Turno.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppGUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Caliculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Caliculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classifica.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifica.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Competizione.py" beforeDir="false" afterPath="$PROJECT_DIR$/Competizione.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +27,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -41,61 +52,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0008801918038335" />
-      <entry key="MS500" value="1.2994625093851906" />
-      <entry key="S2" value="3.133979370377873" />
-      <entry key="S5" value="5.787548870047073" />
-      <entry key="S10" value="7.766811073349027" />
-      <entry key="S30" value="9.735086835360397" />
-      <entry key="S60" value="10.340251537157865" />
-      <entry key="M2" value="10.665941961865595" />
-      <entry key="M5" value="11.016121691462722" />
-      <entry key="M10" value="11.737553829623115" />
-      <entry key="M15" value="13.268120808049346" />
-      <entry key="M30" value="26.718771097556257" />
-      <entry key="H1" value="72.84531467561587" />
-      <entry key="H2" value="158.0300861119862" />
-      <entry key="H4" value="273.4771768612547" />
-      <entry key="D1" value="513.7042804424748" />
-      <entry key="W1" value="584.8178856556165" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="2.1306783590140506E-93" />
-      <entry key="S5" value="8.53900283871463E-38" />
-      <entry key="S10" value="2.922157223476285E-19" />
-      <entry key="S30" value="6.63597313637164E-7" />
-      <entry key="S60" value="8.185708182597901E-4" />
-      <entry key="M2" value="0.03198712459866173" />
-      <entry key="M5" value="0.4445919804529402" />
-      <entry key="M10" value="1.392245885466036" />
-      <entry key="M15" value="2.4358877461342945" />
-      <entry key="M30" value="7.7773706063385415" />
-      <entry key="H1" value="23.612498953167393" />
-      <entry key="H2" value="51.85073280638768" />
-      <entry key="H4" value="89.7433764970188" />
-      <entry key="D1" value="168.41957950954375" />
-      <entry key="W1" value="191.68810395507393" />
+      <entry key="S2" value="1.5632281224272083E-129" />
+      <entry key="S5" value="4.951859056612567E-52" />
+      <entry key="S10" value="3.756253904340201E-26" />
+      <entry key="S30" value="8.589285438960655E-9" />
+      <entry key="S60" value="2.788747085633827E-4" />
+      <entry key="M2" value="0.06828109223889561" />
+      <entry key="M5" value="2.615224821940716" />
+      <entry key="M10" value="11.98725335032286" />
+      <entry key="M15" value="22.903324063136434" />
+      <entry key="M30" value="53.546700581356916" />
+      <entry key="H1" value="101.9466632150119" />
+      <entry key="H2" value="182.75162750462798" />
+      <entry key="H4" value="314.3626514251647" />
+      <entry key="D1" value="665.2325545236805" />
+      <entry key="W1" value="785.8878378662102" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0000000935297129" />
+      <entry key="MS500" value="1.039281667953807" />
+      <entry key="S2" value="1.4451921317280565" />
+      <entry key="S5" value="1.723467442935263" />
+      <entry key="S10" value="1.850568893703069" />
+      <entry key="S30" value="1.9474797982620946" />
+      <entry key="S60" value="1.974415377584525" />
+      <entry key="M2" value="2.076038491451097" />
+      <entry key="M5" value="3.7864198031828367" />
+      <entry key="M10" value="7.923131178769396" />
+      <entry key="M15" value="11.85253445076548" />
+      <entry key="M30" value="21.318785845436523" />
+      <entry key="H1" value="34.46564719651996" />
+      <entry key="H2" value="57.42403385241713" />
+      <entry key="H4" value="97.76366523845319" />
+      <entry key="D1" value="209.63874361438573" />
+      <entry key="W1" value="248.53769984172288" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9468788939025259" />
-      <entry key="MS500" value="1.284209541587539" />
-      <entry key="S2" value="3.1236850908979057" />
-      <entry key="S5" value="5.779831563831823" />
-      <entry key="S10" value="7.761607842929925" />
-      <entry key="S30" value="9.732904718774641" />
-      <entry key="S60" value="10.33988236651147" />
-      <entry key="M2" value="10.696790547015397" />
-      <entry key="M5" value="11.457418541397132" />
-      <entry key="M10" value="13.12486374946563" />
-      <entry key="M15" value="15.698066598087783" />
-      <entry key="M30" value="34.48459934479904" />
-      <entry key="H1" value="96.4375052123209" />
-      <entry key="H2" value="209.85684669963626" />
-      <entry key="H4" value="363.19896647414566" />
-      <entry key="D1" value="682.1168982874783" />
-      <entry key="W1" value="776.5048529169569" />
+      <entry key="MS100" value="3.4288261907696745E-4" />
+      <entry key="MS500" value="0.21694213167968776" />
+      <entry key="S2" value="1.016013405300254" />
+      <entry key="S5" value="1.5058087548258936" />
+      <entry key="S10" value="1.7315831511772297" />
+      <entry key="S30" value="1.905260683860612" />
+      <entry key="S60" value="1.9532237846321925" />
+      <entry key="M2" value="2.1322780442152074" />
+      <entry key="M5" value="6.384023037894641" />
+      <entry key="M10" value="19.881415660747255" />
+      <entry key="M15" value="34.72179669330988" />
+      <entry key="M30" value="74.82882812330672" />
+      <entry key="H1" value="136.3793472752881" />
+      <entry key="H2" value="240.14695162980652" />
+      <entry key="H4" value="412.10157841886087" />
+      <entry key="D1" value="874.8624006249673" />
+      <entry key="W1" value="1034.4240296487503" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -106,27 +117,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.AppGUI.executor": "Run",
-    "Python.Caliculator.executor": "Run",
-    "Python.Main.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Iterazione2",
-    "last_opened_file_path": "D:/Desktop/Universita/Magistrale/Ingegneria del Software/PROGETTO CALISTHENICS/ITERAZIONE 2/Implementazione",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.AppGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Caliculator.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Iterazione3&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/Universita/Magistrale/Ingegneria del Software/PROGETTO CALISTHENICS/ITERAZIONE 3/Implementazione&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Docker&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Desktop\Universita\Magistrale\Ingegneria del Software\PROGETTO CALISTHENICS\ITERAZIONE 2\Implementazione" />
