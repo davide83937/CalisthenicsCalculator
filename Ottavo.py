@@ -1,9 +1,8 @@
-import Turno
-from AtletaInGara import AtletaInGara
+from Turno import Turno
 from Quarto import Quarto
 
 
 class Ottavo(Turno):
 
     def avanza(self):
-        self.AtletaInGara.passaIlTurno(Quarto())
+        self.context.passaIlTurno(Quarto())

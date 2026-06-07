@@ -154,11 +154,11 @@ class Caliculator:
         if self.statoCorrente == "inCorso":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
         elif self.statoCorrente == "ottavi":
-            self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
-
-
-
-        return f"Punteggio complessivo = {final_set.punteggio_totale}"
+            index, winner = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
+        result = f"Punteggio complessivo = {final_set.punteggio_totale}",
+        if winner is not None:
+            return result, index, winner
+        return result, 10000, None
 
     def generaClassifica(self):
         self.statoCorrente = "ottavi"

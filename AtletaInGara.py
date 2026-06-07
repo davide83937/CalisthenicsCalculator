@@ -11,9 +11,12 @@ class AtletaInGara():
     def __init__(self, atleta):
         self.Atleta = atleta
         self.setCorrente = None
+        from Ottavo import Ottavo
+        self.passaIlTurno(Ottavo())
+
 
     def passaIlTurno(self, stato: 't.Turno'): # Usa gli apici per il tipo!
         self._stato = stato # Nota: ho corretto _state in _stato per coerenza con la classe
-        self._stato.AtletaInGara = self
+        self._stato.context = self
         print(f"ATLETA: {self.Atleta.nome} PASSA A")
         print(self._stato)

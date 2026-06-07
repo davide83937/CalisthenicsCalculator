@@ -1,6 +1,6 @@
-import Turno
+from Turno import Turno
 from Campione import Champion
 
 class Finale(Turno):
     def avanza(self):
-        self.AtletaInGara.passaIlTurno(Champion())
+        self.context.passaIlTurno(Champion())

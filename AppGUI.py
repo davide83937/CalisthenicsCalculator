@@ -365,7 +365,7 @@ class appGUI:
 
     def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code):
         import Caliculator as cc
-        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
+        punteggio, indexMatch, winner = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
@@ -380,7 +380,7 @@ class appGUI:
             )
         # -------------------------------------------------------------------------------------
 
-    def getSfidanti(self):
+    def inserisciSfidanti(self):
         import Caliculator as cc
         index, first, second = cc.Caliculator.inserisciSfidanti(cc.Caliculator._instance)
         atl1 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, first[0])
@@ -391,23 +391,37 @@ class appGUI:
         str2 = f"{atl2.nome} {atl2.cognome}"
         return index, str1, str2, codAtl1, codAtl2
 
-    def riempiOttavi(self):
+    def riempiOttavi(self, n):
         sfidantiOttavi = []
-        for i in range(0, 8):
-            index, str1, str2, cod1, cod2 = self.getSfidanti()
+        for i in range(0, n):
+            index, str1, str2, cod1, cod2 = self.inserisciSfidanti()
             sfidantiOttavi.append((index, str1, str2, cod1, cod2))
         return sfidantiOttavi
 
+    def aggiornaQuarto(self, index_ottavo, vincitore):
+        if vincitore is not None:
+            cognome_vincitore = vincitore.Atleta.cognome
+
+            # 1. Calcola l'indice del quarto di finale (da 1 a 4)
+            quarto_index = (index_ottavo - 1) // 2 + 1
+
+            # 2. Determina se va nello slot 1 o nello slot 2 del quarto
+            posizione_sfidante = 1 if index_ottavo % 2 != 0 else 2
+
+            # 3. Costruisci la chiave per trovare la Label corretta
+            chiave_quarti = ("Quarti", quarto_index, posizione_sfidante)
+
+            # 4. SINTASSI DI AGGIORNAMENTO GRAFICO DI TKINTER
+            if chiave_quarti in self.labels_tabellone:
+                self.labels_tabellone[chiave_quarti].config(text=cognome_vincitore)
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
             self.bracket_frame.destroy()
 
         self.bracket_frame = ttk.Frame(self.main_frame)
-        # Un po' di margine dal resto della UI
         self.bracket_frame.grid(row=1, column=6, sticky="n", padx=15)
 
-        # Titoli ingranditi e leggibili
         tk.Label(self.bracket_frame, text="TABELLONE 1v1", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
                                                                                                 columnspan=4, pady=5)
 
@@ -415,7 +429,6 @@ class appGUI:
         for col, fase in enumerate(fasi):
             tk.Label(self.bracket_frame, text=fase, font=('Helvetica', 10, 'bold')).grid(row=1, column=col, pady=2)
 
-        # Manteniamo il rowspan per evitare che la finestra si allunghi troppo in verticale
         posizioni = {
             "Ottavi": [(2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1)],
             "Quarti": [(2, 2), (4, 2), (6, 2), (8, 2)],
@@ -423,32 +436,27 @@ class appGUI:
             "Finale": [(2, 8)]
         }
 
-        sfidanti_ottavi = [
-            (0, "1° Qualif.", "16° Qualif.", "TBD", "TBD"),
-            (0, "8° Qualif.", "9° Qualif.", "TBD", "TBD"),
-            (0, "4° Qualif.", "13° Qualif.", "TBD", "TBD"),
-            (0, "5° Qualif.", "12° Qualif.", "TBD", "TBD"),
-            (0, "2° Qualif.", "15° Qualif.", "TBD", "TBD"),
-            (0, "7° Qualif.", "10° Qualif.", "TBD", "TBD"),
-            (0, "3° Qualif.", "14° Qualif.", "TBD", "TBD"),
-            (0, "6° Qualif.", "11° Qualif.", "TBD", "TBD")
-        ]
+        sfidanti_ottavi = self.riempiOttavi(8)
 
-        l = self.riempiOttavi()
-        if len(l) == 8:
-            sfidanti_ottavi = l
+        # DIZIONARIO PER SALVARE I RIFERIMENTI GRAFICI delle Label
+        self.labels_tabellone = {}
 
         for col, fase in enumerate(fasi):
             configurazioni = posizioni[fase]
             for i, (row, rowspan) in enumerate(configurazioni):
-                nome1, nome2 = "TBD", "TBD"
                 if fase == "Ottavi":
-                    index, nome1, nome2, cod1, cod2= sfidanti_ottavi[i]
-                self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2, index, cod1, cod2)
+                    index, nome1, nome2, cod1, cod2 = sfidanti_ottavi[i]
+                else:
+                    # Per i Quarti (i va da 0 a 3) -> index diventa da 1 a 4
+                    # Per le Semifinali (i va da 0 a 1) -> index diventa 1 e 2
+                    index = i + 1
+                    nome1, nome2 = "TBD", "TBD"
+                    cod1, cod2 = "TBD", "TBD"
 
+                # Passiamo anche il parametro 'fase' a crea_match_box
+                self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2, index, cod1, cod2, fase)
 
-
-    def crea_match_box(self, parent, row, col, rowspan, nome1, nome2, index, cod1, cod2):
+    def crea_match_box(self, parent, row, col, rowspan, nome1, nome2, index, cod1, cod2, fase):
         # Ripristiniamo un leggero padding esterno ed interno per dare respiro
         box = tk.Frame(parent, borderwidth=1, relief="solid", bg="lightgrey", padx=2, pady=2)
         box.grid(row=row, column=col, rowspan=rowspan, padx=6, pady=3)
@@ -464,6 +472,15 @@ class appGUI:
         # Spazio di 1 pixel tra i due sfidanti nel box
         btn1.pack(pady=1)
         btn2.pack(pady=1)
+
+        # SALVATAGGIO DEI RIFERIMENTI NEL DIZIONARIO
+        # Inizializziamo il dizionario come rete di sicurezza nel caso non lo avessi fatto altrove
+        if not hasattr(self, 'labels_tabellone'):
+            self.labels_tabellone = {}
+
+        # Memorizziamo il bottone 1 e il bottone 2 usando la chiave univoca (Fase, Indice, Sfidante 1 o 2)
+        self.labels_tabellone[(fase, index, 1)] = btn1
+        self.labels_tabellone[(fase, index, 2)] = btn2
 
     def imposta_vincitore(self, btn_vincente, btn_perdente):
         btn_vincente.config(bg="green", fg="white", state="disabled")

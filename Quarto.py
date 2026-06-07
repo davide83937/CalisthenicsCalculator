@@ -1,7 +1,7 @@
 from Semifinale import Semifinale
-import Turno
+from Turno import Turno
 
 class Quarto(Turno):
 
     def avanza(self):
-        self.AtletaInGara.passaIlTurno(Semifinale())
+        self.context.passaIlTurno(Semifinale())
