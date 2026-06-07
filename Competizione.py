@@ -9,6 +9,10 @@ class Competizione:
         self.classifica = c.Classifica()
         self.gestoreTorneo = gt.GestoreTorneo()
         self.index = 0
+        # Sostituisci slot_quarti con questo:
+        # Prepara liste vuote per i match da 9 (Quarti) a 15 (Finale)
+        self.slot_attesa = {i: [] for i in range(9, 16)}
+
 
     def getPartecipante(self, codice):
         atleta = next((a for a in self.lista_partecipanti if a.codice == codice), None)
@@ -44,28 +48,39 @@ class Competizione:
         self.gestoreTorneo.aggiungiMatch(first, second, index)
 
     def aggiungiSetSfidante(self, final_set, cod, index):
-        indexMatch, winner = self.gestoreTorneo.aggiungiSetPartecipante(index,cod, final_set)
+        indexMatch, winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
         if winner is not None:
-            self.aggiungiQuarto(index, winner)
+            self.avanzaTurno(indexMatch, winner)  # Richiama il nuovo metodo universale
             return indexMatch, winner
         return 10000, None
 
-    def aggiungiQuarto(self, index, vincitore):
-        if 1 <= index <= 8:
-            # Calcola in quale quarto va (1, 2, 3 o 4)
-            quarto_index = (index - 1) // 2 + 1
+    def avanzaTurno(self, current_match, vincitore):
+        # --- FIX PROBLEMA 2 ---
+        # Svuotiamo il "Set" dell'atleta in modo che il match successivo lo aspetti pulito
+        vincitore.setCorrente = None
 
-            # Mettiamo l'atleta in attesa per quel quarto di finale
-            self.slot_quarti[quarto_index].append(vincitore)
+        # 2. FACCIAMO SCATTARE LO STATE PATTERN!
+        # Ora sappiamo che la variabile si chiama "_stato"
+        if vincitore._stato is not None:
+            vincitore._stato.avanza()
 
-            # Se lo slot si è riempito (entrambi hanno vinto i rispettivi ottavi)
-            if len(self.slot_quarti[quarto_index]) == 2:
-                atleta1 = self.slot_quarti[quarto_index][0]
-                atleta2 = self.slot_quarti[quarto_index][1]
+        # Se siamo al match 15, abbiamo il vincitore assoluto del torneo!
+        if current_match == 15:
+            print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
+            return
 
-                # Creiamo l'indice per il nuovo match.
-                # Se gli ottavi sono 1-8, i quarti saranno 9, 10, 11 e 12.
-                nuovo_indice_match = 8 + quarto_index
-                self.gestoreTorneo.aggiungiMatch(atleta1, atleta2, nuovo_indice_match)
-                print(f"Creato Match {nuovo_indice_match} per i Quarti di Finale!")
+        # Formula matematica per trovare l'ID del prossimo match
+        next_match = 8 + (current_match + 1) // 2
+
+        # Mettiamo l'atleta in attesa in quello slot
+        self.slot_attesa[next_match].append(vincitore)
+
+        # Se lo slot si è riempito (entrambi hanno vinto i match precedenti)
+        if len(self.slot_attesa[next_match]) == 2:
+            atleta1 = self.slot_attesa[next_match][0]
+            atleta2 = self.slot_attesa[next_match][1]
+
+            # Creiamo ufficialmente il nuovo match nel Gestore Torneo
+            self.gestoreTorneo.aggiungiMatch(atleta1, atleta2, next_match)
+            print(f"Creato Match {next_match}!")
 

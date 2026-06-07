@@ -379,6 +379,9 @@ class appGUI:
                 state="disabled"
             )
         # -------------------------------------------------------------------------------------
+        if winner is not None:
+            self.colora_match_concluso(indexMatch, winner)
+            self.aggiornaTabellone(indexMatch, winner)
 
     def inserisciSfidanti(self):
         import Caliculator as cc
@@ -398,22 +401,39 @@ class appGUI:
             sfidantiOttavi.append((index, str1, str2, cod1, cod2))
         return sfidantiOttavi
 
-    def aggiornaQuarto(self, index_ottavo, vincitore):
-        if vincitore is not None:
-            cognome_vincitore = vincitore.Atleta.cognome
+    def aggiornaTabellone(self, current_match, vincitore):
+        if current_match == 15:
+            # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
+            return
 
-            # 1. Calcola l'indice del quarto di finale (da 1 a 4)
-            quarto_index = (index_ottavo - 1) // 2 + 1
+        cognome_vincitore = vincitore.Atleta.cognome
+        codice_vincitore = vincitore.Atleta.codice
 
-            # 2. Determina se va nello slot 1 o nello slot 2 del quarto
-            posizione_sfidante = 1 if index_ottavo % 2 != 0 else 2
+        # 1. Calcola l'ID del prossimo match
+        next_match = 8 + (current_match + 1) // 2
 
-            # 3. Costruisci la chiave per trovare la Label corretta
-            chiave_quarti = ("Quarti", quarto_index, posizione_sfidante)
+        # 2. Determina in automatico la fase grafica per trovare il bottone corretto
+        if 9 <= next_match <= 12:
+            fase = "Quarti"
+            indice_fase = next_match - 8
+        elif 13 <= next_match <= 14:
+            fase = "Semifinali"
+            indice_fase = next_match - 12
+        elif next_match == 15:
+            fase = "Finale"
+            indice_fase = 1
 
-            # 4. SINTASSI DI AGGIORNAMENTO GRAFICO DI TKINTER
-            if chiave_quarti in self.labels_tabellone:
-                self.labels_tabellone[chiave_quarti].config(text=cognome_vincitore)
+        # 3. Determina lo slot (1 in alto, 2 in basso)
+        posizione = 1 if current_match % 2 != 0 else 2
+
+        # 4. Ricostruisci la chiave esatta che hai usato in self.labels_tabellone
+        chiave_ui = (fase, indice_fase, posizione)
+
+        # 5. Aggiorna il bottone
+        if chiave_ui in self.labels_tabellone:
+            btn = self.labels_tabellone[chiave_ui]
+            btn.config(text=cognome_vincitore)
+            btn.config(command=lambda: self.openEvaluationWindow(codice_vincitore, next_match))
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
@@ -486,4 +506,36 @@ class appGUI:
         btn_vincente.config(bg="green", fg="white", state="disabled")
         btn_perdente.config(bg="red", fg="white", state="disabled")
 
+    def colora_match_concluso(self, current_match, vincitore):
+        # 1. Determina la fase e l'indice del match APPENA CONCLUSO
+        if 1 <= current_match <= 8:
+            fase = "Ottavi"
+            indice_fase = current_match
+        elif 9 <= current_match <= 12:
+            fase = "Quarti"
+            indice_fase = current_match - 8
+        elif 13 <= current_match <= 14:
+            fase = "Semifinali"
+            indice_fase = current_match - 12
+        elif current_match == 15:
+            fase = "Finale"
+            indice_fase = 1
+        else:
+            return
+
+        # 2. Costruisci le chiavi per trovare i due bottoni di questo match
+        chiave_btn1 = (fase, indice_fase, 1)
+        chiave_btn2 = (fase, indice_fase, 2)
+
+        if chiave_btn1 in self.labels_tabellone and chiave_btn2 in self.labels_tabellone:
+            btn1 = self.labels_tabellone[chiave_btn1]
+            btn2 = self.labels_tabellone[chiave_btn2]
+
+            cognome_vincente = vincitore.Atleta.cognome
+
+            # 3. Controlla il testo sui bottoni e applica i colori
+            if btn1.cget("text") == cognome_vincente:
+                self.imposta_vincitore(btn1, btn2)
+            elif btn2.cget("text") == cognome_vincente:
+                self.imposta_vincitore(btn2, btn1)
 
