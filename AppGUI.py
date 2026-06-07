@@ -143,6 +143,14 @@ class appGUI:
         cognome_label.grid(row=0, column=2)
         button_add = tk.Button(line, text=goal, command=function)
         button_add.grid(row=0,column=3)
+
+        # --- MODIFICA QUI: Salva il pulsante se serve a valutare ---
+        if goal == "valuta":
+            if not hasattr(self, 'valuta_buttons'):
+                self.valuta_buttons = {}
+            self.valuta_buttons[code] = button_add
+        # -----------------------------------------------------------
+
         import Caliculator as cc
         comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
         if comp is not None:
@@ -361,6 +369,16 @@ class appGUI:
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
+        # --- MODIFICA QUI: Cambia la grafica sulla linea dell'atleta nella lista principale ---
+        if hasattr(self, 'valuta_buttons') and code in self.valuta_buttons:
+            # hex #c3e6cb è un verde chiaro pastello molto pulito, #155724 è un testo verde scuro
+            self.valuta_buttons[code].config(
+                text="Valutato ✔",
+                bg="#c3e6cb",
+                fg="#155724",
+                state="disabled"
+            )
+        # -------------------------------------------------------------------------------------
 
     def getSfidanti(self):
         import Caliculator as cc
@@ -377,7 +395,7 @@ class appGUI:
         sfidantiOttavi = []
         for i in range(0, 8):
             index, str1, str2, cod1, cod2 = self.getSfidanti()
-            sfidantiOttavi.append((index, str1, str2))
+            sfidantiOttavi.append((index, str1, str2, cod1, cod2))
         return sfidantiOttavi
 
 
@@ -406,10 +424,14 @@ class appGUI:
         }
 
         sfidanti_ottavi = [
-            ("1° Qualif.", "16° Qualif."), ("8° Qualif.", "9° Qualif."),
-            ("4° Qualif.", "13° Qualif."), ("5° Qualif.", "12° Qualif."),
-            ("2° Qualif.", "15° Qualif."), ("7° Qualif.", "10° Qualif."),
-            ("3° Qualif.", "14° Qualif."), ("6° Qualif.", "11° Qualif.")
+            (0, "1° Qualif.", "16° Qualif.", "TBD", "TBD"),
+            (0, "8° Qualif.", "9° Qualif.", "TBD", "TBD"),
+            (0, "4° Qualif.", "13° Qualif.", "TBD", "TBD"),
+            (0, "5° Qualif.", "12° Qualif.", "TBD", "TBD"),
+            (0, "2° Qualif.", "15° Qualif.", "TBD", "TBD"),
+            (0, "7° Qualif.", "10° Qualif.", "TBD", "TBD"),
+            (0, "3° Qualif.", "14° Qualif.", "TBD", "TBD"),
+            (0, "6° Qualif.", "11° Qualif.", "TBD", "TBD")
         ]
 
         l = self.riempiOttavi()

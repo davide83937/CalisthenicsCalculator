@@ -1,4 +1,8 @@
-import Turno as t
+from typing import TYPE_CHECKING
+
+# Spostiamo l'import qua dentro
+if TYPE_CHECKING:
+    import Turno as t
 
 class AtletaInGara():
 
@@ -8,10 +12,8 @@ class AtletaInGara():
         self.Atleta = atleta
         self.setCorrente = None
 
-
-
-    def passaIlTurno(self, stato: t.Turno):
-        self._state = stato
-        self._state.AtletaInGara = self
+    def passaIlTurno(self, stato: 't.Turno'): # Usa gli apici per il tipo!
+        self._stato = stato # Nota: ho corretto _state in _stato per coerenza con la classe
+        self._stato.AtletaInGara = self
         print(f"ATLETA: {self.Atleta.nome} PASSA A")
-        print(self._state)
+        print(self._stato)
