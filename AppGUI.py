@@ -1,12 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-import time
-
-from pip._internal.commands import show
-
-from Classifica import Classifica
-
 
 class appGUI:
 
@@ -79,7 +73,6 @@ class appGUI:
         # Usiamo riga 0 e 1 DEL FRAME, quindi non interferiscono con il resto della GUI
         tk.Label(self.classifica_frame, text="CLASSIFICA", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
                                                                                                 columnspan=5, pady=10)
-
         tk.Label(self.classifica_frame, text="Pos").grid(row=1, column=0, padx=5)
         tk.Label(self.classifica_frame, text="Nome").grid(row=1, column=1, padx=5)
         tk.Label(self.classifica_frame, text="Cognome").grid(row=1, column=2, padx=5)
@@ -247,7 +240,7 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-    def openEvaluationWindow(self, code):
+    def openEvaluationWindow(self, code, index_match=1000):
         import Caliculator as cc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
@@ -299,7 +292,7 @@ class appGUI:
 
         confermaButton = ttk.Button(buttons_frame, text="Conferma",
                                     command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
-                                                                          int(bonus_combo_entry.get()), code))
+                                                                          int(bonus_combo_entry.get()), index_match, code))
         confermaButton.pack(pady=10)
 
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
@@ -362,26 +355,29 @@ class appGUI:
 
 
 
-    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, code):
+    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code):
         import Caliculator as cc
-        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo)
+        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
 
     def getSfidanti(self):
         import Caliculator as cc
-        first, second = cc.Caliculator.inserisciSfidanti(cc.Caliculator._instance)
+        index, first, second = cc.Caliculator.inserisciSfidanti(cc.Caliculator._instance)
         atl1 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, first[0])
         atl2 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, second[0])
+        codAtl1 = atl1.codice
+        codAtl2 = atl2.codice
         str1 = f"{atl1.nome} {atl1.cognome}"
         str2 = f"{atl2.nome} {atl2.cognome}"
-        return (str1, str2)
+        return index, str1, str2, codAtl1, codAtl2
 
     def riempiOttavi(self):
         sfidantiOttavi = []
-        for i in range(0, 7):
-            sfidantiOttavi.append(self.getSfidanti())
+        for i in range(0, 8):
+            index, str1, str2, cod1, cod2 = self.getSfidanti()
+            sfidantiOttavi.append((index, str1, str2))
         return sfidantiOttavi
 
 
@@ -425,12 +421,12 @@ class appGUI:
             for i, (row, rowspan) in enumerate(configurazioni):
                 nome1, nome2 = "TBD", "TBD"
                 if fase == "Ottavi":
-                    nome1, nome2 = sfidanti_ottavi[i]
-                self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2)
+                    index, nome1, nome2, cod1, cod2= sfidanti_ottavi[i]
+                self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2, index, cod1, cod2)
 
 
 
-    def crea_match_box(self, parent, row, col, rowspan, nome1, nome2):
+    def crea_match_box(self, parent, row, col, rowspan, nome1, nome2, index, cod1, cod2):
         # Ripristiniamo un leggero padding esterno ed interno per dare respiro
         box = tk.Frame(parent, borderwidth=1, relief="solid", bg="lightgrey", padx=2, pady=2)
         box.grid(row=row, column=col, rowspan=rowspan, padx=6, pady=3)
@@ -440,8 +436,8 @@ class appGUI:
         btn1 = tk.Button(box, text=nome1, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
         btn2 = tk.Button(box, text=nome2, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
 
-        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.imposta_vincitore(b_win, b_lose))
-        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.imposta_vincitore(b_win, b_lose))
+        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, index))
+        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, index))
 
         # Spazio di 1 pixel tra i due sfidanti nel box
         btn1.pack(pady=1)

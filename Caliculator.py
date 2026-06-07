@@ -137,7 +137,7 @@ class Caliculator:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
 
-    def calcolaPunteggioSet(self, n_combo):
+    def calcolaPunteggioSet(self, n_combo, code = 10000, index = 10000):
         # Otteniamo il prodotto dal builder/decorator
         set_prodotto = self.setCorrente.get_result()
 
@@ -153,16 +153,21 @@ class Caliculator:
         final_set = self.setCorrente.get_result()
         if self.statoCorrente == "inCorso":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
+        elif self.statoCorrente == "ottavi":
+            self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
+
+
 
         return f"Punteggio complessivo = {final_set.punteggio_totale}"
 
     def generaClassifica(self):
+        self.statoCorrente = "ottavi"
         return self.competizioneAttuale.getClassificaOrdinata()
 
 
     def inserisciSfidanti(self):
-        first, second = self.competizioneAttuale.getDueSfidanti()
-        return first, second
+        index, first, second = self.competizioneAttuale.getDueSfidanti()
+        return index, first, second
 
 
 

@@ -10,5 +10,6 @@ class Atleta:
         self.nome = nome
         self.cognome = cognome
 
+
     def getCodice(self):
         return self.codice

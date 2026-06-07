@@ -1,5 +1,6 @@
 import GestoreTorneo as gt
 import Classifica as c
+import AtletaInGara as ag
 
 class Competizione:
     def __init__(self):
@@ -8,6 +9,10 @@ class Competizione:
         self.classifica = c.Classifica()
         self.gestoreTorneo = gt.GestoreTorneo()
         self.index = 0
+
+    def getPartecipante(self, codice):
+        atleta = next((a for a in self.lista_partecipanti if a.codice == codice), None)
+        return atleta
 
     def getStatiPartecipanti(self):
         return self.stati_partecipanti
@@ -26,12 +31,21 @@ class Competizione:
         return self.classifica.getClassificaOrdinata()
 
     def getDueSfidanti(self):
-        firstAtlhete, secondAtlhete = self.classifica.getDuesfidenti(self.index, self.index + 8)
-        self.index = self.index + 1
-        self.setDueSfidenti()
-        return firstAtlhete, secondAtlhete
 
-    def setDueSfidenti(self):
-        first, second = self.getDueSfidanti()
-        self.gestoreTorneo.aggiungiMatch(first, second)
+        firstAtlhete, secondAtlhete = self.classifica.getDuesfidenti(self.index, self.index + 8)
+        atleta1 = self.getPartecipante(firstAtlhete[0])
+        atletaInGara1 = ag.AtletaInGara(atleta1)
+        atleta2 = self.getPartecipante(secondAtlhete[0])
+        atletaInGara2 = ag.AtletaInGara(atleta2)
+
+        self.index = self.index + 1
+        self.setDueSfidenti(atletaInGara1, atletaInGara2, self.index)
+        return self.index, firstAtlhete, secondAtlhete
+
+    def setDueSfidenti(self, first, second, index):
+        self.gestoreTorneo.aggiungiMatch(first, second, index)
+
+    def aggiungiSetSfidante(self, final_set, cod, index):
+        self.gestoreTorneo.aggiungiSetPartecipante(index,cod, final_set)
+
 
