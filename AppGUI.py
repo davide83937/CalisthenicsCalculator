@@ -406,7 +406,8 @@ class appGUI:
             # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
             return
 
-        cognome_vincitore = vincitore.Atleta.cognome
+        # MODIFICA: Costruisci il nome completo anche per far avanzare l'atleta sul tabellone
+        nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
         codice_vincitore = vincitore.Atleta.codice
 
         # 1. Calcola l'ID del prossimo match
@@ -432,7 +433,8 @@ class appGUI:
         # 5. Aggiorna il bottone
         if chiave_ui in self.labels_tabellone:
             btn = self.labels_tabellone[chiave_ui]
-            btn.config(text=cognome_vincitore)
+            # MODIFICA: Assegna il nome completo al bottone del prossimo turno anziché solo il cognome
+            btn.config(text=nome_completo_vincitore)
             btn.config(command=lambda: self.openEvaluationWindow(codice_vincitore, next_match))
 
     def mostraTabellone(self):
@@ -531,11 +533,12 @@ class appGUI:
             btn1 = self.labels_tabellone[chiave_btn1]
             btn2 = self.labels_tabellone[chiave_btn2]
 
-            cognome_vincente = vincitore.Atleta.cognome
+            # MODIFICA: Usa la stringa Nome + Cognome per il confronto
+            nome_completo_vincente = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
 
             # 3. Controlla il testo sui bottoni e applica i colori
-            if btn1.cget("text") == cognome_vincente:
+            if btn1.cget("text") == nome_completo_vincente:
                 self.imposta_vincitore(btn1, btn2)
-            elif btn2.cget("text") == cognome_vincente:
+            elif btn2.cget("text") == nome_completo_vincente:
                 self.imposta_vincitore(btn2, btn1)
 
