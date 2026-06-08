@@ -63,7 +63,7 @@ class Competizione:
         # Ora sappiamo che la variabile si chiama "_stato"
         if vincitore._stato is not None:
             stato = vincitore._stato.avanza()
-            return stato
+            #return stato
         # Se siamo al match 15, abbiamo il vincitore assoluto del torneo!
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
@@ -84,4 +84,4 @@ class Competizione:
             # Creiamo ufficialmente il nuovo match nel Gestore Torneo
             self.gestoreTorneo.aggiungiMatch(atleta1, atleta2, next_match)
             print(f"Creato Match {next_match}!")
-
+        return stato

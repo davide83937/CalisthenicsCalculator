@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 
 class appGUI:
@@ -442,6 +442,11 @@ class appGUI:
         if stato.is_finale():
             # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
             print(f"Torneo concluso! Ha vinto {vincitore.Atleta.nome} {vincitore.Atleta.cognome}")
+            # --- LANCIO DEL POP-UP DI VITTORIA ---
+            messagebox.showinfo(
+                title="Torneo Concluso!",
+                message=f"Il vincitore assoluto del torneo è {vincitore.Atleta.nome} {vincitore.Atleta.cognome}!\nCongratulazioni!"
+            )
             return
 
         nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
