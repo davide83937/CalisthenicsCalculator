@@ -4,3 +4,12 @@ from Campione import Champion
 class Finale(Turno):
     def avanza(self):
         self.context.passaIlTurno(Champion())
+
+
+    def get_destinazione_vincitore(self, current_match):
+        # Questo non dovrebbe mai essere chiamato se is_finale() viene verificato prima
+        return None, None, None, None
+
+    class StatoFinale(Turno):
+        def is_finale(self):
+            return True

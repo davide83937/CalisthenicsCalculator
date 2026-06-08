@@ -20,3 +20,4 @@ class AtletaInGara():
         self._stato.context = self
         print(f"ATLETA: {self.Atleta.nome} PASSA A")
         print(self._stato)
+        return self._stato

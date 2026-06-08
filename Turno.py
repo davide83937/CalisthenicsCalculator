@@ -18,3 +18,10 @@ class Turno(ABC):
     @abstractmethod
     def avanza(self):
         pass
+
+    @abstractmethod
+    def get_destinazione_vincitore(self, current_match):
+        pass
+
+    def is_finale(self):
+        return False

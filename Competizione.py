@@ -50,24 +50,25 @@ class Competizione:
     def aggiungiSetSfidante(self, final_set, cod, index):
         indexMatch, winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
         if winner is not None:
-            self.avanzaTurno(indexMatch, winner)  # Richiama il nuovo metodo universale
-            return indexMatch, winner
-        return 10000, None
+            stato = self.avanzaTurno(indexMatch, winner)  # Richiama il nuovo metodo universale
+            return indexMatch, winner, stato
+        return 10000, None, None
 
     def avanzaTurno(self, current_match, vincitore):
         # --- FIX PROBLEMA 2 ---
         # Svuotiamo il "Set" dell'atleta in modo che il match successivo lo aspetti pulito
         vincitore.setCorrente = None
-
+        stato = None
         # 2. FACCIAMO SCATTARE LO STATE PATTERN!
         # Ora sappiamo che la variabile si chiama "_stato"
         if vincitore._stato is not None:
-            vincitore._stato.avanza()
-
+            stato = vincitore._stato.avanza()
+            return stato
         # Se siamo al match 15, abbiamo il vincitore assoluto del torneo!
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
-            return
+            return stato
+        return stato
 
         # Formula matematica per trovare l'ID del prossimo match
         next_match = 8 + (current_match + 1) // 2

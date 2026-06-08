@@ -365,7 +365,7 @@ class appGUI:
 
     def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code):
         import Caliculator as cc
-        punteggio, indexMatch, winner = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
+        punteggio, indexMatch, winner, stato = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
@@ -381,7 +381,7 @@ class appGUI:
         # -------------------------------------------------------------------------------------
         if winner is not None:
             self.colora_match_concluso(indexMatch, winner)
-            self.aggiornaTabellone(indexMatch, winner)
+            self.aggiornaTabellone(indexMatch, winner, stato)
 
     def inserisciSfidanti(self):
         import Caliculator as cc
@@ -401,7 +401,7 @@ class appGUI:
             sfidantiOttavi.append((index, str1, str2, cod1, cod2))
         return sfidantiOttavi
 
-    def aggiornaTabellone(self, current_match, vincitore):
+    """def aggiornaTabellone(self, current_match, vincitore, stato):
         if current_match == 15:
             # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
             return
@@ -435,7 +435,33 @@ class appGUI:
             btn = self.labels_tabellone[chiave_ui]
             # MODIFICA: Assegna il nome completo al bottone del prossimo turno anziché solo il cognome
             btn.config(text=nome_completo_vincitore)
-            btn.config(command=lambda: self.openEvaluationWindow(codice_vincitore, next_match))
+            btn.config(command=lambda: self.openEvaluationWindow(codice_vincitore, next_match))"""
+
+    def aggiornaTabellone(self, current_match, vincitore, stato):
+        # Chiediamo allo stato se questo match ha concluso l'intero torneo
+        if stato.is_finale(current_match):
+            # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
+            print(f"Torneo concluso! Ha vinto {vincitore.Atleta.nome} {vincitore.Atleta.cognome}")
+            return
+
+        nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
+        codice_vincitore = vincitore.Atleta.codice
+
+        # DELEGA ALLO STATO: La GUI non calcola più nulla.
+        # Interroga lo stato corrente per sapere dove piazzare il vincitore.
+        # Lo stato restituisce una tupla con tutti i dati necessari all'interfaccia.
+        next_match, fase, indice_fase, posizione = stato.get_destinazione_vincitore(current_match)
+
+        # Ricostruisci la chiave esatta che hai usato in self.labels_tabellone
+        chiave_ui = (fase, indice_fase, posizione)
+
+        # Aggiorna il bottone
+        if chiave_ui in self.labels_tabellone:
+            btn = self.labels_tabellone[chiave_ui]
+            btn.config(text=nome_completo_vincitore)
+
+            # Uso parametri di default nella lambda per legare i valori in modo sicuro
+            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, m))
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
