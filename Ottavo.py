@@ -5,8 +5,9 @@ from Quarto import Quarto
 class Ottavo(Turno):
 
     def avanza(self):
-        stato = self.context.passaIlTurno(Quarto())
-        return stato
+        statoVecchio = self
+        self.context.passaIlTurno(Quarto())
+        return statoVecchio
 
     def get_destinazione_vincitore(self, current_match):
         # Se vinci l'ottavo n. 1 o 2, vai al quarto n. 1 (match 9), ecc.
