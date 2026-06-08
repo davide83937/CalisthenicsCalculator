@@ -439,9 +439,20 @@ class appGUI:
 
     def aggiornaTabellone(self, current_match, vincitore, stato):
         # Chiediamo allo stato se questo match ha concluso l'intero torneo
-        if stato.is_finale(current_match):
-            # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
+        if 1 <= current_match <= 8:
+            from Ottavo import Ottavo
+            stato_concluso = Ottavo()
+        elif 9 <= current_match <= 12:
+            from Quarto import Quarto
+            stato_concluso = Quarto()
+        elif 13 <= current_match <= 14:
+            from Semifinale import Semifinale
+            stato_concluso = Semifinale()
+        elif current_match == 15:
+            # Se è la finale, il torneo è finito, non c'è una destinazione successiva
             print(f"Torneo concluso! Ha vinto {vincitore.Atleta.nome} {vincitore.Atleta.cognome}")
+            return
+        else:
             return
 
         nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
