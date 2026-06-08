@@ -3,10 +3,14 @@ import Atleta as a
 
 class DataUploader:
 
-    def carica_atleti(self, elencoAtleti, app):
-        f = open("atleti.txt","r")
+    def __init__(self):
+        self.elencoAtleti = {}
+        self.elencoSkills = []
+
+    def carica_atleti(self):
+        f = open("atleti.txt", "r")
         line = f.readline()
-        while line !="":
+        while line != "":
             attributi = line.strip().split()
             codice = int(attributi[0])
             nome = attributi[1]
@@ -18,22 +22,21 @@ class DataUploader:
             altezza = float(attributi[7])
             peso = float(attributi[8])
             atleta = a.Atleta(codice, nome, cognome, età, cod_fiscale, n_cellulare, email, altezza, peso)
-            elencoAtleti[atleta.codice] = atleta
+            self.elencoAtleti[atleta.codice] = atleta
             line = f.readline()
-        for codice, atl in elencoAtleti.items():
-            app.add_line(codice, atl.nome, atl.cognome)
         f.close()
+        return self.elencoAtleti
 
-
-    def carica_skill(self, elencoSkills):
+    def carica_skill(self):
         f = open("skills.txt", "r")
         line = f.readline()
-        while line !="":
+        while line != "":
             attributi = line.strip().split()
             nome = attributi[0]
             categoria = attributi[1]
             valore = float(attributi[2])
             skill = sk.Skill(nome, categoria, valore)
-            elencoSkills.append(skill)
+            self.elencoSkills.append(skill)
             line = f.readline()
         f.close()
+        return self.elencoSkills

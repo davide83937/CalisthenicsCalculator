@@ -5,6 +5,7 @@ from tkinter import ttk, messagebox
 class appGUI:
 
     def __init__(self, root):
+        import Caliculator as cc
         self.root = root
         self.root.title("Caliculator")
         self.root.geometry("1920x1080")
@@ -17,6 +18,8 @@ class appGUI:
         self.but_reg.grid(row=0, column=0)
         self.scroll.grid(row =1, column=1, sticky="NS")
         self.mylist.grid(row=1, column=0, ipadx=20, ipady=40)
+        self.lista_partecipanti_temp = []
+        self.showAthletesZero()
         self.nome_entry = None
         self.style = ttk.Style()
         self.style.theme_use('clam')
@@ -32,8 +35,15 @@ class appGUI:
         self.indexSetLine = 0
         self.startCompetitionButton = self.add_button("StartCompetition", command=self.openCompetitionWindow)
         self.startCompetitionButton.grid(row=0, column=2)
-        self.lista_partecipanti_temp = []
+
         #self.mostraTabellone()
+
+    def showAthletesZero(self):
+        import Caliculator as cc
+
+        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
+             self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist)
+
 
     def showAthletes(self):
         import Caliculator as cc
@@ -43,7 +53,7 @@ class appGUI:
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
             if codice in self.lista_partecipanti_temp:
-               cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
+               self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
         self.makeClassificationButton.grid(row=1, column=4)
 
@@ -113,7 +123,9 @@ class appGUI:
 
     def save_button_f(self):
         import Caliculator as cc
-        cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
+        atleta = cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
+        if atleta:
+            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta")
 
     # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
@@ -327,8 +339,19 @@ class appGUI:
         n = len(self.lista_partecipanti_temp)
         self.string.set("Numero di partecipanti = "+str(n))
         self.n_partecipanti.grid(row=1, column=2)
-        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
-            cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
+        # --- INIZIO PARTE REFACTORIZZATA ---
+
+        # 1. Recuperiamo l'istanza del Singleton in modo pulito
+        calcolatrice = cc.Caliculator()
+
+        # 2. Chiediamo i dati di dominio
+        elenco_atleti = calcolatrice.getElencoAtleti()
+
+        # 3. La GUI usa "se stessa" (self) per aggiornare la visualizzazione
+        for codice, atl in elenco_atleti.items():
+            self.add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
+
+        # --- FINE PARTE REFACTORIZZATA ---
 
 
     def startCompetition(self):
@@ -401,41 +424,7 @@ class appGUI:
             sfidantiOttavi.append((index, str1, str2, cod1, cod2))
         return sfidantiOttavi
 
-    """def aggiornaTabellone(self, current_match, vincitore, stato):
-        if current_match == 15:
-            # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
-            return
-
-        # MODIFICA: Costruisci il nome completo anche per far avanzare l'atleta sul tabellone
-        nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
-        codice_vincitore = vincitore.Atleta.codice
-
-        # 1. Calcola l'ID del prossimo match
-        next_match = 8 + (current_match + 1) // 2
-
-        # 2. Determina in automatico la fase grafica per trovare il bottone corretto
-        if 9 <= next_match <= 12:
-            fase = "Quarti"
-            indice_fase = next_match - 8
-        elif 13 <= next_match <= 14:
-            fase = "Semifinali"
-            indice_fase = next_match - 12
-        elif next_match == 15:
-            fase = "Finale"
-            indice_fase = 1
-
-        # 3. Determina lo slot (1 in alto, 2 in basso)
-        posizione = 1 if current_match % 2 != 0 else 2
-
-        # 4. Ricostruisci la chiave esatta che hai usato in self.labels_tabellone
-        chiave_ui = (fase, indice_fase, posizione)
-
-        # 5. Aggiorna il bottone
-        if chiave_ui in self.labels_tabellone:
-            btn = self.labels_tabellone[chiave_ui]
-            # MODIFICA: Assegna il nome completo al bottone del prossimo turno anziché solo il cognome
-            btn.config(text=nome_completo_vincitore)
-            btn.config(command=lambda: self.openEvaluationWindow(codice_vincitore, next_match))"""
+   
 
     def aggiornaTabellone(self, current_match, vincitore, stato):
         # Chiediamo allo stato se questo match ha concluso l'intero torneo

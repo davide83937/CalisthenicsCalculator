@@ -1,8 +1,10 @@
+from DataUploader import DataUploader
 import Director as d
 import Atleta as a
 import Skill as sk
 import SetBuilderConcrete as set
 import Competizione as comp
+
 
 
 class Caliculator:
@@ -13,23 +15,21 @@ class Caliculator:
             cls._instance = super().__new__(cls)
         return cls._instance  # Restituiamo sempre la stessa istanza
 
-    def __init__(self, app):
+    def __init__(self):
         if not hasattr(self, "_initialized"):
             print("Inizializzo la calcolatricee...")
+            self.dataUploader = DataUploader()
             self.competizioneAttuale = None
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
-            self.app = app
+
             self.atletaCorrente = None
             self.setCorrente = None
             self.statoCorrente = "general"
             
     def getCompetizioneAttuale(self):
         return self.competizioneAttuale
-
-    def getApp(self):
-        return self.app
 
     def getElencoAtleti(self):
         return self.elencoAtleti
@@ -38,47 +38,16 @@ class Caliculator:
         atleta = self.elencoAtleti[index]
         return atleta
 
-
-
     def carica_atleti(self):
-        f = open("atleti.txt","r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            codice = int(attributi[0])
-            nome = attributi[1]
-            cognome = attributi[2]
-            età = int(attributi[3])
-            cod_fiscale = attributi[4]
-            n_cellulare = attributi[5]
-            email = attributi[6]
-            altezza = float(attributi[7])
-            peso = float(attributi[8])
-            atleta = a.Atleta(codice, nome, cognome, età, cod_fiscale, n_cellulare, email, altezza, peso)
-            self.elencoAtleti[atleta.codice] = atleta
-            line = f.readline()
-        for codice, atl in self.elencoAtleti.items():
-            self.app.add_line(codice, atl.nome, atl.cognome, "valuta")
-        f.close()
-
+        self.elencoAtleti = self.dataUploader.carica_atleti()
 
     def carica_skill(self):
-        f = open("skills.txt", "r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            nome = attributi[0]
-            categoria = attributi[1]
-            valore = float(attributi[2])
-            skill = sk.Skill(nome, categoria, valore)
-            self.elencoSkills.append(skill)
-            line = f.readline()
-        f.close()
+        self.elencoSkills = self.dataUploader.carica_skill()
+
 
 
     def getSkillList(self):
         return self.elencoSkills
-
 
     def calcola_codice(self, lista):
         if not lista:
@@ -126,7 +95,7 @@ class Caliculator:
                 +str(self.atletaCorrente.altezza)+" "+str(self.atletaCorrente.peso))
         f.write(line)
         f.close()
-        self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
+        return self.atletaCorrente
 
     def valutaAtleta(self, cod):
         self.setCorrente = set.SetBuilderConcrete(cod, self.elencoSkills)
