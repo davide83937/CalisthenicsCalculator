@@ -68,7 +68,7 @@ class Competizione:
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
             return stato
-        return stato
+        #return stato
 
         # Formula matematica per trovare l'ID del prossimo match
         next_match = 8 + (current_match + 1) // 2

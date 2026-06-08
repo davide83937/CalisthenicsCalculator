@@ -3,7 +3,9 @@ from Finale import Finale
 
 class Semifinale(Turno):
     def avanza(self):
+        statoVecchio = self
         self.context.passaIlTurno(Finale())
+        return statoVecchio
 
     def get_destinazione_vincitore(self, current_match):
         # Il prossimo match è sempre il 15 (la Finale)
