@@ -116,7 +116,7 @@ class Caliculator:
         self.setCorrente = director.get_result()
 
         final_set = self.setCorrente.get_result()
-        winner, stato = self.competizioneAttuale.requestRegistraSet(final_set)
+        winner, stato = self.competizioneAttuale.requestRegistraSet(final_set, code, index)
         """if mode == "partecipa":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
         elif mode == "turni":

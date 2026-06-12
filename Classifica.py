@@ -8,9 +8,7 @@ class Classifica:
         #print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
         if not self.listaSet:
             print("ATTENZIONE: self.listaSet è VUOTA! Nessun set è stato aggiunto alla classifica.")
-        else:
-            for s in self.listaSet:
-                print(s)
+      
         print("--------------------------------------\n")
         # --- FINE DEBUG ---
 

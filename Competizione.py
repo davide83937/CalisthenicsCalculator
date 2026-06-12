@@ -43,21 +43,12 @@ class Competizione:
         atleta = next((a for a in self.lista_partecipanti if a.codice == codice), None)
         return atleta
 
-
-
     def inserisciPartecipanti(self, atleta):
         for a in self.lista_partecipanti:
             if a.codice == atleta.codice:
                 return
         self.lista_partecipanti.append(atleta)
 
-
-    def inserisciSetInClassifica(self, set):
-        self.classifica.listaSet.append(set)
-
-
-    def getClassificaOrdinata(self):
-        return self.classifica.getClassificaOrdinata()
 
 
     def getDueSfidanti(self):
