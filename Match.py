@@ -30,7 +30,7 @@ class Match:
 
         if self.Winner is not None:
             print(f"Il vincitore è {self.Winner.Atleta.cognome}")
-            return self.numeroMatch, self.Winner
-        return self.numeroMatch, None
+            return self.Winner
+        return None
 
 

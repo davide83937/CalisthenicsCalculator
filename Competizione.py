@@ -26,6 +26,7 @@ class Competizione:
             if a.codice == atleta.codice:
                 return
         self.lista_partecipanti.append(atleta)
+        self.stati_partecipanti[atleta.codice] = "partecipa"
 
 
     def inserisciSetInClassifica(self, set):

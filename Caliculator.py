@@ -104,7 +104,7 @@ class Caliculator:
                 self.setCorrente.creaSetLine(sk, malus)
 
     def calcolaPunteggioSet(self, n_combo, mode, code = 10000, index = 10000):
-        winner = 10000, None
+        winner = None
         stato = None
 
         set_prodotto = self.setCorrente.get_result()

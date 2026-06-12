@@ -14,7 +14,7 @@ class AtletaInGara():
         from Ottavo import Ottavo
         self.passaIlTurno(Ottavo())
 
-    def getCodiceAtletaIngara(self):
+    def getCodiceAtletaInGara(self):
         return self.Atleta.codice
 
 

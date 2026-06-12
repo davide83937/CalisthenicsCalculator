@@ -8,6 +8,8 @@ class GestoreTorneo:
     def aggiungiMatch(self, first, second, index):
         match = m.Match(index, first, second)
         self.listaMatch.append(match)
+        # AGGIUNGI QUESTA RIGA:
+        return index, first, second
 
     def aggiungiSetPartecipante(self, index, cod, setCorrente):
         for match in self.listaMatch:

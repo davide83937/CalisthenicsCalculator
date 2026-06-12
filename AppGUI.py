@@ -50,7 +50,7 @@ class appGUI:
         self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.scroll2.grid(row=1, column=3, sticky="NS")
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
-        mode = "classifica"
+        mode = "partecipa"
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
             if codice in self.lista_partecipanti_temp:
                self.add_line(codice, atl.nome, atl.cognome, "valuta", mode, self.mylist2)
@@ -411,12 +411,17 @@ class appGUI:
     def inserisciSfidanti(self):
         import Caliculator as cc
         index, first, second = cc.Caliculator.creaMatch(cc.Caliculator._instance)
-        atl1 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, first[0])
-        atl2 = cc.Caliculator.getAtletaByIndex(cc.Caliculator._instance, second[0])
+
+        # 'first' e 'second' sono già oggetti AtletaInGara.
+        # Accediamo direttamente all'attributo Atleta contenuto al loro interno.
+        atl1 = first.Atleta
+        atl2 = second.Atleta
+
         codAtl1 = atl1.codice
         codAtl2 = atl2.codice
         str1 = f"{atl1.nome} {atl1.cognome}"
         str2 = f"{atl2.nome} {atl2.cognome}"
+
         return index, str1, str2, codAtl1, codAtl2
 
     def riempiOttavi(self, n):
@@ -457,7 +462,7 @@ class appGUI:
             btn.config(text=nome_completo_vincitore)
 
             # Uso parametri di default nella lambda per legare i valori in modo sicuro
-            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, m))
+            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, 'turni', m))
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
