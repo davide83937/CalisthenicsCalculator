@@ -4,15 +4,10 @@ class Classifica:
         self.classificaOrdinata = []
 
     def ordinaClassifica(self):
-        # --- INIZIO DEBUG ---
-        print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
-        if not self.listaSet:
-            print("ATTENZIONE: self.listaSet è VUOTA! Nessun set è stato aggiunto alla classifica.")
-        else:
-            for s in self.listaSet:
-                print(s)
-        print("--------------------------------------\n")
-        # --- FINE DEBUG ---
+
+        if len(self.listaSet) < 16:
+            return None
+
 
         # Svuotiamo la classifica per ricrearla pulita
         self.classificaOrdinata = []
@@ -24,17 +19,16 @@ class Classifica:
         lista_atleti_inseriti = []
 
         for s in set_ordinati:
-            # Opzionale: inseriamo solo il set con il punteggio migliore per un atleta.
-            # Se vuoi che un atleta appaia più volte in classifica con set diversi,
-            # puoi rimuovere questo 'if'.
             if s.cod_atleta not in lista_atleti_inseriti:
                 item_classifica = [s.cod_atleta, s.punteggio_totale, pos]
                 self.classificaOrdinata.append(item_classifica)
-
                 lista_atleti_inseriti.append(s.cod_atleta)
                 pos += 1
+        return True
 
     def getClassificaOrdinata(self):
-        self.ordinaClassifica()
+        b = self.ordinaClassifica()
+        if b is None:
+            return None
         return self.classificaOrdinata
 

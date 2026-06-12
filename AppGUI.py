@@ -1,13 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-import time
-
-from pip._internal.commands import show
-
-from Classifica import Classifica
-
-
 class appGUI:
 
     def __init__(self, root):
@@ -23,6 +16,7 @@ class appGUI:
         self.but_reg.grid(row=0, column=0)
         self.scroll.grid(row =1, column=1, sticky="NS")
         self.mylist.grid(row=1, column=0, ipadx=20, ipady=40)
+        self.showAthletesZero()
         self.nome_entry = None
         self.style = ttk.Style()
         self.style.theme_use('clam')
@@ -40,67 +34,34 @@ class appGUI:
         self.startCompetitionButton.grid(row=0, column=2)
         self.lista_partecipanti_temp = []
 
+    def showAthletesZero(self):
+        import Caliculator as cc
+        mode = "general"
+        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
+             self.add_line(codice, atl.nome, atl.cognome, "valuta", mode, self.mylist)
+
+
     def showAthletes(self):
         import Caliculator as cc
         self.scroll2 = ttk.Scrollbar(self.main_frame)
         self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.scroll2.grid(row=1, column=3, sticky="NS")
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
+        mode = "classifica"
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
             if codice in self.lista_partecipanti_temp:
-               cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
+                self.add_line(codice, atl.nome, atl.cognome, "valuta", mode, self.mylist2)
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
         self.makeClassificationButton.grid(row=1, column=4)
 
-    """def generaClassifica(self):
-        import Caliculator as cc
-        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
-        classificaOrdinata = comp.getClassificaOrdinata()
-        self.showClassification()
-        self.makeClassification(classificaOrdinata)
 
-    def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
-        self.code_label = tk.Label(self.main_frame, text=posizione)
-        self.code_label.grid(row=row, column=4)
-        self.code_label = tk.Label(self.main_frame, text=nome)
-        self.code_label.grid(row=row, column=5)
-        self.code_label = tk.Label(self.main_frame, text=cognome)
-        self.code_label.grid(row=row, column=6)
-        self.code_label = tk.Label(self.main_frame, text=punteggio)
-        self.code_label.grid(row=row, column=7)
-        self.code_label = tk.Label(self.main_frame, text=code)
-        self.code_label.grid(row=row, column=8)
-
-    def makeClassification(self, classificaOrdinata):
-        import Caliculator as cc
-        row = 2
-        #n = len(classificaOrdinata)
-        lista_atleti = cc.Caliculator.getElencoAtleti(cc.Caliculator._instance)
-        for co in classificaOrdinata:
-            atleta = lista_atleti[co[0]]
-            self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
-            row = row + 1
-
-
-    def showClassification(self):
-        self.code_label = tk.Label(self.main_frame, text="CLASSIFICA")
-        self.code_label.grid(row=0, column=4)
-        self.code_label = tk.Label(self.main_frame, text="Posizione")
-        self.code_label.grid(row=1, column=4)
-        self.code_label = tk.Label(self.main_frame, text="Nome")
-        self.code_label.grid(row=1, column=5)
-        self.code_label = tk.Label(self.main_frame, text="Cognome")
-        self.code_label.grid(row=1, column=6)
-        self.code_label = tk.Label(self.main_frame, text="Punteggio")
-        self.code_label.grid(row=1, column=7)
-        self.code_label = tk.Label(self.main_frame, text="Codice")
-        self.code_label.grid(row=1, column=8)"""
 
     def generaClassifica(self):
         import Caliculator as cc
         comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
         classificaOrdinata = comp.getClassificaOrdinata()
-
+        if classificaOrdinata is None:
+            return
         # 1. Mostra le intestazioni
         self.showClassification()
         # 2. Riempie la classifica con i dati
@@ -158,10 +119,12 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-
     def save_button_f(self):
         import Caliculator as cc
-        cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
+        atleta = cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
+        mode = "general"
+        if atleta:
+            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", mode)
 
     # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
@@ -174,11 +137,11 @@ class appGUI:
             n = len(self.lista_partecipanti_temp)
             self.string.set("Numero di partecipanti = " + str(n))
 
-    def add_line(self, code, nome, cognome, goal, myLista = None):
+    def add_line(self, code, nome, cognome, goal, mode,  myLista = None):
         if myLista == None:
             myLista = self.mylist
         if goal == "valuta":
-            function = lambda:self.openEvaluationWindow(code)
+            function = lambda:self.openEvaluationWindow(code, mode)
         elif goal == "partecipa":
             function = lambda: self.add_athlete_temp(code)
         line = tk.Frame(myLista)
@@ -191,15 +154,9 @@ class appGUI:
         cognome_label.grid(row=0, column=2)
         button_add = tk.Button(line, text=goal, command=function)
         button_add.grid(row=0,column=3)
-        import Caliculator as cc
-        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
-        if comp is not None:
-            lista_stati = comp.getStatiPartecipanti()
-            stato = lista_stati[code]
-            print("Stato")
-            print(stato)
-            stato_label = tk.Label(line, text=stato)
-            stato_label.grid(row=0, column=4)
+
+
+
 
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
@@ -288,7 +245,7 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-    def openEvaluationWindow(self, code):
+    def openEvaluationWindow(self, code, mode):
         import Caliculator as cc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
@@ -296,10 +253,8 @@ class appGUI:
         self.evaluationWindow.resizable(False, False)
         # Importante: grid_propagate va messo DOPO aver definito la geometry
         self.evaluationWindow.grid_propagate(False)
-
         cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
 
-        # Label del Codice Atleta
         self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
         self.code.grid(row=0, column=0, columnspan=2, pady=5)
 
@@ -331,7 +286,6 @@ class appGUI:
         bonus_combo_entry.insert(0, "0")
         bonus_combo_entry.grid(row=0, column=1)
 
-        # 3. Sezione Pulsanti Azione (Colonna 2)
         buttons_frame = ttk.Frame(self.evaluationWindow)
         buttons_frame.grid(row=1, column=2, padx=20, sticky="n")
 
@@ -340,7 +294,7 @@ class appGUI:
 
         confermaButton = ttk.Button(buttons_frame, text="Conferma",
                                     command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
-                                                                          int(bonus_combo_entry.get()), code))
+                                                                          int(bonus_combo_entry.get()),  mode))
         confermaButton.pack(pady=10)
 
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
@@ -348,25 +302,7 @@ class appGUI:
 
         # Inizializza la prima riga
         self.addSetLine()
-    """def openEvaluationWindow(self, code):
-        import Caliculator as cc
-        self.evaluationWindow = tk.Toplevel(self.root)
-        self.evaluationWindow.title("Valuta atleta")
-        self.evaluationWindow.geometry("720x540")
-        cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
-        self.code = ttk.Label(self.evaluationWindow, text=code)
-        self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow)
-        self.mySetLinesList = tk.Listbox(self.evaluationWindow, yscrollcommand=self.scrollSetLines.set)
-        self.code.grid(row=0,column=1)
-        self.scrollSetLines.grid(row=1, column=1, sticky="NS")
-        self.mySetLinesList.grid(row=1, column=0, ipadx=100, ipady=150)
-        addSetLineButton =  ttk.Button(self.evaluationWindow, text="Aggiungi Linea", command=self.addSetLine)
-        addSetLineButton.grid(row=0, column=2)
-        confermaButton = ttk.Button(self.evaluationWindow, text="Conferma", command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton))
-        confermaButton.grid(row=0, column=3)
-        self.labelResult = ttk.Label(self.evaluationWindow, text="")
-        self.labelResult.grid(row=1, column=2)
-        self.addSetLine()"""
+
 
     def openCompetitionWindow(self):
         import Caliculator as cc
@@ -385,8 +321,14 @@ class appGUI:
         n = len(self.lista_partecipanti_temp)
         self.string.set("Numero di partecipanti = "+str(n))
         self.n_partecipanti.grid(row=1, column=2)
-        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
-            cc.Caliculator.getApp(cc.Caliculator._instance).add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
+
+        calcolatrice = cc.Caliculator()
+
+        elenco_atleti = calcolatrice.getElencoAtleti()
+        mode = "partecipa"
+        for codice, atl in elenco_atleti.items():
+            self.add_line(codice, atl.nome, atl.cognome, "partecipa", mode, self.mylistComp)
+
 
 
     def startCompetition(self):
@@ -421,9 +363,9 @@ class appGUI:
 
 
 
-    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, code):
+    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, mode):
         import Caliculator as cc
-        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo)
+        punteggio =cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, mode)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()

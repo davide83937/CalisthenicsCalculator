@@ -1,8 +1,8 @@
 import Director as d
 import Atleta as a
-import Skill as sk
 import SetBuilderConcrete as set
 import Competizione as comp
+import DataUploader as du
 
 
 class Caliculator:
@@ -13,62 +13,31 @@ class Caliculator:
             cls._instance = super().__new__(cls)
         return cls._instance  # Restituiamo sempre la stessa istanza
 
-    def __init__(self, app):
+    def __init__(self):
         if not hasattr(self, "_initialized"):
             print("Inizializzo la calcolatricee...")
             self.competizioneAttuale = None
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
-            self.app = app
             self.atletaCorrente = None
             self.setCorrente = None
-            self.statoCorrente = "general"
-            
+            self.du = du.DataUploader()
+
+
+
     def getCompetizioneAttuale(self):
         return self.competizioneAttuale
 
-    def getApp(self):
-        return self.app
 
     def getElencoAtleti(self):
         return self.elencoAtleti
 
-
     def carica_atleti(self):
-        f = open("atleti.txt","r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            codice = int(attributi[0])
-            nome = attributi[1]
-            cognome = attributi[2]
-            età = int(attributi[3])
-            cod_fiscale = attributi[4]
-            n_cellulare = attributi[5]
-            email = attributi[6]
-            altezza = float(attributi[7])
-            peso = float(attributi[8])
-            atleta = a.Atleta(codice, nome, cognome, età, cod_fiscale, n_cellulare, email, altezza, peso)
-            self.elencoAtleti[atleta.codice] = atleta
-            line = f.readline()
-        for codice, atl in self.elencoAtleti.items():
-            self.app.add_line(codice, atl.nome, atl.cognome, "valuta")
-        f.close()
-
+        self.elencoAtleti = self.du.carica_atleti()
 
     def carica_skill(self):
-        f = open("skills.txt", "r")
-        line = f.readline()
-        while line !="":
-            attributi = line.strip().split()
-            nome = attributi[0]
-            categoria = attributi[1]
-            valore = float(attributi[2])
-            skill = sk.Skill(nome, categoria, valore)
-            self.elencoSkills.append(skill)
-            line = f.readline()
-        f.close()
+        self.elencoSkills = self.du.carica_skill()
 
 
     def getSkillList(self):
@@ -111,17 +80,18 @@ class Caliculator:
             self.atletaCorrente = a.Atleta(cod, nome, cognome, età, codice_fiscale, numero_cellulare, email, altezza, peso)
             return 0
 
-
     def terminaRegistrazione(self):
         self.elencoAtleti[self.atletaCorrente.codice] = self.atletaCorrente
         f = open("atleti.txt", "a")
         print("file aperto")
-        line = (str(self.atletaCorrente.codice)+" "+self.atletaCorrente.nome+" "+self.atletaCorrente.cognome+" "+str(self.atletaCorrente.età)+
-                " "+self.atletaCorrente.codice_fiscale+" "+self.atletaCorrente.numero_cellulare+" "+self.atletaCorrente.email+" "
-                +str(self.atletaCorrente.altezza)+" "+str(self.atletaCorrente.peso))
+        line = (
+                    str(self.atletaCorrente.codice) + " " + self.atletaCorrente.nome + " " + self.atletaCorrente.cognome + " " + str(
+                self.atletaCorrente.età) +
+                    " " + self.atletaCorrente.codice_fiscale + " " + self.atletaCorrente.numero_cellulare + " " + self.atletaCorrente.email + " "
+                    + str(self.atletaCorrente.altezza) + " " + str(self.atletaCorrente.peso))
         f.write(line)
         f.close()
-        self.app.add_line(self.atletaCorrente.codice, self.atletaCorrente.nome, self.atletaCorrente.cognome)
+        return self.atletaCorrente
 
     def valutaAtleta(self, cod):
         self.setCorrente = set.SetBuilderConcrete(cod, self.elencoSkills)
@@ -132,7 +102,7 @@ class Caliculator:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
 
-    def calcolaPunteggioSet(self, n_combo):
+    def calcolaPunteggioSet(self, n_combo, mode):
         # Otteniamo il prodotto dal builder/decorator
         set_prodotto = self.setCorrente.get_result()
 
@@ -146,11 +116,21 @@ class Caliculator:
 
         # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
-        if self.statoCorrente == "inCorso":
+        if mode == "classifica":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
 
         return f"Punteggio complessivo = {final_set.punteggio_totale}"
 
+    def generaClassifica(self):
+        return self.competizioneAttuale.getClassificaOrdinata()
+
+    def getAtletaByIndex(self, lista):
+        for cod in lista:
+            # 3. Verifichi se il codice esiste nell'elenco degli atleti
+            if cod in self.elencoAtleti:
+                # Prendi l'oggetto atleta usando la chiave 'cod'
+                atleta = self.elencoAtleti[cod]
+                return atleta
 
     def creaNuovaCompetizione(self, lista):
         # 1. Crei l'istanza della competizione
@@ -164,7 +144,7 @@ class Caliculator:
                 atleta = self.elencoAtleti[cod]
                 # 4. Chiami il metodo SULL'ISTANZA appena creata, passando l'atleta
                 self.competizioneAttuale.inserisciPartecipanti(atleta)
-        self.statoCorrente = "inCorso"
+
 
 
 
