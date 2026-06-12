@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="refactoring">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppGUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Caliculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Caliculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Competizione.py" beforeDir="false" afterPath="$PROJECT_DIR$/Competizione.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StatoConcluso.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatoConcluso.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StatoQualificazioni.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatoQualificazioni.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StatoTurni.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatoTurni.py" afterDir="false" />
-    </list>
+    <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="refactoring" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -343,7 +335,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781295727722</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="refactoring">
+      <option name="closed" value="true" />
+      <created>1781296829451</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1781296829451</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
