@@ -15,4 +15,4 @@ class StatoQualificazioni(StatoCompetizione):
         self.competizione.transitionTo(StatoTurni(self.competizione))
 
     def generaClassifica(self):
-        pass
+        return self.competizione.classifica.getClassificaOrdinata()

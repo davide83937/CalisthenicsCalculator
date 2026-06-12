@@ -5,7 +5,7 @@ class Classifica:
 
     def ordinaClassifica(self):
         # --- INIZIO DEBUG ---
-        print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
+        #print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
         if not self.listaSet:
             print("ATTENZIONE: self.listaSet è VUOTA! Nessun set è stato aggiunto alla classifica.")
         else:

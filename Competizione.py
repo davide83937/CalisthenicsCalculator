@@ -23,15 +23,21 @@ class Competizione:
         _state = self.transitionTo(sq.StatoQualificazioni(self))
 
 
-
     def transitionTo(self, stato: 'StatoCompetizione'):
         self._state = stato
 
+    def nextPhase(self):
+        self._state.avanza()
+
     def requestRegistraSet(self, finalSet, codice= 0, index=0):
-        self._state.registraSet(finalSet, codice, index)
+        return self._state.registraSet(finalSet, codice, index)
 
     def requestGeneraClassifica(self):
-        self._state.generaClassifica()
+        classifica = self._state.generaClassifica()
+        if classifica is not None:
+            self.nextPhase()
+        return classifica
+
 
     def getPartecipante(self, codice):
         atleta = next((a for a in self.lista_partecipanti if a.codice == codice), None)
@@ -46,12 +52,13 @@ class Competizione:
         self.lista_partecipanti.append(atleta)
 
 
-
     def inserisciSetInClassifica(self, set):
         self.classifica.listaSet.append(set)
 
+
     def getClassificaOrdinata(self):
         return self.classifica.getClassificaOrdinata()
+
 
     def getDueSfidanti(self):
         firstAtlhete, secondAtlhete = self.classifica.getDuesfidenti(self.index, self.index + 8)
@@ -86,6 +93,7 @@ class Competizione:
 
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
+            self.nextPhase()
             return stato
         #return stato
 

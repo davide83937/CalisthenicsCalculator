@@ -25,4 +25,4 @@ class StatoTurni(StatoCompetizione):
         self.competizione.transitionTo(StatoConcluso())
 
     def generaClassifica(self):
-        pass
+        return None

@@ -127,7 +127,7 @@ class Caliculator:
         return result, None, stato
 
     def generaClassifica(self):
-        return self.competizioneAttuale.getClassificaOrdinata()
+        return self.competizioneAttuale.requestGeneraClassifica()
 
 
     def creaMatch(self):

@@ -21,6 +21,6 @@ class AtletaInGara():
     def passaIlTurno(self, stato: 't.Turno'): # Usa gli apici per il tipo!
         self._stato = stato # Nota: ho corretto _state in _stato per coerenza con la classe
         self._stato.context = self
-        print(f"ATLETA: {self.Atleta.nome} PASSA A")
-        print(self._stato)
+        #print(f"ATLETA: {self.Atleta.nome} PASSA A")
+        #print(self._stato)
         return self._stato
