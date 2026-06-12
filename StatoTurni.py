@@ -15,6 +15,7 @@ class StatoTurni(StatoCompetizione):
 
     def registraSet(self, finalSet, codice=0, indexMatch=0):
         winner = self.competizione.gestoreTorneo.aggiungiSetPartecipante(indexMatch, codice, finalSet)
+        print("Set in Turni")
         if winner is not None:
             stato = self.competizione.avanzaTurnoAtleta(indexMatch, winner)  # Richiama il nuovo metodo universale
             return winner, stato
@@ -25,4 +26,5 @@ class StatoTurni(StatoCompetizione):
         self.competizione.transitionTo(StatoConcluso())
 
     def generaClassifica(self):
+        print("Nella fase di turni non puoi generare una classifica")
         return None

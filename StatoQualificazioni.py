@@ -8,6 +8,7 @@ class StatoQualificazioni(StatoCompetizione):
 
     def registraSet(self, finalSet, codice=0, indexMatch=0):
         self.competizione.classifica.listaSet.append(finalSet)
+        print("SetInClassifica")
         return None, None
 
     def avanza(self):

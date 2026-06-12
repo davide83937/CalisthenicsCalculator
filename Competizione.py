@@ -28,6 +28,8 @@ class Competizione:
 
     def nextPhase(self):
         self._state.avanza()
+        print("NUOVO STATO TORNEO")
+        print(self._state)
 
     def requestRegistraSet(self, finalSet, codice= 0, index=0):
         return self._state.registraSet(finalSet, codice, index)

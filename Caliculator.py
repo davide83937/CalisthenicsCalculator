@@ -103,7 +103,7 @@ class Caliculator:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
 
-    def calcolaPunteggioSet(self, n_combo, mode, code = 10000, index = 10000):
+    def calcolaPunteggioSet(self, n_combo, code = 10000, index = 10000):
         winner = None
         stato = None
 
@@ -117,10 +117,7 @@ class Caliculator:
 
         final_set = self.setCorrente.get_result()
         winner, stato = self.competizioneAttuale.requestRegistraSet(final_set, code, index)
-        """if mode == "partecipa":
-            self.competizioneAttuale.inserisciSetInClassifica(final_set)
-        elif mode == "turni":
-            winner, stato  = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)"""
+
         result = f"Punteggio complessivo = {final_set.punteggio_totale}"
         if winner is not None:
             return result, winner, stato

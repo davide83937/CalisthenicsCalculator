@@ -39,9 +39,9 @@ class appGUI:
 
     def showAthletesZero(self):
         import Caliculator as cc
-        mode = "general"
+
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
-             self.add_line(codice, atl.nome, atl.cognome, "valuta", mode, self.mylist)
+             self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist)
 
 
     def showAthletes(self):
@@ -50,10 +50,10 @@ class appGUI:
         self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.scroll2.grid(row=1, column=3, sticky="NS")
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
-        mode = "partecipa"
+
         for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
             if codice in self.lista_partecipanti_temp:
-               self.add_line(codice, atl.nome, atl.cognome, "valuta", mode, self.mylist2)
+               self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
         self.makeClassificationButton.grid(row=1, column=4)
 
@@ -125,9 +125,9 @@ class appGUI:
     def save_button_f(self):
         import Caliculator as cc
         atleta = cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
-        mode = "general"
+
         if atleta:
-            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", mode)
+            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta")
 
     # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
@@ -140,11 +140,11 @@ class appGUI:
             n = len(self.lista_partecipanti_temp)
             self.string.set("Numero di partecipanti = " + str(n))
 
-    def add_line(self, code, nome, cognome, goal, mode, myLista = None):
+    def add_line(self, code, nome, cognome, goal, myLista = None):
         if myLista == None:
             myLista = self.mylist
         if goal == "valuta":
-            function = lambda:self.openEvaluationWindow(code, mode)
+            function = lambda:self.openEvaluationWindow(code)
         elif goal == "partecipa":
             function = lambda: self.add_athlete_temp(code)
         line = tk.Frame(myLista)
@@ -253,7 +253,7 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-    def openEvaluationWindow(self, code, mode, index_match=1000):
+    def openEvaluationWindow(self, code, index_match=1000):
         import Caliculator as cc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
@@ -305,7 +305,7 @@ class appGUI:
 
         confermaButton = ttk.Button(buttons_frame, text="Conferma",
                                     command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
-                                                                          int(bonus_combo_entry.get()), mode, index_match, code))
+                                                                          int(bonus_combo_entry.get()), index_match, code))
         confermaButton.pack(pady=10)
 
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
@@ -339,10 +339,10 @@ class appGUI:
 
         # 2. Chiediamo i dati di dominio
         elenco_atleti = calcolatrice.getElencoAtleti()
-        mode = "partecipa"
+
         # 3. La GUI usa "se stessa" (self) per aggiornare la visualizzazione
         for codice, atl in elenco_atleti.items():
-            self.add_line(codice, atl.nome, atl.cognome, "partecipa", mode, self.mylistComp)
+            self.add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
 
         # --- FINE PARTE REFACTORIZZATA ---
 
@@ -379,9 +379,9 @@ class appGUI:
 
 
 
-    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, mode, index, code):
+    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code):
         import Caliculator as cc
-        punteggio, winner, stato = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, mode, code, index)
+        punteggio, winner, stato = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
         self.labelResult.configure(text=punteggio)
         addLineButton.grid_remove()
         confermaButton.grid_remove()
@@ -453,7 +453,7 @@ class appGUI:
             btn.config(text=nome_completo_vincitore)
 
             # Uso parametri di default nella lambda per legare i valori in modo sicuro
-            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, 'turni', m))
+            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, m))
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
@@ -505,9 +505,9 @@ class appGUI:
         # bd=2 ridà il classico effetto "pulsante" cliccabile 3D
         btn1 = tk.Button(box, text=nome1, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
         btn2 = tk.Button(box, text=nome2, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
-        mode = "turni"
-        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, mode, index))
-        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, mode, index))
+
+        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, index))
+        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, index))
 
         # Spazio di 1 pixel tra i due sfidanti nel box
         btn1.pack(pady=1)
