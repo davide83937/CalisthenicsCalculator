@@ -116,11 +116,12 @@ class Caliculator:
         self.setCorrente = director.get_result()
 
         final_set = self.setCorrente.get_result()
-        if mode == "partecipa":
+        winner, stato = self.competizioneAttuale.requestRegistraSet(final_set)
+        """if mode == "partecipa":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
         elif mode == "turni":
-            winner, stato  = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
-        result = f"Punteggio complessivo = {final_set.punteggio_totale}",
+            winner, stato  = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)"""
+        result = f"Punteggio complessivo = {final_set.punteggio_totale}"
         if winner is not None:
             return result, winner, stato
         return result, None, stato

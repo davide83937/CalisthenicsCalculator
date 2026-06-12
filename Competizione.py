@@ -1,32 +1,50 @@
+import _stat
+
 import GestoreTorneo as gt
 import Classifica as c
 import AtletaInGara as ag
+import StatoQualificazioni as sq
+from StatoCompetizione import StatoCompetizione
+
 
 class Competizione:
+    _state = None
+
     def __init__(self):
         self.lista_partecipanti = []
-        self.stati_partecipanti = {}
+
         self.classifica = c.Classifica()
         self.gestoreTorneo = gt.GestoreTorneo()
         self.index = 0
         # Sostituisci slot_quarti con questo:
         # Prepara liste vuote per i match da 9 (Quarti) a 15 (Finale)
         self.slot_attesa = {i: [] for i in range(9, 16)}
+        import StatoQualificazioni as sq
+        _state = self.transitionTo(sq.StatoQualificazioni(self))
 
+
+
+    def transitionTo(self, stato: 'StatoCompetizione'):
+        self._state = stato
+
+    def requestRegistraSet(self, finalSet, codice= 0, index=0):
+        self._state.registraSet(finalSet, codice, index)
+
+    def requestGeneraClassifica(self):
+        self._state.generaClassifica()
 
     def getPartecipante(self, codice):
         atleta = next((a for a in self.lista_partecipanti if a.codice == codice), None)
         return atleta
 
-    def getStatiPartecipanti(self):
-        return self.stati_partecipanti
+
 
     def inserisciPartecipanti(self, atleta):
         for a in self.lista_partecipanti:
             if a.codice == atleta.codice:
                 return
         self.lista_partecipanti.append(atleta)
-        self.stati_partecipanti[atleta.codice] = "partecipa"
+
 
 
     def inserisciSetInClassifica(self, set):
@@ -52,11 +70,11 @@ class Competizione:
     def aggiungiSetSfidante(self, final_set, cod, index):
         winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
         if winner is not None:
-            stato = self.avanzaTurno(index, winner)  # Richiama il nuovo metodo universale
+            stato = self.avanzaTurnoAtleta(index, winner)  # Richiama il nuovo metodo universale
             return winner, stato
         return None, None
 
-    def avanzaTurno(self, current_match, vincitore):
+    def avanzaTurnoAtleta(self, current_match, vincitore):
         # --- FIX PROBLEMA 2 ---
         # Svuotiamo il "Set" dell'atleta in modo che il match successivo lo aspetti pulito
         vincitore.setCorrente = None

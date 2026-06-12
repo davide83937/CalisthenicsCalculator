@@ -165,15 +165,6 @@ class appGUI:
             self.valuta_buttons[code] = button_add
         # -----------------------------------------------------------
 
-        import Caliculator as cc
-        comp = cc.Caliculator.getCompetizioneAttuale(cc.Caliculator._instance)
-        if comp is not None:
-            lista_stati = comp.getStatiPartecipanti()
-            stato = lista_stati[code]
-            print("Stato")
-            print(stato)
-            stato_label = tk.Label(line, text=stato)
-            stato_label.grid(row=0, column=4)
 
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
