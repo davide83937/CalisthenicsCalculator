@@ -14,6 +14,9 @@ class AtletaInGara():
         from Ottavo import Ottavo
         self.passaIlTurno(Ottavo())
 
+    def getCodiceAtletaIngara(self):
+        return self.Atleta.codice
+
 
     def passaIlTurno(self, stato: 't.Turno'): # Usa gli apici per il tipo!
         self._stato = stato # Nota: ho corretto _state in _stato per coerenza con la classe

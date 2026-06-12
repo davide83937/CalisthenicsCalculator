@@ -26,7 +26,7 @@ class Competizione:
             if a.codice == atleta.codice:
                 return
         self.lista_partecipanti.append(atleta)
-        self.stati_partecipanti[atleta.codice] = "qualificazione"
+
 
     def inserisciSetInClassifica(self, set):
         self.classifica.listaSet.append(set)
@@ -41,18 +41,19 @@ class Competizione:
         atleta2 = self.getPartecipante(secondAtlhete[0])
         atletaInGara2 = ag.AtletaInGara(atleta2)
         self.index = self.index + 1
-        self.setDueSfidenti(atletaInGara1, atletaInGara2, self.index)
-        return self.index, firstAtlhete, secondAtlhete
+        index, first, second = self.setDueSfidenti(atletaInGara1, atletaInGara2, self.index)
+        return index, first, second
 
     def setDueSfidenti(self, first, second, index):
-        self.gestoreTorneo.aggiungiMatch(first, second, index)
+        index, first, second = self.gestoreTorneo.aggiungiMatch(first, second, index)
+        return index, first, second
 
     def aggiungiSetSfidante(self, final_set, cod, index):
-        indexMatch, winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
+        winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
         if winner is not None:
-            stato = self.avanzaTurno(indexMatch, winner)  # Richiama il nuovo metodo universale
-            return indexMatch, winner, stato
-        return 10000, None, None
+            stato = self.avanzaTurno(index, winner)  # Richiama il nuovo metodo universale
+            return winner, stato
+        return None, None
 
     def avanzaTurno(self, current_match, vincitore):
         # --- FIX PROBLEMA 2 ---
@@ -63,8 +64,7 @@ class Competizione:
         # Ora sappiamo che la variabile si chiama "_stato"
         if vincitore._stato is not None:
             stato = vincitore._stato.avanza()
-            #return stato
-        # Se siamo al match 15, abbiamo il vincitore assoluto del torneo!
+
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
             return stato

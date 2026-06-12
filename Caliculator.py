@@ -1,10 +1,8 @@
 from DataUploader import DataUploader
 import Director as d
 import Atleta as a
-import Skill as sk
 import SetBuilderConcrete as set
 import Competizione as comp
-
 
 
 class Caliculator:
@@ -23,10 +21,9 @@ class Caliculator:
             self._initialized = True
             self.elencoAtleti = {}
             self.elencoSkills = []
-
             self.atletaCorrente = None
             self.setCorrente = None
-            self.statoCorrente = "general"
+
             
     def getCompetizioneAttuale(self):
         return self.competizioneAttuale
@@ -106,37 +103,33 @@ class Caliculator:
             if sk.nome == nomeSkill.get():
                 self.setCorrente.creaSetLine(sk, malus)
 
-    def calcolaPunteggioSet(self, n_combo, code = 10000, index = 10000):
-        indexMatch, winner = 10000, None
+    def calcolaPunteggioSet(self, n_combo, mode, code = 10000, index = 10000):
+        winner = 10000, None
         stato = None
-        # Otteniamo il prodotto dal builder/decorator
+
         set_prodotto = self.setCorrente.get_result()
 
-        # Iteriamo sulle linee salvate nel prodotto
         for sl in set_prodotto.lista_linee:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
 
-        # Il DirectorBuilder analizza il set e decide se applicare decorator
         director = d.DirectorBuilder(self.setCorrente, self.elencoSkills, n_combo)
         self.setCorrente = director.get_result()
 
-        # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
-        if self.statoCorrente == "inCorso":
+        if mode == "partecipa":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
-        elif self.statoCorrente == "ottavi":
-            indexMatch, winner, stato  = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
+        elif mode == "turni":
+            winner, stato  = self.competizioneAttuale.aggiungiSetSfidante(final_set, code, index)
         result = f"Punteggio complessivo = {final_set.punteggio_totale}",
         if winner is not None:
-            return result, indexMatch, winner, stato
-        return result, 10000, None, stato
+            return result, winner, stato
+        return result, None, stato
 
     def generaClassifica(self):
-        self.statoCorrente = "ottavi"
         return self.competizioneAttuale.getClassificaOrdinata()
 
 
-    def inserisciSfidanti(self):
+    def creaMatch(self):
         index, first, second = self.competizioneAttuale.getDueSfidanti()
         return index, first, second
 
@@ -154,7 +147,7 @@ class Caliculator:
                 atleta = self.elencoAtleti[cod]
                 # 4. Chiami il metodo SULL'ISTANZA appena creata, passando l'atleta
                 self.competizioneAttuale.inserisciPartecipanti(atleta)
-        self.statoCorrente = "inCorso"
+
 
 
 

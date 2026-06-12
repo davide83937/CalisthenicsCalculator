@@ -1,5 +1,4 @@
 import Match as m
-from Match import Match
 
 
 class GestoreTorneo:
@@ -15,15 +14,15 @@ class GestoreTorneo:
             if match.numeroMatch == index:
                 # 1. Usa Atleta1 con la A maiuscola (correzione precedente)
                 # 2. Usa .Atleta.codice per accedere correttamente all'ID (nuova correzione)
-                if match.Atleta1.Atleta.codice == cod:
+                if match.getCodiceAtletaInGara1() == cod:
                     # 3. Usa l'operatore di assegnazione "=" e non le parentesi (nuova correzione)
-                    match.Atleta1.setCorrente = setCorrente
+                    match.setSetAtletaInGara1(setCorrente)
                 else:
-                    match.Atleta2.setCorrente = setCorrente
+                    match.setSetAtletaInGara2(setCorrente)
 
-                indexMatch, winner = match.risolvi()
+                winner = match.risolvi()
                 if winner is not None:
-                    return indexMatch, winner
-        return 10000, None
+                    return  winner
+        return None
 
 
