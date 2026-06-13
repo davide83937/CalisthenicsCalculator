@@ -458,7 +458,7 @@ class appGUI:
             btn.config(text=nome_completo_vincitore)
 
             # Uso parametri di default nella lambda per legare i valori in modo sicuro
-            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, m))
+            btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, "competition", m))
 
     def mostraTabellone(self):
         if hasattr(self, 'bracket_frame') and self.bracket_frame is not None:
@@ -511,8 +511,8 @@ class appGUI:
         btn1 = tk.Button(box, text=nome1, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
         btn2 = tk.Button(box, text=nome2, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
 
-        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, index))
-        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, index))
+        btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, "competition", index))
+        btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, "competition", index))
 
         # Spazio di 1 pixel tra i due sfidanti nel box
         btn1.pack(pady=1)

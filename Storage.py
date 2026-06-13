@@ -37,5 +37,5 @@ class Storage:
                     str(atleta.codice) + " " + atleta.nome + " " + atleta.cognome + " " + str(
                 atleta.età) +
                     " " + atleta.codice_fiscale + " " + atleta.numero_cellulare + " " + atleta.email + " "
-                    + str(atleta.altezza) + " " + str(atleta.peso))
+                    + str(atleta.altezza) + " " + str(atleta.peso)+ "\n")
         self.dataUploader.salvaAtleta(line)
