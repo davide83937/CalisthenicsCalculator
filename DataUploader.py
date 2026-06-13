@@ -40,3 +40,9 @@ class DataUploader:
             line = f.readline()
         f.close()
         return self.elencoSkills
+
+    def salvaAtleta(self, line):
+        f = open("atleti.txt", "a")
+        print("file aperto")
+        f.write(line)
+        f.close()

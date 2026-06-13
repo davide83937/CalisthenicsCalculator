@@ -21,4 +21,4 @@
 20 Enrico Vitale 22 NRCVTL04D30D226N 3467788990 enrico.v@gmail.com 1.70 66.0
 21 Giorgio Neri 33 GRGNRI93D30D286O 3428899001 giorgio.neri@gmail.com 1.77 74.5
 22 Alberto Pace 29 LBRPCE97D30D286P 3289900112 alberto.pace@gmail.com 1.80 77.0
-23 Valerio Bruno 27 VLRBRN99D30D286Q 3330011223 valerio.bruno@gmail.com 1.74 70.52424 Doriano Yatesi 45 YTSDRN80A01I754I 3663975871 sulecco10@gmail.com 175.0 130.0
+23 Valerio Bruno 27 VLRBRN99D30D286Q 3330011223 valerio.bruno@gmail.com 1.74 70.52424 Doriano Yatesi 45 YTSDRN80A01I754I 3663975871 sulecco10@gmail.com 175.0 130.024 Vincenzo Casalinghi 30 CSLVCN96A01E507Y 3663876871 vincenzocas@gmail.com 180.0 100.0

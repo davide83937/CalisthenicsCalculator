@@ -38,30 +38,29 @@ class appGUI:
         #self.mostraTabellone()
 
     def showAthletesZero(self):
-        import Caliculator as cc
-
-        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
-             self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist)
+        import Storage as s
+        for codice, atl in s.Storage.getElencoAtleti(s.Storage._instance).items():
+             self.add_line(codice, atl.nome, atl.cognome, "valuta", "simple", self.mylist)
 
 
     def showAthletes(self):
-        import Caliculator as cc
+        import Storage as s
         self.scroll2 = ttk.Scrollbar(self.main_frame)
         self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.scroll2.grid(row=1, column=3, sticky="NS")
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
 
-        for codice, atl in cc.Caliculator.getElencoAtleti(cc.Caliculator._instance).items():
+        for codice, atl in s.Storage.getElencoAtleti(s.Storage._instance).items():
             if codice in self.lista_partecipanti_temp:
-               self.add_line(codice, atl.nome, atl.cognome, "valuta", self.mylist2)
+               self.add_line(codice, atl.nome, atl.cognome, "valuta", "competition", self.mylist2)
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
         self.makeClassificationButton.grid(row=1, column=4)
 
 
 
     def generaClassifica(self):
-        import Caliculator as cc
-        classificaOrdinata = cc.Caliculator.generaClassifica(cc.Caliculator._instance)
+        import CompetitionController as cc
+        classificaOrdinata = cc.CompetitionController.generaClassifica(cc.CompetitionController._instance)
         if classificaOrdinata is None:
             return
         # 1. Mostra le intestazioni
@@ -91,9 +90,9 @@ class appGUI:
         tk.Label(self.classifica_frame, text="Cod").grid(row=1, column=4, padx=5)
 
     def makeClassification(self, classificaOrdinata):
-        import Caliculator as cc
+        import Storage as s
         row = 2
-        lista_atleti = cc.Caliculator.getElencoAtleti(cc.Caliculator._instance)
+        lista_atleti = s.Storage.getElencoAtleti(s.Storage._instance)
         for co in classificaOrdinata:
             atleta = lista_atleti[co[0]]
             self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
@@ -123,11 +122,11 @@ class appGUI:
 
 
     def save_button_f(self):
-        import Caliculator as cc
-        atleta = cc.Caliculator.terminaRegistrazione(cc.Caliculator._instance)
+        import BaseController as bc
+        atleta = bc.BaseController.terminaRegistrazione(bc.BaseController._instance)
 
         if atleta:
-            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta")
+            self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", "simple")
 
     # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
@@ -140,11 +139,11 @@ class appGUI:
             n = len(self.lista_partecipanti_temp)
             self.string.set("Numero di partecipanti = " + str(n))
 
-    def add_line(self, code, nome, cognome, goal, myLista = None):
+    def add_line(self, code, nome, cognome, goal, mode, myLista = None):
         if myLista == None:
             myLista = self.mylist
         if goal == "valuta":
-            function = lambda:self.openEvaluationWindow(code)
+            function = lambda:self.openEvaluationWindow(code, mode)
         elif goal == "partecipa":
             function = lambda: self.add_athlete_temp(code)
         line = tk.Frame(myLista)
@@ -168,7 +167,7 @@ class appGUI:
 
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
-        import Caliculator as cc
+        import BaseController as bc
         nome = nome.get()
         cognome = cognome.get()
         età = int(età.get())
@@ -177,7 +176,7 @@ class appGUI:
         altezza = float(altezza.get())
         peso = float(peso.get())
         email = email.get()
-        result = cc.Caliculator.inserisciDati(cc.Caliculator._instance, nome, cognome, età, c_fiscale, n_cellulare, email, altezza, peso)
+        result = bc.BaseController.inserisciDati(bc.BaseController._instance, nome, cognome, età, c_fiscale, n_cellulare, email, altezza, peso)
         print(result)
         if result == 1:
             self.nome_entry.config(style="Errore.TEntry")
@@ -253,8 +252,8 @@ class appGUI:
         self.modify.grid_remove()
         self.save_button.grid_remove()
 
-    def openEvaluationWindow(self, code, index_match=1000):
-        import Caliculator as cc
+    def openEvaluationWindow(self, code, mode, index_match=1000):
+        import BaseController as bc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
         self.evaluationWindow.geometry("720x540")
@@ -262,7 +261,7 @@ class appGUI:
         # Importante: grid_propagate va messo DOPO aver definito la geometry
         self.evaluationWindow.grid_propagate(False)
 
-        cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
+        bc.BaseController.valutaAtleta(bc.BaseController._instance, code)
 
         # Label del Codice Atleta
         self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
@@ -305,7 +304,7 @@ class appGUI:
 
         confermaButton = ttk.Button(buttons_frame, text="Conferma",
                                     command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
-                                                                          int(bonus_combo_entry.get()), index_match, code))
+                                                                          int(bonus_combo_entry.get()), index_match, code, mode))
         confermaButton.pack(pady=10)
 
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
@@ -316,7 +315,7 @@ class appGUI:
 
 
     def openCompetitionWindow(self):
-        import Caliculator as cc
+        import Storage as s
         self.lista_partecipanti_temp = []
         self.competitionWindow = tk.Toplevel(self.root)
         self.competitionWindow.title("Valuta atleta")
@@ -335,30 +334,30 @@ class appGUI:
         # --- INIZIO PARTE REFACTORIZZATA ---
 
         # 1. Recuperiamo l'istanza del Singleton in modo pulito
-        calcolatrice = cc.Caliculator()
+        storage = s.Storage
 
         # 2. Chiediamo i dati di dominio
-        elenco_atleti = calcolatrice.getElencoAtleti()
+        elenco_atleti = storage.getElencoAtleti(s.Storage._instance)
 
         # 3. La GUI usa "se stessa" (self) per aggiornare la visualizzazione
         for codice, atl in elenco_atleti.items():
-            self.add_line(codice, atl.nome, atl.cognome, "partecipa", self.mylistComp)
+            self.add_line(codice, atl.nome, atl.cognome, "partecipa", "competition", self.mylistComp)
 
         # --- FINE PARTE REFACTORIZZATA ---
 
 
     def startCompetition(self):
-        import Caliculator as cc
-        cc.Caliculator.creaNuovaCompetizione(cc.Caliculator._instance, self.lista_partecipanti_temp)
+        import CompetitionController as cc
+        cc.CompetitionController.creaNuovaCompetizione(cc.CompetitionController._instance, self.lista_partecipanti_temp)
         self.showAthletes()
 
 
     def addSetLine(self):
-        import Caliculator as cc
+        import Storage as s
         setLine = tk.Frame(self.scrollable_frame)
         setLine.pack(fill="x", pady=2)
         scelta = tk.StringVar(value="Seleziona una skill")
-        listaSkill = cc.Caliculator.getSkillList(cc.Caliculator._instance)
+        listaSkill = s.Storage.getSkillList(s.Storage._instance)
         tendinaSkill = ttk.OptionMenu(setLine, scelta, *(["Seleziona Skill"]+[s.nome for s in listaSkill]))
         tendinaSkill.grid(row=1, column=0)
         sceltaMalus = tk.StringVar(value="Seleziona un malus")
@@ -371,37 +370,43 @@ class appGUI:
 
 
     def confermaSingola(self, skill, malus, tendinaSkill, tendinaMalus, lineButton):
-        import Caliculator as cc
+        import BaseController as bc
         tendinaSkill.configure(state="disabled")
         tendinaMalus.configure(state="disabled")
         lineButton.grid_remove()
-        cc.Caliculator.inserisciSkillInSet(cc.Caliculator._instance, skill, float(malus.get()))
+        bc.BaseController.inserisciSkillInSet(bc.BaseController._instance, skill, float(malus.get()))
 
 
 
-    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code):
-        import Caliculator as cc
-        punteggio, winner, stato = cc.Caliculator.calcolaPunteggioSet(cc.Caliculator._instance, n_combo, code, index)
-        self.labelResult.configure(text=punteggio)
-        addLineButton.grid_remove()
-        confermaButton.grid_remove()
-        # --- MODIFICA QUI: Cambia la grafica sulla linea dell'atleta nella lista principale ---
-        if hasattr(self, 'valuta_buttons') and code in self.valuta_buttons:
-            # hex #c3e6cb è un verde chiaro pastello molto pulito, #155724 è un testo verde scuro
-            self.valuta_buttons[code].config(
-                text="Valutato ✔",
-                bg="#c3e6cb",
-                fg="#155724",
-                state="disabled"
-            )
-        # -------------------------------------------------------------------------------------
-        if winner is not None:
-            self.colora_match_concluso(index, winner)
-            self.aggiornaTabellone(index, winner, stato)
+    def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code, mode):
+        import BaseController as bc
+        import CompetitionController as cc
+        #punteggio, winner, stato = bc.BaseController.calcolaPunteggioSet(bc.BaseController._instance, n_combo)
+        finalSet = bc.BaseController.calcolaPunteggioSet(bc.BaseController._instance, n_combo)
+        self.labelResult.configure(text=finalSet.punteggio_totale)
+
+        if mode == "competition":
+
+            winner, stato = cc.CompetitionController.registraSet(cc.CompetitionController._instance, finalSet, code, index)
+            addLineButton.grid_remove()
+            confermaButton.grid_remove()
+            # --- MODIFICA QUI: Cambia la grafica sulla linea dell'atleta nella lista principale ---
+            if hasattr(self, 'valuta_buttons') and code in self.valuta_buttons:
+                # hex #c3e6cb è un verde chiaro pastello molto pulito, #155724 è un testo verde scuro
+                self.valuta_buttons[code].config(
+                    text="Valutato ✔",
+                    bg="#c3e6cb",
+                    fg="#155724",
+                    state="disabled"
+                )
+            # -------------------------------------------------------------------------------------
+            if winner is not None:
+                self.colora_match_concluso(index, winner)
+                self.aggiornaTabellone(index, winner, stato)
 
     def inserisciSfidanti(self):
-        import Caliculator as cc
-        index, first, second = cc.Caliculator.creaMatch(cc.Caliculator._instance)
+        import CompetitionController as cc
+        index, first, second = cc.CompetitionController.creaMatch(cc.CompetitionController._instance)
 
         # 'first' e 'second' sono già oggetti AtletaInGara.
         # Accediamo direttamente all'attributo Atleta contenuto al loro interno.

@@ -67,12 +67,7 @@ class Competizione:
         index, first, second = self.gestoreTorneo.aggiungiMatch(first, second, index)
         return index, first, second
 
-    def aggiungiSetSfidante(self, final_set, cod, index):
-        winner = self.gestoreTorneo.aggiungiSetPartecipante(index, cod, final_set)
-        if winner is not None:
-            stato = self.avanzaTurnoAtleta(index, winner)  # Richiama il nuovo metodo universale
-            return winner, stato
-        return None, None
+
 
     def avanzaTurnoAtleta(self, current_match, vincitore):
         # --- FIX PROBLEMA 2 ---
