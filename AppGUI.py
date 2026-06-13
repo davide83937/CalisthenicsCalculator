@@ -2,9 +2,14 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 
+
+
 class appGUI:
 
-    def __init__(self, root):
+    def __init__(self, root, baseController, competitionController):
+        self.baseController = baseController
+        self.competitionController = competitionController
+
         self.root = root
         self.root.title("Caliculator")
         self.root.geometry("1920x1080")
@@ -35,22 +40,19 @@ class appGUI:
         self.startCompetitionButton = self.add_button("StartCompetition", command=self.openCompetitionWindow)
         self.startCompetitionButton.grid(row=0, column=2)
 
-        #self.mostraTabellone()
 
     def showAthletesZero(self):
-        import Storage as s
-        for codice, atl in s.Storage.getElencoAtleti(s.Storage._instance).items():
+        for codice, atl in self.baseController.getElencoAtleti().items():
              self.add_line(codice, atl.nome, atl.cognome, "valuta", "simple", self.mylist)
 
 
     def showAthletes(self):
-        import Storage as s
         self.scroll2 = ttk.Scrollbar(self.main_frame)
         self.mylist2 = tk.Listbox(self.main_frame, yscrollcommand=self.scroll.set)
         self.scroll2.grid(row=1, column=3, sticky="NS")
         self.mylist2.grid(row=1, column=2, ipadx=20, ipady=40)
 
-        for codice, atl in s.Storage.getElencoAtleti(s.Storage._instance).items():
+        for codice, atl in self.baseController.getElencoAtleti().items():
             if codice in self.lista_partecipanti_temp:
                self.add_line(codice, atl.nome, atl.cognome, "valuta", "competition", self.mylist2)
         self.makeClassificationButton = self.add_button("Genera Classifica", command=self.generaClassifica)
@@ -59,8 +61,8 @@ class appGUI:
 
 
     def generaClassifica(self):
-        import CompetitionController as cc
-        classificaOrdinata = cc.CompetitionController.generaClassifica(cc.CompetitionController._instance)
+
+        classificaOrdinata = self.competitionController.generaClassifica()
         if classificaOrdinata is None:
             return
         # 1. Mostra le intestazioni
@@ -90,9 +92,8 @@ class appGUI:
         tk.Label(self.classifica_frame, text="Cod").grid(row=1, column=4, padx=5)
 
     def makeClassification(self, classificaOrdinata):
-        import Storage as s
         row = 2
-        lista_atleti = s.Storage.getElencoAtleti(s.Storage._instance)
+        lista_atleti = self.baseController.getElencoAtleti()
         for co in classificaOrdinata:
             atleta = lista_atleti[co[0]]
             self.makeClassificationItem(co[0], atleta.nome, atleta.cognome, co[1], co[2], row)
@@ -122,9 +123,7 @@ class appGUI:
 
 
     def save_button_f(self):
-        import BaseController as bc
-        atleta = bc.BaseController.terminaRegistrazione(bc.BaseController._instance)
-
+        atleta = self.baseController.terminaRegistrazione()
         if atleta:
             self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", "simple")
 
@@ -167,7 +166,6 @@ class appGUI:
 
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
-        import BaseController as bc
         nome = nome.get()
         cognome = cognome.get()
         età = int(età.get())
@@ -176,7 +174,7 @@ class appGUI:
         altezza = float(altezza.get())
         peso = float(peso.get())
         email = email.get()
-        result = bc.BaseController.inserisciDati(bc.BaseController._instance, nome, cognome, età, c_fiscale, n_cellulare, email, altezza, peso)
+        result = self.baseController.inserisciDati(nome, cognome, età, c_fiscale, n_cellulare, email, altezza, peso)
         print(result)
         if result == 1:
             self.nome_entry.config(style="Errore.TEntry")
@@ -253,7 +251,6 @@ class appGUI:
         self.save_button.grid_remove()
 
     def openEvaluationWindow(self, code, mode, index_match=1000):
-        import BaseController as bc
         self.evaluationWindow = tk.Toplevel(self.root)
         self.evaluationWindow.title("Valuta atleta")
         self.evaluationWindow.geometry("720x540")
@@ -261,7 +258,7 @@ class appGUI:
         # Importante: grid_propagate va messo DOPO aver definito la geometry
         self.evaluationWindow.grid_propagate(False)
 
-        bc.BaseController.valutaAtleta(bc.BaseController._instance, code)
+        self.baseController.valutaAtleta(code)
 
         # Label del Codice Atleta
         self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
@@ -315,7 +312,6 @@ class appGUI:
 
 
     def openCompetitionWindow(self):
-        import Storage as s
         self.lista_partecipanti_temp = []
         self.competitionWindow = tk.Toplevel(self.root)
         self.competitionWindow.title("Valuta atleta")
@@ -331,13 +327,8 @@ class appGUI:
         n = len(self.lista_partecipanti_temp)
         self.string.set("Numero di partecipanti = "+str(n))
         self.n_partecipanti.grid(row=1, column=2)
-        # --- INIZIO PARTE REFACTORIZZATA ---
 
-        # 1. Recuperiamo l'istanza del Singleton in modo pulito
-        storage = s.Storage
-
-        # 2. Chiediamo i dati di dominio
-        elenco_atleti = storage.getElencoAtleti(s.Storage._instance)
+        elenco_atleti = self.baseController.getElencoAtleti()
 
         # 3. La GUI usa "se stessa" (self) per aggiornare la visualizzazione
         for codice, atl in elenco_atleti.items():
@@ -347,17 +338,16 @@ class appGUI:
 
 
     def startCompetition(self):
-        import CompetitionController as cc
-        cc.CompetitionController.creaNuovaCompetizione(cc.CompetitionController._instance, self.lista_partecipanti_temp)
+
+        self.competitionController.creaNuovaCompetizione(self.lista_partecipanti_temp)
         self.showAthletes()
 
 
     def addSetLine(self):
-        import Storage as s
         setLine = tk.Frame(self.scrollable_frame)
         setLine.pack(fill="x", pady=2)
         scelta = tk.StringVar(value="Seleziona una skill")
-        listaSkill = s.Storage.getSkillList(s.Storage._instance)
+        listaSkill = self.baseController.getSkillList()
         tendinaSkill = ttk.OptionMenu(setLine, scelta, *(["Seleziona Skill"]+[s.nome for s in listaSkill]))
         tendinaSkill.grid(row=1, column=0)
         sceltaMalus = tk.StringVar(value="Seleziona un malus")
@@ -370,24 +360,19 @@ class appGUI:
 
 
     def confermaSingola(self, skill, malus, tendinaSkill, tendinaMalus, lineButton):
-        import BaseController as bc
         tendinaSkill.configure(state="disabled")
         tendinaMalus.configure(state="disabled")
         lineButton.grid_remove()
-        bc.BaseController.inserisciSkillInSet(bc.BaseController._instance, skill, float(malus.get()))
+        self.baseController.inserisciSkillInSet(skill, float(malus.get()))
 
 
 
     def calcolaPunteggio(self, addLineButton, confermaButton, n_combo, index, code, mode):
-        import BaseController as bc
-        import CompetitionController as cc
-        #punteggio, winner, stato = bc.BaseController.calcolaPunteggioSet(bc.BaseController._instance, n_combo)
-        finalSet = bc.BaseController.calcolaPunteggioSet(bc.BaseController._instance, n_combo)
+        finalSet = self.baseController.calcolaPunteggioSet(n_combo)
         self.labelResult.configure(text=finalSet.punteggio_totale)
 
         if mode == "competition":
-
-            winner, stato = cc.CompetitionController.registraSet(cc.CompetitionController._instance, finalSet, code, index)
+            winner, stato = self.competitionController.registraSet(finalSet, code, index)
             addLineButton.grid_remove()
             confermaButton.grid_remove()
             # --- MODIFICA QUI: Cambia la grafica sulla linea dell'atleta nella lista principale ---
@@ -405,19 +390,13 @@ class appGUI:
                 self.aggiornaTabellone(index, winner, stato)
 
     def inserisciSfidanti(self):
-        import CompetitionController as cc
-        index, first, second = cc.CompetitionController.creaMatch(cc.CompetitionController._instance)
-
-        # 'first' e 'second' sono già oggetti AtletaInGara.
-        # Accediamo direttamente all'attributo Atleta contenuto al loro interno.
+        index, first, second = self.competitionController.creaMatch()
         atl1 = first.Atleta
         atl2 = second.Atleta
-
         codAtl1 = atl1.codice
         codAtl2 = atl2.codice
         str1 = f"{atl1.nome} {atl1.cognome}"
         str2 = f"{atl2.nome} {atl2.cognome}"
-
         return index, str1, str2, codAtl1, codAtl2
 
     def riempiOttavi(self, n):
@@ -430,7 +409,6 @@ class appGUI:
    
 
     def aggiornaTabellone(self, current_match, vincitore, stato):
-        # Chiediamo allo stato se questo match ha concluso l'intero torneo
         if stato.is_finale():
             # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
             print(f"Torneo concluso! Ha vinto {vincitore.Atleta.nome} {vincitore.Atleta.cognome}")
@@ -443,16 +421,10 @@ class appGUI:
 
         nome_completo_vincitore = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
         codice_vincitore = vincitore.Atleta.codice
-
-        # DELEGA ALLO STATO: La GUI non calcola più nulla.
-        # Interroga lo stato corrente per sapere dove piazzare il vincitore.
-        # Lo stato restituisce una tupla con tutti i dati necessari all'interfaccia.
         next_match, fase, indice_fase, posizione = stato.get_destinazione_vincitore(current_match)
 
-        # Ricostruisci la chiave esatta che hai usato in self.labels_tabellone
         chiave_ui = (fase, indice_fase, posizione)
 
-        # Aggiorna il bottone
         if chiave_ui in self.labels_tabellone:
             btn = self.labels_tabellone[chiave_ui]
             btn.config(text=nome_completo_vincitore)

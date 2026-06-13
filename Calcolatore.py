@@ -4,9 +4,9 @@ import Director as d
 
 class Calcolatore:
 
-    def __init__(self):
+    def __init__(self, storage):
         self.setCorrente = None
-        self.storage = s.Storage._instance
+        self.storage = storage
 
 
     def setSetCorrente(self, cod):

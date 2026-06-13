@@ -1,18 +1,13 @@
 import Atleta as a
 import Storage as s
 import Calcolatore as c
+from Storage import Storage
+
 
 class BaseController:
-    _instance = None  # Qui memorizziamo l'istanza unica
-
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:  # Se non esiste ancora
-            cls._instance = super().__new__(cls)
-        return cls._instance  # Restituiamo sempre la stessa istanza
-
-    def __init__(self):
-        self.storage = s.Storage._instance
-        self.Calcolatore = c.Calcolatore()
+    def __init__(self, storage):
+        self.storage = storage
+        self.Calcolatore = c.Calcolatore(storage)
 
     def calcola_codice(self, lista):
         if not lista:
@@ -63,3 +58,9 @@ class BaseController:
 
     def inserisciSkillInSet(self, nomeSkill, malus):
         self.Calcolatore.inserisciSkillInSet(nomeSkill, malus)
+
+    def getElencoAtleti(self):
+        self.storage.getElencoAtleti()
+
+    def getElencoSkills(self):
+        self.storage.getElencoSkills()

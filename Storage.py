@@ -3,12 +3,6 @@ from DataUploader import DataUploader
 
 
 class Storage:
-    _instance = None  # Qui memorizziamo l'istanza unica
-
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:  # Se non esiste ancora
-            cls._instance = super().__new__(cls)
-        return cls._instance  # Restituiamo sempre la stessa istanza
 
     def __init__(self):
         self.dataUploader = DataUploader()

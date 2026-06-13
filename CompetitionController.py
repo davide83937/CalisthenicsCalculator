@@ -1,16 +1,8 @@
-import Storage as s
 import Competizione as comp
 
 class CompetitionController:
-    _instance = None  # Qui memorizziamo l'istanza unica
-
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:  # Se non esiste ancora
-            cls._instance = super().__new__(cls)
-        return cls._instance  # Restituiamo sempre la stessa istanza
-
-    def __init__(self):
-        self.storage = s.Storage._instance
+    def __init__(self, storage):
+        self.storage = storage
         self.competizioneAttuale = None
 
     def registraSet(self, final_set, code , index ):
