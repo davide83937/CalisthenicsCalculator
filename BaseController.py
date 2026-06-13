@@ -60,7 +60,7 @@ class BaseController:
         self.Calcolatore.inserisciSkillInSet(nomeSkill, malus)
 
     def getElencoAtleti(self):
-        self.storage.getElencoAtleti()
+        return self.storage.getElencoAtleti()
 
-    def getElencoSkills(self):
-        self.storage.getElencoSkills()
+    def getSkillList(self):
+        return self.storage.getSkillList()
