@@ -1,20 +1,15 @@
-
 from StatoCompetizione import StatoCompetizione
 from typing import TYPE_CHECKING
 
-# RIMUOVI da qui: from StatoConcluso import StatoConcluso
-# Questo previene l'import circolare con Competizione
 if TYPE_CHECKING:
     from Competizione import Competizione
-
-
 
 class StatoTurni(StatoCompetizione):
     def __init__(self, competizione: 'Competizione'):
         super().__init__(competizione)
 
     def registraSet(self, finalSet, codice=0, indexMatch=0):
-        winner = self.competizione.gestoreTorneo.aggiungiSetPartecipante(indexMatch, codice, finalSet)
+        winner = self.competizione.aggiungiSetPartecipante(indexMatch, codice, finalSet)
         print("Set in Turni")
         if winner is not None:
             stato = self.competizione.avanzaTurnoAtleta(indexMatch, winner)  # Richiama il nuovo metodo universale

@@ -1,7 +1,7 @@
 import Match as m
 
 
-class GestoreTorneo:
+class GestoreMatch:
     def __init__(self):
         self.listaMatch = []
 

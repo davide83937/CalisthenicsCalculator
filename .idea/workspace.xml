@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="refactoring finito">
-      <change afterPath="$PROJECT_DIR$/Eccezioni.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AppGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AppGUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BaseController.py" beforeDir="false" afterPath="$PROJECT_DIR$/BaseController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Caliculator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/atleti.txt" beforeDir="false" afterPath="$PROJECT_DIR$/atleti.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Calcolatore.py" beforeDir="false" afterPath="$PROJECT_DIR$/Calcolatore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classifica.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifica.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Competizione.py" beforeDir="false" afterPath="$PROJECT_DIR$/Competizione.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GestoreTorneo.py" beforeDir="false" afterPath="$PROJECT_DIR$/GestoreMatch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Set.py" beforeDir="false" afterPath="$PROJECT_DIR$/Set.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatoQualificazioni.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatoQualificazioni.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StatoTurni.py" beforeDir="false" afterPath="$PROJECT_DIR$/StatoTurni.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,61 +54,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0000032222518478" />
-      <entry key="S60" value="1.0029215210758846" />
-      <entry key="M2" value="1.112132383140433" />
-      <entry key="M5" value="2.5199805334534533" />
-      <entry key="M10" value="6.943808836330903" />
-      <entry key="M15" value="12.469700257640367" />
-      <entry key="M30" value="32.21127896864141" />
-      <entry key="H1" value="72.47172159613221" />
-      <entry key="H2" value="134.66877739107082" />
-      <entry key="H4" value="227.17684866125077" />
-      <entry key="D1" value="889.4134692736123" />
-      <entry key="W1" value="1643.050514523118" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="3.3954715073967717E-78" />
+      <entry key="S2" value="6.898963530166263E-20" />
+      <entry key="S5" value="3.4310684774006915E-8" />
+      <entry key="S10" value="3.2533673426672014E-4" />
+      <entry key="S30" value="0.1863642135306836" />
+      <entry key="S60" value="0.9556960841498955" />
+      <entry key="M2" value="2.1805717830416604" />
+      <entry key="M5" value="3.5947601027279883" />
+      <entry key="M10" value="4.54822850353753" />
+      <entry key="M15" value="5.5600158309771945" />
+      <entry key="M30" value="8.93124593208172" />
+      <entry key="H1" value="17.974084247391705" />
+      <entry key="H2" value="51.76509531915446" />
+      <entry key="H4" value="135.0558859610487" />
+      <entry key="D1" value="816.8272948161847" />
+      <entry key="W1" value="1639.667248247435" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="2.1804546498126068E-179" />
-      <entry key="S5" value="3.430985068750528E-72" />
-      <entry key="S10" value="1.852560698884267E-36" />
-      <entry key="S30" value="1.3302832881165886E-12" />
-      <entry key="S60" value="1.5661348327468398E-6" />
-      <entry key="M2" value="0.0023028052579766715" />
-      <entry key="M5" value="0.4407589114503982" />
-      <entry key="M10" value="3.778646712990584" />
-      <entry key="M15" value="8.465109005466246" />
-      <entry key="M30" value="24.05462519269198" />
-      <entry key="H1" value="52.683855280102065" />
-      <entry key="H2" value="91.20310244725133" />
-      <entry key="H4" value="137.8855942199612" />
-      <entry key="D1" value="382.99504163327407" />
-      <entry key="W1" value="637.1499835500045" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000248481849725" />
+      <entry key="S5" value="1.0143924986076567" />
+      <entry key="S10" value="1.1208554527369616" />
+      <entry key="S30" value="1.661994902356745" />
+      <entry key="S60" value="2.397598784665986" />
+      <entry key="M2" value="3.274234408922619" />
+      <entry key="M5" value="4.163283821216366" />
+      <entry key="M10" value="4.564349284971289" />
+      <entry key="M15" value="4.771475822266418" />
+      <entry key="M30" value="5.449705025807922" />
+      <entry key="H1" value="9.821013667847858" />
+      <entry key="H2" value="31.002039521985704" />
+      <entry key="H4" value="78.50429065045131" />
+      <entry key="D1" value="351.7934257736825" />
+      <entry key="W1" value="636.9085882227406" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.237743505603062E-4" />
-      <entry key="MS500" value="0.16539642998851503" />
-      <entry key="S2" value="0.6377221958392721" />
-      <entry key="S5" value="0.8353194870637252" />
-      <entry key="S10" value="0.9139581429495145" />
-      <entry key="S30" value="0.9704582096276654" />
-      <entry key="S60" value="0.9880033323826674" />
-      <entry key="M2" value="1.1063635456290897" />
-      <entry key="M5" value="2.953780232957175" />
-      <entry key="M10" value="10.709946340463011" />
-      <entry key="M15" value="20.9183024251226" />
-      <entry key="M30" value="56.24388342253655" />
-      <entry key="H1" value="125.13133563301623" />
-      <entry key="H2" value="225.84994425793036" />
-      <entry key="H4" value="365.0445702508839" />
-      <entry key="D1" value="1272.3974441586622" />
-      <entry key="W1" value="2280.197558673178" />
+      <entry key="MS100" value="2.0727822542687564E-6" />
+      <entry key="MS500" value="0.07299796216331987" />
+      <entry key="S2" value="0.5198079327578263" />
+      <entry key="S5" value="0.7824282757437722" />
+      <entry key="S10" value="0.9911630353141676" />
+      <entry key="S30" value="1.7876914671033515" />
+      <entry key="S60" value="3.308323509774962" />
+      <entry key="M2" value="5.422899948692537" />
+      <entry key="M5" value="7.741309767132579" />
+      <entry key="M10" value="9.102952653966664" />
+      <entry key="M15" value="10.324176408510395" />
+      <entry key="M30" value="14.375685756483035" />
+      <entry key="H1" value="27.78984673497257" />
+      <entry key="H2" value="82.7591761521541" />
+      <entry key="H4" value="213.54977941478916" />
+      <entry key="D1" value="1168.6105856349293" />
+      <entry key="W1" value="2276.5729075596187" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -115,29 +119,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.AppGUI.executor": "Run",
-    "Python.Caliculator.executor": "Run",
-    "Python.Main.executor": "Run",
-    "Python.Match.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Iterazione3",
-    "last_opened_file_path": "D:/Desktop/Universita/Magistrale/Ingegneria del Software/PROGETTO CALISTHENICS/ITERAZIONE 3/Implementazione",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Docker"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.AppGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Caliculator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Match.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Iterazione3&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/Universita/Magistrale/Ingegneria del Software/PROGETTO CALISTHENICS/ITERAZIONE 3/Implementazione&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Docker&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Desktop\Universita\Magistrale\Ingegneria del Software\PROGETTO CALISTHENICS\ITERAZIONE 2\Implementazione" />
@@ -390,7 +394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781360616286</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="refactoring finito">
+      <option name="closed" value="true" />
+      <created>1781362129903</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1781362129903</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

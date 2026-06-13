@@ -1,9 +1,6 @@
-import _stat
-
-import GestoreTorneo as gt
+import GestoreMatch as gt
 import Classifica as c
 import AtletaInGara as ag
-import StatoQualificazioni as sq
 from StatoCompetizione import StatoCompetizione
 
 
@@ -12,12 +9,9 @@ class Competizione:
 
     def __init__(self):
         self.lista_partecipanti = []
-
         self.classifica = c.Classifica()
-        self.gestoreTorneo = gt.GestoreTorneo()
+        self.gestoreMatch = gt.GestoreMatch()
         self.index = 0
-        # Sostituisci slot_quarti con questo:
-        # Prepara liste vuote per i match da 9 (Quarti) a 15 (Finale)
         self.slot_attesa = {i: [] for i in range(9, 16)}
         import StatoQualificazioni as sq
         _state = self.transitionTo(sq.StatoQualificazioni(self))
@@ -31,7 +25,7 @@ class Competizione:
         print("NUOVO STATO TORNEO")
         print(self._state)
 
-    def requestRegistraSet(self, finalSet, codice= 0, index=0):
+    def requestRegistraSet(self, finalSet, codice, index):
         return self._state.registraSet(finalSet, codice, index)
 
     def requestGeneraClassifica(self):
@@ -39,6 +33,9 @@ class Competizione:
         if classifica is not None:
             self.nextPhase()
         return classifica
+
+    def getClassificaOrdinata(self):
+        return self.classifica.getClassificaOrdinata()
 
 
     def getPartecipante(self, codice):
@@ -64,39 +61,29 @@ class Competizione:
         return index, first, second
 
     def setDueSfidenti(self, first, second, index):
-        index, first, second = self.gestoreTorneo.aggiungiMatch(first, second, index)
+        index, first, second = self.gestoreMatch.aggiungiMatch(first, second, index)
         return index, first, second
 
 
-
     def avanzaTurnoAtleta(self, current_match, vincitore):
-        # --- FIX PROBLEMA 2 ---
-        # Svuotiamo il "Set" dell'atleta in modo che il match successivo lo aspetti pulito
         vincitore.setCorrente = None
         stato = None
-        # 2. FACCIAMO SCATTARE LO STATE PATTERN!
-        # Ora sappiamo che la variabile si chiama "_stato"
         if vincitore._stato is not None:
             stato = vincitore._stato.avanza()
-
         if current_match == 15:
             print(f"IL VINCITORE DEL TORNEO È {vincitore.Atleta.cognome}!")
             self.nextPhase()
             return stato
-        #return stato
-
-        # Formula matematica per trovare l'ID del prossimo match
         next_match = 8 + (current_match + 1) // 2
-
-        # Mettiamo l'atleta in attesa in quello slot
         self.slot_attesa[next_match].append(vincitore)
 
-        # Se lo slot si è riempito (entrambi hanno vinto i match precedenti)
         if len(self.slot_attesa[next_match]) == 2:
             atleta1 = self.slot_attesa[next_match][0]
             atleta2 = self.slot_attesa[next_match][1]
-
-            # Creiamo ufficialmente il nuovo match nel Gestore Torneo
-            self.gestoreTorneo.aggiungiMatch(atleta1, atleta2, next_match)
+            self.gestoreMatch.aggiungiMatch(atleta1, atleta2, next_match)
             print(f"Creato Match {next_match}!")
+
         return stato
+
+    def aggiungiSetPartecipante(self, indexMatch, codice, finalSet):
+        return self.gestoreMatch.aggiungiSetPartecipante(indexMatch, codice, finalSet)

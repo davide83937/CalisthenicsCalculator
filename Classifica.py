@@ -22,9 +22,6 @@ class Classifica:
         lista_atleti_inseriti = []
 
         for s in set_ordinati:
-            # Opzionale: inseriamo solo il set con il punteggio migliore per un atleta.
-            # Se vuoi che un atleta appaia più volte in classifica con set diversi,
-            # puoi rimuovere questo 'if'.
             if s.cod_atleta not in lista_atleti_inseriti:
                 item_classifica = [s.cod_atleta, s.punteggio_totale, pos]
                 self.classificaOrdinata.append(item_classifica)

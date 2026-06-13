@@ -428,7 +428,7 @@ class appGUI:
         tendinaSkill.configure(state="disabled")
         tendinaMalus.configure(state="disabled")
         lineButton.grid_remove()
-        self.baseController.inserisciSkillInSet(skill, float(malus.get()))
+        self.baseController.inserisciSkillInSet(skill.get(), float(malus.get()))
 
 
 

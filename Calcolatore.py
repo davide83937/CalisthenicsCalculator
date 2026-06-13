@@ -15,7 +15,7 @@ class Calcolatore:
 
     def inserisciSkillInSet(self, nomeSkill, malus):
         for sk in self.storage.elencoSkills:
-            if sk.nome == nomeSkill.get():
+            if sk.nome == nomeSkill:
                 self.setCorrente.creaSetLine(sk, malus)
 
     def calcolaPunteggioSet(self, n_combo):
