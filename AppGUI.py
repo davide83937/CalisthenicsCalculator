@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+from Eccezioni import RegistraAtletaError
 
 
 
@@ -165,7 +165,7 @@ class appGUI:
 
 
 
-    def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
+    """def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
         nome = nome.get()
         cognome = cognome.get()
         età = int(età.get())
@@ -202,11 +202,76 @@ class appGUI:
             self.peso_entry.configure(style="Ok.TEntry", state="readonly")
             self.email_entry.configure(style="Ok.TEntry", state="readonly")
             self.modify.grid()
+            self.save_button.grid()"""
+
+    def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
+
+        # 1. Usiamo direttamente i parametri ricevuti invece di self.xxx_entry
+        for entry in [nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email]:
+            entry.config(style="white.TEntry")
+
+        try:
+            v_nome = nome.get().strip()
+            v_cognome = cognome.get().strip()
+            v_eta = int(età.get())
+            v_cf = c_fiscale.get().strip()
+            v_cell = n_cellulare.get().strip()
+            v_alt = float(altezza.get())
+            v_peso = float(peso.get())
+            v_email = email.get().strip()
+
+            # Lanciamo i dati al controller
+            self.baseController.inserisciDati(v_nome, v_cognome, v_eta, v_cf, v_cell, v_email, v_alt, v_peso)
+
+            # 2. Se tutto va bene, coloriamo di verde i parametri passati
+            nome.config(style="Ok.TEntry", state="readonly")
+            cognome.configure(style="Ok.TEntry", state="readonly")
+            età.configure(style="Ok.TEntry", state="readonly")
+            c_fiscale.configure(style="Ok.TEntry", state="readonly")
+            n_cellulare.configure(style="Ok.TEntry", state="readonly")
+            altezza.configure(style="Ok.TEntry", state="readonly")
+            peso.configure(style="Ok.TEntry", state="readonly")
+            email.configure(style="Ok.TEntry", state="readonly")
+
+            self.modify.grid()
             self.save_button.grid()
+
+        except RegistraAtletaError as e:
+            # 3. Gestione mirata dell'errore
+            messagebox.showwarning("Errore di compilazione", str(e))
+
+            if e.campo_errato == "nome":
+                nome.config(style="Errore.TEntry")
+            elif e.campo_errato == "cognome":
+                cognome.config(style="Errore.TEntry")
+            elif e.campo_errato == "età":
+                età.config(style="Errore.TEntry")
+            elif e.campo_errato == "codice_fiscale":
+                c_fiscale.config(style="Errore.TEntry")
+            elif e.campo_errato == "cellulare":
+                n_cellulare.config(style="Errore.TEntry")
+            elif e.campo_errato == "email":
+                email.config(style="Errore.TEntry")
+            elif e.campo_errato == "altezza":
+                altezza.config(style="Errore.TEntry")
+            elif e.campo_errato == "peso":
+                peso.config(style="Errore.TEntry")
+
+        except ValueError:
+            # Cattura gli errori se l'utente digita testo nei campi numerici (es. lettere al posto dell'età)
+            messagebox.showerror("Errore Formato", "Assicurati di aver inserito numeri validi per Età, Altezza e Peso.")
 
 
     def openSubWindow(self):
-        registerWindow = tk.Toplevel(self.root)
+        # --- INIZIO FIX: Evita finestre multiple ---
+        if hasattr(self, 'registerWindow') and self.registerWindow.winfo_exists():
+            self.registerWindow.lift()  # Se esiste già, portala semplicemente in primo piano
+            return
+
+        self.registerWindow = tk.Toplevel(self.root)
+        registerWindow = self.registerWindow  # Mantiene la compatibilità col tuo codice sotto
+        # --- FINE FIX ---
+        #registerWindow = tk.Toplevel(self.root)
         registerWindow.title("Registra Nuovo Atleta")
         registerWindow.geometry("480x540")
         nome_label = ttk.Label(registerWindow, text="Nome")

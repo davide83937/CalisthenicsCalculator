@@ -18,3 +18,4 @@
 17 Lorenzo Villa 24 LRNVLL02D30D226K 3274455667 lorenzo.v@gmail.com 1.81 79.0
 18 Nicola Fabbri 28 NCLFBB98D30D286L 3395566778 nicola.f@gmail.com 1.72 67.5
 19 Doriano Yatesi 19 YTSDRN07A01A662K 3673976871 mravellino07@gmail.com 175.0 100.0
+20 Riccardo Pianura 47 PNRRCR80A01A952K 3563976873 pianura@gmail.com 158.0 67.0
