@@ -63,12 +63,12 @@ class Caliculator:
         elif str(numero_cellulare).__len__() != 10:
             return 5
         elif email == "":
-            print("Email:"+ email)
+            print("Email:"+ str(email))
             return 6
         elif not isinstance(altezza, float):
             return 7
         elif not isinstance(peso, float):
-            print("Peso:" + peso)
+            print("Peso:" + str(peso))
             return 8
         else:
             self.atletaCorrente = a.Atleta(cod, nome, cognome, età, codice_fiscale, numero_cellulare, email, altezza, peso)
