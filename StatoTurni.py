@@ -18,7 +18,7 @@ class StatoTurni(StatoCompetizione):
 
     def avanza(self):
         from StatoConcluso import StatoConcluso
-        self.competizione.transitionTo(StatoConcluso())
+        self.competizione.transitionTo(StatoConcluso(self.competizione))
 
     def generaClassifica(self):
         print("Nella fase di turni non puoi generare una classifica")
