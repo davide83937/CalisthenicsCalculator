@@ -19,3 +19,6 @@ class Set:
             f"Punteggio: {self.punteggio_totale} \n"
             f"Bonus:\n{stringa_bonus}"
         )
+
+    def aggiungiSetLine(self, st):
+        self.lista_linee.append(st)

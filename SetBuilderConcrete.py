@@ -9,7 +9,7 @@ class SetBuilderConcrete(setBuilder):
 
     def creaSetLine(self, skill, malus):
         nuova_linea = sl.setLine(skill.nome, malus)
-        self._prodotto.lista_linee.append(nuova_linea)
+        self._prodotto.aggiungiSetLine(nuova_linea)
         return nuova_linea
 
     def calcolaPunteggioParziale(self, riga, elencoSkills):
