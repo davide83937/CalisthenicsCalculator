@@ -103,18 +103,14 @@ class Caliculator:
                 self.setCorrente.creaSetLine(sk, malus)
 
     def calcolaPunteggioSet(self, n_combo, mode):
-        # Otteniamo il prodotto dal builder/decorator
         set_prodotto = self.setCorrente.get_result()
 
-        # Iteriamo sulle linee salvate nel prodotto
         for sl in set_prodotto.lista_linee:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
 
-        # Il DirectorBuilder analizza il set e decide se applicare decorator
         director = d.DirectorBuilder(self.setCorrente, self.elencoSkills, n_combo)
         self.setCorrente = director.get_result()
 
-        # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
         if mode == "classifica":
             self.competizioneAttuale.inserisciSetInClassifica(final_set)
@@ -126,23 +122,16 @@ class Caliculator:
 
     def getAtletaByIndex(self, lista):
         for cod in lista:
-            # 3. Verifichi se il codice esiste nell'elenco degli atleti
             if cod in self.elencoAtleti:
-                # Prendi l'oggetto atleta usando la chiave 'cod'
                 atleta = self.elencoAtleti[cod]
                 return atleta
 
     def creaNuovaCompetizione(self, lista):
-        # 1. Crei l'istanza della competizione
         self.competizioneAttuale = comp.Competizione()
 
-        # 2. Cicli direttamente sui codici ricevuti nella lista
         for cod in lista:
-            # 3. Verifichi se il codice esiste nell'elenco degli atleti
             if cod in self.elencoAtleti:
-                # Prendi l'oggetto atleta usando la chiave 'cod'
                 atleta = self.elencoAtleti[cod]
-                # 4. Chiami il metodo SULL'ISTANZA appena creata, passando l'atleta
                 self.competizioneAttuale.inserisciPartecipanti(atleta)
 
 

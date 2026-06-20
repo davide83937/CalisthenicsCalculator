@@ -7,7 +7,6 @@ class appGUI:
         self.root = root
         self.root.title("Caliculator")
         self.root.geometry("1920x1080")
-        # Frame principale
         self.main_frame = ttk.Frame(self.root, padding=10)
         self.main_frame.pack(expand=True, fill="both")
         self.but_reg = self.add_button("Registra nuovo atleta", command=self.openSubWindow)
@@ -62,23 +61,16 @@ class appGUI:
         classificaOrdinata = comp.getClassificaOrdinata()
         if classificaOrdinata is None:
             return
-        # 1. Mostra le intestazioni
         self.showClassification()
-        # 2. Riempie la classifica con i dati
         self.makeClassification(classificaOrdinata)
 
     def showClassification(self):
-        # Se la classifica esiste già a schermo, la distruggiamo per svuotarla
-        # (Questo risolve il bug degli atleti duplicati sulla GUI se premi due volte!)
         if hasattr(self, 'classifica_frame') and self.classifica_frame is not None:
             self.classifica_frame.destroy()
 
-        # Creiamo un frame "contenitore" solo per la classifica
         self.classifica_frame = ttk.Frame(self.main_frame)
-        # Lo mettiamo a destra di tutto (column=5), allineato in alto (sticky="n")
         self.classifica_frame.grid(row=1, column=5, sticky="n", padx=30)
 
-        # Usiamo riga 0 e 1 DEL FRAME, quindi non interferiscono con il resto della GUI
         tk.Label(self.classifica_frame, text="CLASSIFICA", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
                                                                                                 columnspan=5, pady=10)
 
@@ -98,7 +90,6 @@ class appGUI:
             row = row + 1
 
     def makeClassificationItem(self, code, nome, cognome, punteggio, posizione, row):
-        # Anziché usare self.main_frame, inseriamo le etichette in self.classifica_frame
         tk.Label(self.classifica_frame, text=posizione).grid(row=row, column=0)
         tk.Label(self.classifica_frame, text=nome).grid(row=row, column=1)
         tk.Label(self.classifica_frame, text=cognome).grid(row=row, column=2)
@@ -126,7 +117,6 @@ class appGUI:
         if atleta:
             self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", mode)
 
-    # Metodo per aggiungere pulsanti dinamicamente
     def add_button(self, text, command):
         btn = ttk.Button(self.main_frame, text=text, command=command)
         return btn
@@ -251,14 +241,10 @@ class appGUI:
         self.evaluationWindow.title("Valuta atleta")
         self.evaluationWindow.geometry("720x540")
         self.evaluationWindow.resizable(False, False)
-        # Importante: grid_propagate va messo DOPO aver definito la geometry
         self.evaluationWindow.grid_propagate(False)
         cc.Caliculator.valutaAtleta(cc.Caliculator._instance, code)
-
         self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
         self.code.grid(row=0, column=0, columnspan=2, pady=5)
-
-        # 1. Configurazione CANVAS e SCROLLBAR
         self.canvas = tk.Canvas(self.evaluationWindow, width=450, height=350)  # Altezza fissa
         self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = ttk.Frame(self.canvas)
@@ -270,37 +256,25 @@ class appGUI:
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollSetLines.set)
-
-        # Posizionamento Canvas (Colonna 0)
         self.canvas.grid(row=1, column=0, padx=10, pady=10)
         self.scrollSetLines.grid(row=1, column=1, sticky="ns")
-
-        # 2. Sezione Input Bonus (Sotto il canvas)
         bonus_frame = ttk.Frame(self.evaluationWindow)
         bonus_frame.grid(row=2, column=0, pady=10)
-
         bonus_combo_label = ttk.Label(bonus_frame, text="Bonus Combo:")
         bonus_combo_label.grid(row=0, column=0, padx=5)
-
         bonus_combo_entry = ttk.Entry(bonus_frame, width=5)
         bonus_combo_entry.insert(0, "0")
         bonus_combo_entry.grid(row=0, column=1)
-
         buttons_frame = ttk.Frame(self.evaluationWindow)
         buttons_frame.grid(row=1, column=2, padx=20, sticky="n")
-
         addSetLineButton = ttk.Button(buttons_frame, text="Aggiungi Linea", command=self.addSetLine)
         addSetLineButton.pack(pady=10)
-
         confermaButton = ttk.Button(buttons_frame, text="Conferma",
                                     command=lambda: self.calcolaPunteggio(addSetLineButton, confermaButton,
                                                                           int(bonus_combo_entry.get()),  mode))
         confermaButton.pack(pady=10)
-
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
         self.labelResult.pack(pady=20)
-
-        # Inizializza la prima riga
         self.addSetLine()
 
 

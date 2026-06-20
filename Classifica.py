@@ -4,17 +4,10 @@ class Classifica:
         self.classificaOrdinata = []
 
     def ordinaClassifica(self):
-
         if len(self.listaSet) < 16:
             return None
-
-
-        # Svuotiamo la classifica per ricrearla pulita
         self.classificaOrdinata = []
-
-        # Ordiniamo la lista dei set in base al punteggio_totale, in ordine decrescente
         set_ordinati = sorted(self.listaSet, key=lambda x: x.punteggio_totale, reverse=True)
-
         pos = 1
         lista_atleti_inseriti = []
 

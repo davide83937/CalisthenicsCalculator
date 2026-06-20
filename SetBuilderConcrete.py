@@ -13,7 +13,6 @@ class SetBuilderConcrete(setBuilder):
         return nuova_linea
 
     def calcolaPunteggioParziale(self, riga, elencoSkills):
-        # Trova il valore base della skill
         valore_base = float(next((s.punteggio for s in elencoSkills if s.nome == riga.skill), 0))
         punteggio_riga = valore_base - (valore_base * riga.malus)
         self._prodotto.punteggio_totale += punteggio_riga
