@@ -44,7 +44,6 @@ class BaseController:
         elif not isinstance(peso, float) or peso <= 0:
             raise RegistraAtletaError("Il peso deve essere un numero decimale valido.", "peso")
 
-        # Se tutto va bene, crea e restituisci l'atleta (niente più "return 0")
         self.atletaCorrente = a.Atleta(cod, nome, cognome, età, codice_fiscale, numero_cellulare, email, altezza, peso)
         return self.atletaCorrente
 

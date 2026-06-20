@@ -4,18 +4,11 @@ class Classifica:
         self.classificaOrdinata = []
 
     def ordinaClassifica(self):
-        # --- INIZIO DEBUG ---
-        #print("\n--- VERIFICA PUNTEGGI IN LISTA SET ---")
         if not self.listaSet:
             print("ATTENZIONE: self.listaSet è VUOTA! Nessun set è stato aggiunto alla classifica.")
-      
-        print("--------------------------------------\n")
-        # --- FINE DEBUG ---
 
-        # Svuotiamo la classifica per ricrearla pulita
         self.classificaOrdinata = []
 
-        # Ordiniamo la lista dei set in base al punteggio_totale, in ordine decrescente
         set_ordinati = sorted(self.listaSet, key=lambda x: x.punteggio_totale, reverse=True)
 
         pos = 1

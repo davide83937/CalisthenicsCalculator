@@ -9,7 +9,6 @@ class Quarto(Turno):
         return statoVecchio
 
     def get_destinazione_vincitore(self, current_match):
-        # Se vinci il quarto n. 1 o 2, vai alla semifinale n. 1 (match 13)
         next_match = 8 + (current_match + 1) // 2
         fase = "Semifinali"
         indice_fase = next_match - 12

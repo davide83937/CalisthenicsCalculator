@@ -6,7 +6,6 @@ class Champion(Turno):
         pass
 
     def get_destinazione_vincitore(self, current_match):
-        # Il campione non ha destinazioni successive
         return None, None, None, None
 
     def is_finale(self):

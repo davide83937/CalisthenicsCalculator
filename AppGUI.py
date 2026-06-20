@@ -9,11 +9,9 @@ class appGUI:
     def __init__(self, root, baseController, competitionController):
         self.baseController = baseController
         self.competitionController = competitionController
-
         self.root = root
         self.root.title("Caliculator")
         self.root.geometry("1920x1080")
-        # Frame principale
         self.main_frame = ttk.Frame(self.root, padding=10)
         self.main_frame.pack(expand=True, fill="both")
         self.but_reg = self.add_button("Registra nuovo atleta", command=self.openSubWindow)
@@ -65,24 +63,17 @@ class appGUI:
         classificaOrdinata = self.competitionController.generaClassifica()
         if classificaOrdinata is None:
             return
-        # 1. Mostra le intestazioni
         self.showClassification()
-        # 2. Riempie la classifica con i dati
         self.makeClassification(classificaOrdinata)
         self.mostraTabellone()
 
     def showClassification(self):
-        # Se la classifica esiste già a schermo, la distruggiamo per svuotarla
-        # (Questo risolve il bug degli atleti duplicati sulla GUI se premi due volte!)
         if hasattr(self, 'classifica_frame') and self.classifica_frame is not None:
             self.classifica_frame.destroy()
 
-        # Creiamo un frame "contenitore" solo per la classifica
         self.classifica_frame = ttk.Frame(self.main_frame)
-        # Lo mettiamo a destra di tutto (column=5), allineato in alto (sticky="n")
         self.classifica_frame.grid(row=1, column=5, sticky="n", padx=30)
 
-        # Usiamo riga 0 e 1 DEL FRAME, quindi non interferiscono con il resto della GUI
         tk.Label(self.classifica_frame, text="CLASSIFICA", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
                                                                                                 columnspan=5, pady=10)
         tk.Label(self.classifica_frame, text="Pos").grid(row=1, column=0, padx=5)
@@ -127,7 +118,7 @@ class appGUI:
         if atleta:
             self.add_line(atleta.codice, atleta.nome, atleta.cognome, "valuta", "simple")
 
-    # Metodo per aggiungere pulsanti dinamicamente
+
     def add_button(self, text, command):
         btn = ttk.Button(self.main_frame, text=text, command=command)
         return btn
@@ -156,57 +147,17 @@ class appGUI:
         button_add = tk.Button(line, text=goal, command=function)
         button_add.grid(row=0,column=3)
 
-        # --- MODIFICA QUI: Salva il pulsante se serve a valutare ---
         if goal == "valuta":
             if not hasattr(self, 'valuta_buttons'):
                 self.valuta_buttons = {}
             self.valuta_buttons[code] = button_add
-        # -----------------------------------------------------------
 
 
 
-    """def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
-        nome = nome.get()
-        cognome = cognome.get()
-        età = int(età.get())
-        c_fiscale = c_fiscale.get()
-        n_cellulare = n_cellulare.get()
-        altezza = float(altezza.get())
-        peso = float(peso.get())
-        email = email.get()
-        result = self.baseController.inserisciDati(nome, cognome, età, c_fiscale, n_cellulare, email, altezza, peso)
-        print(result)
-        if result == 1:
-            self.nome_entry.config(style="Errore.TEntry")
-        elif result == 2:
-            self.cognome_entry.configure(style="Errore.TEntry")
-        elif result == 3:
-            self.età_entry.configure(style="Errore.TEntry")
-        elif result == 4:
-            self.codice_fiscale_entry.configure(style="Errore.TEntry")
-        elif result == 5:
-            self.cellulare_entry.configure(style="Errore.TEntry")
-        elif result == 6:
-            self.email_entry.configure(style="Errore.TEntry")
-        elif result == 7:
-            self.altezza_entry.configure(style="Errore.TEntry")
-        elif result == 8:
-            self.peso_entry.configure(style="Errore.TEntry")
-        elif result == 0:
-            self.nome_entry.config(style="Ok.TEntry", state="readonly")
-            self.cognome_entry.configure(style="Ok.TEntry", state="readonly")
-            self.età_entry.configure(style="Ok.TEntry", state="readonly")
-            self.codice_fiscale_entry.configure(style="Ok.TEntry", state="readonly")
-            self.cellulare_entry.configure(style="Ok.TEntry", state="readonly")
-            self.altezza_entry.configure(style="Ok.TEntry", state="readonly")
-            self.peso_entry.configure(style="Ok.TEntry", state="readonly")
-            self.email_entry.configure(style="Ok.TEntry", state="readonly")
-            self.modify.grid()
-            self.save_button.grid()"""
+
 
     def read_data(self, nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email):
 
-        # 1. Usiamo direttamente i parametri ricevuti invece di self.xxx_entry
         for entry in [nome, cognome, età, c_fiscale, n_cellulare, altezza, peso, email]:
             entry.config(style="white.TEntry")
 
@@ -220,10 +171,8 @@ class appGUI:
             v_peso = float(peso.get())
             v_email = email.get().strip()
 
-            # Lanciamo i dati al controller
             self.baseController.inserisciDati(v_nome, v_cognome, v_eta, v_cf, v_cell, v_email, v_alt, v_peso)
 
-            # 2. Se tutto va bene, coloriamo di verde i parametri passati
             nome.config(style="Ok.TEntry", state="readonly")
             cognome.configure(style="Ok.TEntry", state="readonly")
             età.configure(style="Ok.TEntry", state="readonly")
@@ -237,7 +186,6 @@ class appGUI:
             self.save_button.grid()
 
         except RegistraAtletaError as e:
-            # 3. Gestione mirata dell'errore
             messagebox.showwarning("Errore di compilazione", str(e))
 
             if e.campo_errato == "nome":
@@ -258,20 +206,16 @@ class appGUI:
                 peso.config(style="Errore.TEntry")
 
         except ValueError:
-            # Cattura gli errori se l'utente digita testo nei campi numerici (es. lettere al posto dell'età)
             messagebox.showerror("Errore Formato", "Assicurati di aver inserito numeri validi per Età, Altezza e Peso.")
 
 
     def openSubWindow(self):
-        # --- INIZIO FIX: Evita finestre multiple ---
         if hasattr(self, 'registerWindow') and self.registerWindow.winfo_exists():
             self.registerWindow.lift()  # Se esiste già, portala semplicemente in primo piano
             return
 
         self.registerWindow = tk.Toplevel(self.root)
         registerWindow = self.registerWindow  # Mantiene la compatibilità col tuo codice sotto
-        # --- FINE FIX ---
-        #registerWindow = tk.Toplevel(self.root)
         registerWindow.title("Registra Nuovo Atleta")
         registerWindow.geometry("480x540")
         nome_label = ttk.Label(registerWindow, text="Nome")
@@ -320,16 +264,11 @@ class appGUI:
         self.evaluationWindow.title("Valuta atleta")
         self.evaluationWindow.geometry("720x540")
         self.evaluationWindow.resizable(False, False)
-        # Importante: grid_propagate va messo DOPO aver definito la geometry
         self.evaluationWindow.grid_propagate(False)
-
         self.baseController.valutaAtleta(code)
-
-        # Label del Codice Atleta
         self.code = ttk.Label(self.evaluationWindow, text=f"Atleta: {code}")
         self.code.grid(row=0, column=0, columnspan=2, pady=5)
 
-        # 1. Configurazione CANVAS e SCROLLBAR
         self.canvas = tk.Canvas(self.evaluationWindow, width=450, height=350)  # Altezza fissa
         self.scrollSetLines = ttk.Scrollbar(self.evaluationWindow, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = ttk.Frame(self.canvas)
@@ -342,11 +281,9 @@ class appGUI:
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollSetLines.set)
 
-        # Posizionamento Canvas (Colonna 0)
         self.canvas.grid(row=1, column=0, padx=10, pady=10)
         self.scrollSetLines.grid(row=1, column=1, sticky="ns")
 
-        # 2. Sezione Input Bonus (Sotto il canvas)
         bonus_frame = ttk.Frame(self.evaluationWindow)
         bonus_frame.grid(row=2, column=0, pady=10)
 
@@ -357,7 +294,6 @@ class appGUI:
         bonus_combo_entry.insert(0, "0")
         bonus_combo_entry.grid(row=0, column=1)
 
-        # 3. Sezione Pulsanti Azione (Colonna 2)
         buttons_frame = ttk.Frame(self.evaluationWindow)
         buttons_frame.grid(row=1, column=2, padx=20, sticky="n")
 
@@ -372,7 +308,6 @@ class appGUI:
         self.labelResult = ttk.Label(buttons_frame, text="", font=('Helvetica', 12, 'bold'))
         self.labelResult.pack(pady=20)
 
-        # Inizializza la prima riga
         self.addSetLine()
 
 
@@ -395,11 +330,9 @@ class appGUI:
 
         elenco_atleti = self.baseController.getElencoAtleti()
 
-        # 3. La GUI usa "se stessa" (self) per aggiornare la visualizzazione
         for codice, atl in elenco_atleti.items():
             self.add_line(codice, atl.nome, atl.cognome, "partecipa", "competition", self.mylistComp)
 
-        # --- FINE PARTE REFACTORIZZATA ---
 
 
     def startCompetition(self):
@@ -449,7 +382,6 @@ class appGUI:
                     fg="#155724",
                     state="disabled"
                 )
-            # -------------------------------------------------------------------------------------
             if winner is not None:
                 self.colora_match_concluso(index, winner)
                 self.aggiornaTabellone(index, winner, stato)
@@ -475,9 +407,7 @@ class appGUI:
 
     def aggiornaTabellone(self, current_match, vincitore, stato):
         if stato.is_finale():
-            # Opzionale: Qui potresti lanciare un pop-up per festeggiare il vincitore del torneo!
             print(f"Torneo concluso! Ha vinto {vincitore.Atleta.nome} {vincitore.Atleta.cognome}")
-            # --- LANCIO DEL POP-UP DI VITTORIA ---
             messagebox.showinfo(
                 title="Torneo Concluso!",
                 message=f"Il vincitore assoluto del torneo è {vincitore.Atleta.nome} {vincitore.Atleta.cognome}!\nCongratulazioni!"
@@ -493,8 +423,6 @@ class appGUI:
         if chiave_ui in self.labels_tabellone:
             btn = self.labels_tabellone[chiave_ui]
             btn.config(text=nome_completo_vincitore)
-
-            # Uso parametri di default nella lambda per legare i valori in modo sicuro
             btn.config(command=lambda c=codice_vincitore, m=next_match: self.openEvaluationWindow(c, "competition", m))
 
     def mostraTabellone(self):
@@ -503,10 +431,8 @@ class appGUI:
 
         self.bracket_frame = ttk.Frame(self.main_frame)
         self.bracket_frame.grid(row=1, column=6, sticky="n", padx=15)
-
         tk.Label(self.bracket_frame, text="TABELLONE 1v1", font=('Helvetica', 12, 'bold')).grid(row=0, column=0,
                                                                                                 columnspan=4, pady=5)
-
         fasi = ["Ottavi", "Quarti", "Semifinali", "Finale"]
         for col, fase in enumerate(fasi):
             tk.Label(self.bracket_frame, text=fase, font=('Helvetica', 10, 'bold')).grid(row=1, column=col, pady=2)
@@ -520,7 +446,6 @@ class appGUI:
 
         sfidanti_ottavi = self.riempiOttavi(8)
 
-        # DIZIONARIO PER SALVARE I RIFERIMENTI GRAFICI delle Label
         self.labels_tabellone = {}
 
         for col, fase in enumerate(fasi):
@@ -529,38 +454,27 @@ class appGUI:
                 if fase == "Ottavi":
                     index, nome1, nome2, cod1, cod2 = sfidanti_ottavi[i]
                 else:
-                    # Per i Quarti (i va da 0 a 3) -> index diventa da 1 a 4
-                    # Per le Semifinali (i va da 0 a 1) -> index diventa 1 e 2
                     index = i + 1
                     nome1, nome2 = "TBD", "TBD"
                     cod1, cod2 = "TBD", "TBD"
 
-                # Passiamo anche il parametro 'fase' a crea_match_box
                 self.crea_match_box(self.bracket_frame, row, col, rowspan, nome1, nome2, index, cod1, cod2, fase)
 
     def crea_match_box(self, parent, row, col, rowspan, nome1, nome2, index, cod1, cod2, fase):
-        # Ripristiniamo un leggero padding esterno ed interno per dare respiro
         box = tk.Frame(parent, borderwidth=1, relief="solid", bg="lightgrey", padx=2, pady=2)
         box.grid(row=row, column=col, rowspan=rowspan, padx=6, pady=3)
-
-        # Font riportato a 9, larghezza a 13.
-        # bd=2 ridà il classico effetto "pulsante" cliccabile 3D
         btn1 = tk.Button(box, text=nome1, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
         btn2 = tk.Button(box, text=nome2, width=13, font=('Helvetica', 9), cursor="hand2", bd=2)
 
         btn1.config(command=lambda b_win=btn1, b_lose=btn2: self.openEvaluationWindow(cod1, "competition", index))
         btn2.config(command=lambda b_win=btn2, b_lose=btn1: self.openEvaluationWindow(cod2, "competition", index))
 
-        # Spazio di 1 pixel tra i due sfidanti nel box
         btn1.pack(pady=1)
         btn2.pack(pady=1)
 
-        # SALVATAGGIO DEI RIFERIMENTI NEL DIZIONARIO
-        # Inizializziamo il dizionario come rete di sicurezza nel caso non lo avessi fatto altrove
         if not hasattr(self, 'labels_tabellone'):
             self.labels_tabellone = {}
 
-        # Memorizziamo il bottone 1 e il bottone 2 usando la chiave univoca (Fase, Indice, Sfidante 1 o 2)
         self.labels_tabellone[(fase, index, 1)] = btn1
         self.labels_tabellone[(fase, index, 2)] = btn2
 
@@ -569,7 +483,6 @@ class appGUI:
         btn_perdente.config(bg="red", fg="white", state="disabled")
 
     def colora_match_concluso(self, current_match, vincitore):
-        # 1. Determina la fase e l'indice del match APPENA CONCLUSO
         if 1 <= current_match <= 8:
             fase = "Ottavi"
             indice_fase = current_match
@@ -585,18 +498,14 @@ class appGUI:
         else:
             return
 
-        # 2. Costruisci le chiavi per trovare i due bottoni di questo match
         chiave_btn1 = (fase, indice_fase, 1)
         chiave_btn2 = (fase, indice_fase, 2)
 
         if chiave_btn1 in self.labels_tabellone and chiave_btn2 in self.labels_tabellone:
             btn1 = self.labels_tabellone[chiave_btn1]
             btn2 = self.labels_tabellone[chiave_btn2]
-
-            # MODIFICA: Usa la stringa Nome + Cognome per il confronto
             nome_completo_vincente = f"{vincitore.Atleta.nome} {vincitore.Atleta.cognome}"
 
-            # 3. Controlla il testo sui bottoni e applica i colori
             if btn1.cget("text") == nome_completo_vincente:
                 self.imposta_vincitore(btn1, btn2)
             elif btn2.cget("text") == nome_completo_vincente:

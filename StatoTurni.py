@@ -12,7 +12,7 @@ class StatoTurni(StatoCompetizione):
         winner = self.competizione.aggiungiSetPartecipante(indexMatch, codice, finalSet)
         print("Set in Turni")
         if winner is not None:
-            stato = self.competizione.avanzaTurnoAtleta(indexMatch, winner)  # Richiama il nuovo metodo universale
+            stato = self.competizione.avanzaTurnoAtleta(indexMatch, winner)
             return winner, stato
         return None, None
 

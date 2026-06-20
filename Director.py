@@ -13,7 +13,6 @@ class DirectorBuilder:
 
     def checkBonusCompletezza(self):
         tempListaCategorie = []
-        print("Dentro il decorator")
 
         for e in self.sb._prodotto.lista_linee:
             categoria = next((s.categoria for s in self.listaSkill if s.nome == e.skill), None)
@@ -21,7 +20,6 @@ class DirectorBuilder:
                 print(f"Categoria {categoria}")
                 tempListaCategorie.append(categoria)
         if len(tempListaCategorie) == 4:
-            print("Bonus completezza presente")
             return DecoratorCompletezza(self.sb)
         return self.sb
 

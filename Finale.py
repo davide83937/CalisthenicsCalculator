@@ -8,7 +8,6 @@ class Finale(Turno):
         return statoVecchio
 
     def get_destinazione_vincitore(self, current_match):
-        # Questo non dovrebbe mai essere chiamato se is_finale() viene verificato prima
         return None, None, None, None
 
     def is_finale(self):
