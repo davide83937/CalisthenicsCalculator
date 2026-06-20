@@ -97,22 +97,16 @@ class Caliculator:
 
 
     def calcolaPunteggioSet(self, n_combo):
-        # Otteniamo il prodotto dal builder/decorator
         set_prodotto = self.setCorrente.get_result()
-
-        # Iteriamo sulle linee salvate nel prodotto
         for sl in set_prodotto.lista_linee:
             self.setCorrente.calcolaPunteggioParziale(sl, self.elencoSkills)
 
-        # Il DirectorBuilder analizza il set e decide se applicare decorator
         director = d.DirectorBuilder(self.setCorrente, self.elencoSkills, n_combo)
         self.setCorrente = director.get_result()
 
-        # Recuperiamo il prodotto finale (potenzialmente decorato)
         final_set = self.setCorrente.get_result()
         final_set.__str__()
 
-        #return f"Punteggio complessivo = {final_set.punteggio_totale}"
         return final_set.__str__()
 
 
