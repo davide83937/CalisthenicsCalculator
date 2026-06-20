@@ -5,7 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf2e45c5-18b7-4471-9984-4c1bbfb2dc0b" name="Changes" comment="seconda iterazione fatta">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/1 - Ideazione/1 - Documento di visione.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/1 - Ideazione/2 - Modello dei Casi d'Uso.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/1 - Ideazione/3 - Regole di dominio.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/1 - Ideazione/4 - Glossario.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/AnalisiOO - 1 Iterazione.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Elaborazione e Progettazione - 1.asta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Elaborazione/D. di Dominio immagine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Elaborazione/SSD-UC1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Elaborazione/SSD-UC2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/CD-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/SD_UC1_O1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/SD_UC1_O2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/SD_UC2_O1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/SD_UC2_O2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/2 - Elaborazione e Progettazione/Immagini Progettazione/SD_UC2_O3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Appunti Pattern.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/AppGUI.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/Atleta.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/Caliculator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/Main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/Set.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/SetLine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/Skill.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/atleti.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITERAZIONE 1/Implementazione/skills.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +247,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781960918381</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="seconda iterazione fatta">
+      <option name="closed" value="true" />
+      <created>1781962094345</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1781962094345</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
